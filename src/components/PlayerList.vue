@@ -1,12 +1,11 @@
 <template>
-  <div class="player-list">
-    <h2>Players</h2>
-    <ul>
-      <li v-for="player in players">
+  <md-table>
+    <md-table-row v-for="player in players">
+      <md-table-cell>
         {{ player.name }}
-      </li>
-    </ul>
-  </div>
+      </md-table-cell>
+    </md-table-row>
+  </md-table>
 </template>
 
 <script>

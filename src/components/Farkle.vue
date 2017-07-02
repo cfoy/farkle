@@ -1,14 +1,32 @@
 <template>
-  <div class="farkle">
-    <h1>Farkle</h1>
-    <div v-if="started">
-      <farkle-game v-bind:players="players"></farkle-game>
-    </div>
-    <div v-else>
-      <create-player v-on:create-player="createPlayer"></create-player>
-      <player-list v-bind:players="players"></player-list>
-      <button v-on:click="startGame">Start Game</button>
-    </div>
+  <div v-if="started">
+    <md-card>
+      <md-card-header>
+        <h1 class="md-title">Farkle</h1>
+      </md-card-header>
+      <md-card-content>
+        <farkle-game v-bind:players="players"></farkle-game>
+      </md-card-content>
+    </md-card>
+  </div>
+  <div v-else>
+    <md-card>
+      <md-card-header>
+        <h1 class="md-title">Farkle</h1>
+      </md-card-header>
+      <md-card-content>
+        <create-player v-on:create-player="createPlayer"></create-player>
+      </md-card-content>
+    </md-card>
+    <md-card>
+      <md-card-header>
+        <h1 class="md-title">Players</h1>
+      </md-card-header>
+      <md-card-content>
+        <player-list v-bind:players="players"></player-list>
+        <md-button v-on:click="startGame" class="md-raised md-primary">Start Game</md-button>
+      </md-card-content>
+    </md-card>
   </div>
 </template>
 

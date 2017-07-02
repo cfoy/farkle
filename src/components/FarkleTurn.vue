@@ -1,26 +1,24 @@
 <template>
   <div class="farkle-turn">
-    <hr>
-    <h2>Current Turn</h2>
     <h3>Points: {{ points }}</h3>
-    <button v-on:click="one">One</button>
-    <button v-on:click="five">Five</button>
-    <button v-on:click="tripleOnes">111</button>
-    <button v-on:click="tripleTwos">222</button>
-    <button v-on:click="tripleThrees">333</button>
-    <button v-on:click="tripleFours">444</button>
-    <button v-on:click="tripleFives">555</button>
-    <button v-on:click="tripleSixes">666</button>
-    <button v-on:click="fourOfAKind">Four of a Kind</button>
-    <button v-on:click="fiveOfAKind">Five of a Kind</button>
-    <button v-on:click="sixOfAKind">Six of a Kind</button>
-    <button v-on:click="straight">Straight</button>
-    <button v-on:click="threePairs">Three Pairs</button>
-    <button v-on:click="fourPlusTwo">Four of a Kind Plus a Pair</button>
-    <button v-on:click="twoThreeOfAKind">Three of a Kind x 2</button>
+    <md-button v-on:click="one">One</md-button>
+    <md-button v-on:click="five">Five</md-button>
+    <md-button v-on:click="tripleOnes">111</md-button>
+    <md-button v-on:click="tripleTwos">222</md-button>
+    <md-button v-on:click="tripleThrees">333</md-button>
+    <md-button v-on:click="tripleFours">444</md-button>
+    <md-button v-on:click="tripleFives">555</md-button>
+    <md-button v-on:click="tripleSixes">666</md-button>
+    <md-button v-on:click="fourOfAKind">Four of a Kind</md-button>
+    <md-button v-on:click="fiveOfAKind">Five of a Kind</md-button>
+    <md-button v-on:click="sixOfAKind">Six of a Kind</md-button>
+    <md-button v-on:click="straight">Straight</md-button>
+    <md-button v-on:click="threePairs">Three Pairs</md-button>
+    <md-button v-on:click="fourPlusTwo">Four of a Kind Plus a Pair</md-button>
+    <md-button v-on:click="twoThreeOfAKind">Three of a Kind x 2</md-button>
     <div>
-      <button v-on:click="done">Done</button>
-      <button v-on:click="farkle">Farkle!</button>
+      <md-button class="md-raised md-primary" v-on:click="done">Done</md-button>
+      <md-button class="md-raised md-warn" v-on:click="farkle">Farkle!</md-button>
     </div>
   </div>
 </template>

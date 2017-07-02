@@ -1,10 +1,11 @@
 <template>
   <div class="create-player">
-    <h3>Add Player</h3>
     <form v-on:submit.prevent v-on:submit="addPlayer">
-      <label for="player_name">Name: </label>
-      <input id="player_name" type="text" v-model="name">
-      <button>Add</button>
+      <md-input-container>
+        <label>Name: </label>
+        <md-input type="text" v-model="name"></md-input>
+        <md-button class="md-button md-theme-default" v-on:click="addPlayer">Add</md-button>
+      </md-input-container>
     </form>
   </div>
 </template>
@@ -19,11 +20,13 @@ export default {
   name: 'create-player',
   methods: {
     addPlayer () {
-      this.$emit('create-player', {
-        name: this.name,
-        score: 0
-      })
-      this.name = ''
+      if (this.name.length > 0) {
+        this.$emit('create-player', {
+          name: this.name,
+          score: 0
+        })
+        this.name = ''
+      }
     }
   }
 }

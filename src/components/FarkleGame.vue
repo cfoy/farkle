@@ -1,22 +1,19 @@
 <template>
-  <div class="farkle-game">
-    <player v-for="(player, index) in players"
-            :key="player.id"
-            v-bind:player="player"
-            :active="index === currentPlayer">
-    </player>
+  <div>
+    <h3>Current Player: {{ currentPlayerName }}</h3>
     <farkle-turn v-on:score="score"></farkle-turn>
+    <score v-bind:players="players"></score>
   </div>
 </template>
 
 <script>
-import Player from './Player.vue'
+import Score from './Score.vue'
 import FarkleTurn from './FarkleTurn.vue'
 
 export default {
   name: 'farkle-game',
   components: {
-    Player,
+    Score,
     FarkleTurn
   },
 
@@ -36,6 +33,12 @@ export default {
     score (points) {
       this.players[this.currentPlayer].score += points
       this.nextPlayer()
+    }
+  },
+
+  computed: {
+    currentPlayerName () {
+      return this.players[this.currentPlayer].name
     }
   }
 }
