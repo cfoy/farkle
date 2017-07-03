@@ -1,32 +1,17 @@
 <template>
   <div v-if="started">
-    <md-card>
-      <md-card-header>
-        <h1 class="md-title">Farkle</h1>
-      </md-card-header>
-      <md-card-content>
-        <farkle-game v-bind:players="players"></farkle-game>
-      </md-card-content>
-    </md-card>
+      <farkle-game v-bind:players="players"></farkle-game>
   </div>
   <div v-else>
-    <md-card>
-      <md-card-header>
-        <h1 class="md-title">Farkle</h1>
-      </md-card-header>
-      <md-card-content>
+    <v-card>
+      <v-card-text>
         <create-player v-on:create-player="createPlayer"></create-player>
-      </md-card-content>
-    </md-card>
-    <md-card>
-      <md-card-header>
-        <h1 class="md-title">Players</h1>
-      </md-card-header>
-      <md-card-content>
+      </v-card-text>
+      <v-card-text>
         <player-list v-bind:players="players"></player-list>
-        <md-button v-on:click="startGame" class="md-raised md-primary">Start Game</md-button>
-      </md-card-content>
-    </md-card>
+        <v-btn primary light v-on:click.native="startGame">Start Game</v-btn>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
@@ -61,24 +46,3 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-</style>

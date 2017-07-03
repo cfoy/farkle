@@ -1,28 +1,23 @@
 <template>
-  <md-table>
-    <md-table-header>
-      <md-table-row>
-        <md-table-cell>
-          Name
-        </md-table-cell>
-        <md-table-cell>
-          Score
-        </md-table-cell>
-      </md-table-row>
-    </md-table-header>
-    <md-table-body>
-      <md-table-row v-for="player in players" v-bind:key="player.id">
-        <md-table-cell>
-          {{ player.name }}
-        </md-table-cell>
-        <md-table-cell>
+  <v-list subheader>
+    <v-subheader>Players</v-subheader>
+    <v-list-item v-for="(player, index) in players" v-bind:key="index">
+      <v-list-tile avatar>
+        <v-list-tile-avatar>
+          <v-icon>face</v-icon>
+        </v-list-tile-avatar>
+        <v-list-tile-content>
+          <v-list-tile-title>
+            {{ player.name }}
+          </v-list-tile-title>
+        </v-list-tile-content>
+        <v-list-tile-action>
           {{ player.score }}
-        </md-table-cell>
-      </md-table-row>
-    </md-table-body>
-  </md-table>
+        </v-list-tile-action>
+      </v-list-tile>
+    </v-list-item>
+  </v-list>
 </template>
-
 <script>
   export default {
     props: ['players'],

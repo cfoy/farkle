@@ -1,26 +1,36 @@
 <template>
-  <div class="farkle-turn">
-    <h3>Points: {{ points }}</h3>
-    <md-button v-on:click="one">One</md-button>
-    <md-button v-on:click="five">Five</md-button>
-    <md-button v-on:click="tripleOnes">111</md-button>
-    <md-button v-on:click="tripleTwos">222</md-button>
-    <md-button v-on:click="tripleThrees">333</md-button>
-    <md-button v-on:click="tripleFours">444</md-button>
-    <md-button v-on:click="tripleFives">555</md-button>
-    <md-button v-on:click="tripleSixes">666</md-button>
-    <md-button v-on:click="fourOfAKind">Four of a Kind</md-button>
-    <md-button v-on:click="fiveOfAKind">Five of a Kind</md-button>
-    <md-button v-on:click="sixOfAKind">Six of a Kind</md-button>
-    <md-button v-on:click="straight">Straight</md-button>
-    <md-button v-on:click="threePairs">Three Pairs</md-button>
-    <md-button v-on:click="fourPlusTwo">Four of a Kind Plus a Pair</md-button>
-    <md-button v-on:click="twoThreeOfAKind">Three of a Kind x 2</md-button>
-    <div>
-      <md-button class="md-raised md-primary" v-on:click="done">Done</md-button>
-      <md-button class="md-raised md-warn" v-on:click="farkle">Farkle!</md-button>
-    </div>
-  </div>
+  <v-layout row wrap>
+    <v-flex xs12>
+      <h5>Points: {{ points }}</h5>
+    </v-flex>
+    <v-flex xs12>
+      <v-btn flat v-on:click.native="one">One</v-btn>
+      <v-btn flat v-on:click.native="five">Five</v-btn>
+    </v-flex>
+    <v-flex xs12>
+      <v-btn flat v-on:click.native="tripleOnes">111</v-btn>
+      <v-btn flat v-on:click.native="tripleTwos">222</v-btn>
+      <v-btn flat v-on:click.native="tripleThrees">333</v-btn>
+      <v-btn flat v-on:click.native="tripleFours">444</v-btn>
+      <v-btn flat v-on:click.native="tripleFives">555</v-btn>
+      <v-btn flat v-on:click.native="tripleSixes">666</v-btn>
+    </v-flex>
+    <v-flex xs12>
+      <v-btn flat v-on:click.native="fourOfAKind">Four of a Kind</v-btn>
+      <v-btn flat v-on:click.native="fiveOfAKind">Five of a Kind</v-btn>
+      <v-btn flat v-on:click.native="sixOfAKind">Six of a Kind</v-btn>
+    </v-flex>
+    <v-flex xs12>
+      <v-btn flat v-on:click.native="straight">Straight</v-btn>
+      <v-btn flat v-on:click.native="threePairs">Three Pairs</v-btn>
+      <v-btn flat v-on:click.native="fourPlusTwo">Four of a Kind Plus a Pair</v-btn>
+      <v-btn flat v-on:click.native="twoThreeOfAKind">Three of a Kind x 2</v-btn>
+    </v-flex>
+    <v-flex xs12>
+      <v-btn primary light v-on:click.native="done">Done</v-btn>
+      <v-btn error light v-on:click.native="farkle">Farkle!</v-btn>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -90,9 +100,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  h2 {
-    color: red;
-  }
-</style>
