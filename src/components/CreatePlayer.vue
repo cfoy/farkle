@@ -5,7 +5,7 @@
         <v-text-field label="Name" v-model="name"></v-text-field>
       </v-flex>
       <v-flex xs4>
-        <v-btn flat v-on:click="addPlayer">Add</v-btn>
+        <v-btn flat v-on:click.native="addPlayer">Add</v-btn>
       </v-flex>
     </v-layout>
   </form>
