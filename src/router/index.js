@@ -11,5 +11,6 @@ export default new Router({
       name: 'Farkle',
       component: Farkle
     }
-  ]
+  ],
+  mode: 'history'
 })
