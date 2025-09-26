@@ -1,6 +1,9 @@
 <template>
   <div v-if="started">
       <farkle-game v-bind:players="players"></farkle-game>
+      <v-card>
+        <v-btn primary light v-on:click.native="restartGame">Restart Game</v-btn>
+      </v-card>
   </div>
   <div v-else>
     <v-card>
@@ -11,9 +14,6 @@
         <player-list v-bind:players="players"></player-list>
         <v-btn primary light v-on:click.native="startGame">Start Game</v-btn>
       </v-card-text>
-    </v-card>
-    <v-card>
-        <v-btn primary light v-on:click.native="restartGame">Restart Game</v-btn>
     </v-card>
   </div>
 </template>
