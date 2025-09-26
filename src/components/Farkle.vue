@@ -47,6 +47,9 @@ export default {
       }
     },
     restartGame () {
+      this.players.forEach(function (player) {
+        player.score = 0
+      })
       this.started = false
     }
   }
