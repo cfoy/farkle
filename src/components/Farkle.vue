@@ -12,6 +12,9 @@
         <v-btn primary light v-on:click.native="startGame">Start Game</v-btn>
       </v-card-text>
     </v-card>
+    <v-card>
+        <v-btn primary light v-on:click.native="restartGame">Restart Game</v-btn>
+    </v-card>
   </div>
 </template>
 
@@ -42,6 +45,9 @@ export default {
       if (this.players.length >= 2) {
         this.started = true
       }
+    },
+    restartGame () {
+      this.started = false
     }
   }
 }
