@@ -1,5 +1,6 @@
 require('babel-register')
 var config = require('../../config')
+var puppeteer = require('puppeteer')
 
 // http://nightwatchjs.org/gettingstarted#settings-file
 module.exports = {
@@ -7,23 +8,24 @@ module.exports = {
   output_folder: 'test/e2e/reports',
   custom_assertions_path: ['test/e2e/custom-assertions'],
 
-  selenium: {
+  webdriver: {
     start_process: true,
-    server_path: require('selenium-server').path,
-    host: '127.0.0.1',
-    port: 4444,
-    cli_args: {
-      'webdriver.chrome.driver': require('chromedriver').path
-    }
+    server_path: require('chromedriver').path,
+    port: 9515
   },
 
   test_settings: {
     default: {
-      selenium_port: 4444,
-      selenium_host: 'localhost',
       silent: true,
       globals: {
         devServerURL: 'http://localhost:' + (process.env.PORT || config.dev.port)
+      },
+      desiredCapabilities: {
+        browserName: 'chrome',
+        chromeOptions: {
+          binary: puppeteer.executablePath(),
+          args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
+        }
       }
     },
 
@@ -31,7 +33,11 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         javascriptEnabled: true,
-        acceptSslCerts: true
+        acceptSslCerts: true,
+        chromeOptions: {
+          binary: puppeteer.executablePath(),
+          args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
+        }
       }
     },
 
