@@ -21,7 +21,7 @@ export default {
   name: 'create-player',
   methods: {
     addPlayer () {
-      if (this.name.length > 0) {
+      if (this.name.trim().length > 0) {
         this.$emit('create-player', {
           name: this.name,
           score: 0
