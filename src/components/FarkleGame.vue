@@ -37,7 +37,8 @@ export default {
   data () {
     return {
       currentPlayer: 0,
-      totalTurns: 0
+      totalTurns: 0,
+      winningPlayerIndex: null
     }
   },
 
@@ -49,6 +50,11 @@ export default {
     },
     score (points) {
       this.players[this.currentPlayer].score += points
+
+      if (this.winningPlayerIndex === null && this.players[this.currentPlayer].score >= 10000) {
+        this.winningPlayerIndex = this.currentPlayer
+      }
+
       this.nextPlayer()
     }
   },

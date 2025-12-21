@@ -34,6 +34,10 @@ describe('FarkleGame.vue', () => {
     expect(wrapper.vm.totalTurns).toBe(0)
   })
 
+  it('initializes winningPlayerIndex to null', () => {
+    expect(wrapper.vm.winningPlayerIndex).toBe(null)
+  })
+
   it('displays current player name', () => {
     expect(wrapper.vm.currentPlayerName).toBe('Alice')
   })
@@ -147,6 +151,73 @@ describe('FarkleGame.vue', () => {
 
       equalTurns = wrapper.vm.totalTurns % players.length === 0
       expect(equalTurns).toBe(true)
+    })
+  })
+
+  describe('Winning condition detection', () => {
+    it('sets winningPlayerIndex when player reaches exactly 10,000', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.winningPlayerIndex).toBe(0)
+      expect(players[0].score).toBe(10000)
+    })
+
+    it('sets winningPlayerIndex when player exceeds 10,000', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(1000)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.winningPlayerIndex).toBe(0)
+      expect(players[0].score).toBe(10500)
+    })
+
+    it('does not set winningPlayerIndex for scores below 10,000', async () => {
+      wrapper.vm.score(9999)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.winningPlayerIndex).toBe(null)
+    })
+
+    it('only records first player to reach 10,000', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.winningPlayerIndex).toBe(0)
+
+      players[1].score = 9800
+      wrapper.vm.score(300)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.winningPlayerIndex).toBe(0)
+      expect(players[1].score).toBe(10100)
+    })
+
+    it('tracks correct player index when second player reaches 10k first', async () => {
+      wrapper.vm.score(5000)
+      await wrapper.vm.$nextTick()
+
+      players[1].score = 9000
+      wrapper.vm.score(1500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.winningPlayerIndex).toBe(1)
+      expect(players[1].score).toBe(10500)
+    })
+
+    it('tracks correct player index when third player reaches 10k first', async () => {
+      wrapper.vm.score(3000)
+      wrapper.vm.score(4000)
+      await wrapper.vm.$nextTick()
+
+      players[2].score = 8000
+      wrapper.vm.score(2500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.winningPlayerIndex).toBe(2)
+      expect(players[2].score).toBe(10500)
     })
   })
 
