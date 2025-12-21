@@ -9,7 +9,7 @@
       </v-card-text>
       <v-card-text>
         <player-list v-bind:players="players"></player-list>
-        <v-btn primary light v-on:click.native="startGame">Start Game</v-btn>
+        <v-btn color="primary" v-on:click.native="startGame">Start Game</v-btn>
       </v-card-text>
     </v-card>
   </div>
