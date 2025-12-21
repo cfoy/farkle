@@ -20,28 +20,26 @@ test.describe('Complete Game Turn with Scoring', () => {
   })
 
   test('accumulates points when clicking scoring buttons', async ({ page }) => {
-    // Initial state: Points should be 0
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 0')
+    // Initial state: Turn Total should be 0
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 0')
 
     // Click "One" button (adds 100 points) - use exact text match
     await page.getByRole('button', { name: 'One', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 100')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 100')
 
     // Click "Five" button (adds 50 points)
     await page.getByRole('button', { name: 'Five', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 150')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 150')
 
     // Click "111" button (adds 300 points)
     await page.getByRole('button', { name: '111', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 450')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 450')
   })
 
   test('completes turn, updates score, and rotates to next player', async ({ page }) => {
-    // Alice's turn: score some points
-    await page.getByRole('button', { name: 'One', exact: true }).click()
-    await page.getByRole('button', { name: 'One', exact: true }).click()
-    await page.getByRole('button', { name: 'Five', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 250')
+    // Alice's turn: score 500+ points to get on board
+    await page.getByRole('button', { name: '555', exact: true }).click() // 500 points
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 500')
 
     // Click Done to end turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
