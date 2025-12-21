@@ -123,3 +123,32 @@ nvm use        # Switch to project Node version
 ## Git Workflow
 
 This project uses Beads for issue tracking. See the session startup hook output for Beads commands.
+
+### Feature Branch Workflow
+
+**IMPORTANT**: Always create a new feature branch for new work:
+
+```bash
+# For new features, epics, or significant tasks
+git checkout -b feature/descriptive-name
+
+# Examples:
+git checkout -b feature/winning-condition
+git checkout -b feature/multiplayer-mode
+git checkout -b bugfix/scoring-calculation
+```
+
+**Branching Guidelines**:
+- Create feature branches from `master` (or current feature branch if building on top)
+- Use descriptive branch names: `feature/`, `bugfix/`, `chore/`
+- One feature/epic per branch
+- Always start a new branch before creating beads epics or beginning significant work
+
+**Completing Feature Work**:
+When a feature is complete, create a pull request using the GitHub CLI:
+
+```bash
+gh pr create --title "Feature: Descriptive Title" --body "Description of changes"
+```
+
+See the GitHub CLI section in this file for more details on PR creation.
