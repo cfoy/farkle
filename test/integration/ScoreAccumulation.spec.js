@@ -330,7 +330,7 @@ describe('Score Accumulation Integration', () => {
 
     it('handles score accumulation reaching 10000+', async () => {
       const scoreComponent = wrapper.findComponent(Score)
-      const farkleTurn = wrapper.findComponent(FarkleTurn)
+      let farkleTurn = wrapper.findComponent(FarkleTurn)
 
       // Manually set high initial scores for faster testing
       players[0].score = 9500
@@ -338,18 +338,28 @@ describe('Score Accumulation Integration', () => {
       players[2].score = 9700
       await wrapper.vm.$nextTick()
 
-      // Add final scoring round
+      // Add final scoring round - game enters last round after first player reaches 10k
       farkleTurn.vm.$emit('score', 1000) // Alice: 10500
       await wrapper.vm.$nextTick()
+
+      farkleTurn = wrapper.findComponent(FarkleTurn)
       farkleTurn.vm.$emit('score', 500)  // Bob: 10300
       await wrapper.vm.$nextTick()
+
+      farkleTurn = wrapper.findComponent(FarkleTurn)
       farkleTurn.vm.$emit('score', 800)  // Charlie: 10500
       await wrapper.vm.$nextTick()
 
-      const scoreTiles = scoreComponent.findAll('.list__tile__action')
+      // Game is now over, score component still exists in game over UI
+      const finalScoreComponent = wrapper.findComponent(Score)
+      const scoreTiles = finalScoreComponent.findAll('.list__tile__action')
       expect(scoreTiles.at(0).text()).toContain('10500')
       expect(scoreTiles.at(1).text()).toContain('10300')
       expect(scoreTiles.at(2).text()).toContain('10500')
+
+      // Verify game ended
+      const farkleGame = wrapper.findComponent(FarkleGame)
+      expect(farkleGame.vm.gameOver).toBe(true)
     })
   })
 })

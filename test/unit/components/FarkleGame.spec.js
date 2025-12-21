@@ -574,4 +574,79 @@ describe('FarkleGame.vue', () => {
       expect(header.text()).toContain('Alice')
     })
   })
+
+  describe('Game over UI', () => {
+    it('shows game UI when game is not over', () => {
+      expect(wrapper.find('h5').exists()).toBe(true)
+      expect(wrapper.find('h5').text()).toContain('Current Player')
+      expect(wrapper.findComponent({ name: 'farkle-turn' }).exists()).toBe(true)
+    })
+
+    it('hides game over UI when game is not over', () => {
+      expect(wrapper.find('h3').exists()).toBe(false)
+    })
+
+    it('shows game over UI when game ends', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      wrapper.vm.score(200)
+      wrapper.vm.score(300)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
+      expect(wrapper.find('h3').exists()).toBe(true)
+      expect(wrapper.find('h3').text()).toBe('Game Over!')
+    })
+
+    it('hides turn interface when game is over', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      wrapper.vm.score(200)
+      wrapper.vm.score(300)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.findComponent({ name: 'farkle-turn' }).exists()).toBe(false)
+      expect(wrapper.find('h5').exists()).toBe(false)
+    })
+
+    it('displays winner name and score', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      wrapper.vm.score(200)
+      wrapper.vm.score(300)
+      await wrapper.vm.$nextTick()
+
+      const winnerText = wrapper.find('h4')
+      expect(winnerText.exists()).toBe(true)
+      expect(winnerText.text()).toContain('Winner: Alice')
+      expect(winnerText.text()).toContain('10000 points')
+    })
+
+    it('displays correct winner when different player wins', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      players[1].score = 9000
+      wrapper.vm.score(2000)
+      await wrapper.vm.$nextTick()
+
+      wrapper.vm.score(100)
+      await wrapper.vm.$nextTick()
+
+      const winnerText = wrapper.find('h4')
+      expect(winnerText.text()).toContain('Winner: Bob')
+      expect(winnerText.text()).toContain('11000 points')
+    })
+
+    it('displays scoreboard in game over UI', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      wrapper.vm.score(200)
+      wrapper.vm.score(300)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.findComponent({ name: 'score' }).exists()).toBe(true)
+    })
+  })
 })
