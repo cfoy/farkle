@@ -297,10 +297,10 @@ test.describe('Edge Cases and Validation', () => {
     // Verify game started
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
 
-    // Setup components should not be visible
+    // Setup components should not be visible (but Restart Game button should be)
     await expect(page.locator('label:has-text("Name")')).not.toBeVisible()
     await expect(page.locator('button:has-text("Add")')).not.toBeVisible()
-    await expect(page.locator('button:has-text("Start Game")')).not.toBeVisible()
+    await expect(page.getByRole('button', { name: 'Start Game', exact: true })).not.toBeVisible()
 
     // Play a turn
     await page.getByRole('button', { name: 'One', exact: true }).click()
