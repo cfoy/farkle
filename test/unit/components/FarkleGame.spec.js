@@ -406,6 +406,121 @@ describe('FarkleGame.vue', () => {
     })
   })
 
+  describe('Winner determination', () => {
+    it('returns null when game is not over', () => {
+      expect(wrapper.vm.winner).toBe(null)
+    })
+
+    it('returns null during last round before game ends', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.inLastRound).toBe(true)
+      expect(wrapper.vm.gameOver).toBe(false)
+      expect(wrapper.vm.winner).toBe(null)
+    })
+
+    it('identifies winner after game ends', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      wrapper.vm.score(200)
+      wrapper.vm.score(300)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
+      expect(wrapper.vm.winner).toBe(players[0])
+      expect(wrapper.vm.winner.name).toBe('Alice')
+      expect(wrapper.vm.winner.score).toBe(10000)
+    })
+
+    it('identifies correct winner when second player has highest score', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      players[1].score = 8000
+      wrapper.vm.score(3000)
+      await wrapper.vm.$nextTick()
+
+      wrapper.vm.score(200)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
+      expect(wrapper.vm.winner).toBe(players[1])
+      expect(wrapper.vm.winner.name).toBe('Bob')
+      expect(wrapper.vm.winner.score).toBe(11000)
+    })
+
+    it('identifies correct winner when third player has highest score', async () => {
+      players[0].score = 9000
+      wrapper.vm.score(1000)
+      await wrapper.vm.$nextTick()
+
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      players[2].score = 9000
+      wrapper.vm.score(2500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
+      expect(wrapper.vm.winner).toBe(players[2])
+      expect(wrapper.vm.winner.name).toBe('Charlie')
+      expect(wrapper.vm.winner.score).toBe(11500)
+    })
+
+    it('returns first player in case of tie', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      players[1].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      wrapper.vm.score(100)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
+      expect(wrapper.vm.winner).toBe(players[0])
+      expect(wrapper.vm.winner.score).toBe(10000)
+      expect(players[1].score).toBe(10000)
+    })
+
+    it('identifies winner when player who triggered winning didnt win', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.winningPlayerIndex).toBe(0)
+
+      players[1].score = 9000
+      wrapper.vm.score(2000)
+      await wrapper.vm.$nextTick()
+
+      players[2].score = 8000
+      wrapper.vm.score(3500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
+      expect(wrapper.vm.winner).toBe(players[2])
+      expect(wrapper.vm.winner.score).toBe(11500)
+    })
+
+    it('handles scenario where all players have low scores', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      wrapper.vm.score(0)
+      wrapper.vm.score(0)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
+      expect(wrapper.vm.winner).toBe(players[0])
+      expect(wrapper.vm.winner.score).toBe(10000)
+    })
+  })
+
   describe('Component integration', () => {
     it('renders farkle-turn component', () => {
       expect(wrapper.findComponent({ name: 'farkle-turn' }).exists()).toBe(true)

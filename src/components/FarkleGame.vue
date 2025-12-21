@@ -73,6 +73,23 @@ export default {
   computed: {
     currentPlayerName () {
       return this.players[this.currentPlayer].name
+    },
+    winner () {
+      if (!this.gameOver) {
+        return null
+      }
+
+      let maxScore = -1
+      let winnerIndex = -1
+
+      for (let i = 0; i < this.players.length; i++) {
+        if (this.players[i].score > maxScore) {
+          maxScore = this.players[i].score
+          winnerIndex = i
+        }
+      }
+
+      return winnerIndex >= 0 ? this.players[winnerIndex] : null
     }
   }
 }
