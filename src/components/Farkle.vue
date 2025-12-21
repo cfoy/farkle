@@ -1,6 +1,9 @@
 <template>
   <div v-if="started">
       <farkle-game v-bind:players="players"></farkle-game>
+      <v-card>
+        <v-btn color="primary" v-on:click.native="restartGame">Restart Game</v-btn>
+      </v-card>
   </div>
   <div v-else>
     <v-card>
@@ -42,6 +45,12 @@ export default {
       if (this.players.length >= 2) {
         this.started = true
       }
+    },
+    restartGame () {
+      this.players.forEach(function (player) {
+        player.score = 0
+      })
+      this.started = false
     }
   }
 }

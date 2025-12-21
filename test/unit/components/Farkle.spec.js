@@ -152,4 +152,78 @@ describe('Farkle.vue', () => {
       expect(wrapper.findComponent({ name: 'farkle-game' }).exists()).toBe(true)
     })
   })
+
+  describe('Restart game', () => {
+    beforeEach(async () => {
+      // Setup a game in progress with players who have scores
+      wrapper.vm.players = [
+        { name: 'Alice', score: 250 },
+        { name: 'Bob', score: 150 }
+      ]
+      wrapper.vm.started = true
+      await wrapper.vm.$nextTick()
+    })
+
+    it('displays restart button when game is started', () => {
+      const buttons = wrapper.findAll('button')
+      const restartButton = buttons.filter(btn => btn.text() === 'Restart Game').at(0)
+      expect(restartButton).toBeTruthy()
+      expect(restartButton.text()).toBe('Restart Game')
+    })
+
+    it('does not display restart button when game not started', async () => {
+      wrapper.vm.started = false
+      await wrapper.vm.$nextTick()
+
+      const buttons = wrapper.findAll('button')
+      const restartButton = buttons.filter(btn => btn.text() === 'Restart Game')
+      expect(restartButton.length).toBe(0)
+    })
+
+    it('resets all player scores to 0 when restart clicked', async () => {
+      expect(wrapper.vm.players[0].score).toBe(250)
+      expect(wrapper.vm.players[1].score).toBe(150)
+
+      wrapper.vm.restartGame()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.players[0].score).toBe(0)
+      expect(wrapper.vm.players[1].score).toBe(0)
+    })
+
+    it('returns to player setup view when restart clicked', async () => {
+      expect(wrapper.vm.started).toBe(true)
+
+      wrapper.vm.restartGame()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.started).toBe(false)
+      expect(wrapper.findComponent({ name: 'create-player' }).exists()).toBe(true)
+      expect(wrapper.findComponent({ name: 'player-list' }).exists()).toBe(true)
+    })
+
+    it('preserves player list after restart', async () => {
+      const originalPlayers = [...wrapper.vm.players]
+
+      wrapper.vm.restartGame()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.players.length).toBe(2)
+      expect(wrapper.vm.players[0].name).toBe('Alice')
+      expect(wrapper.vm.players[1].name).toBe('Bob')
+    })
+
+    it('allows starting a new game after restart', async () => {
+      wrapper.vm.restartGame()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.started).toBe(false)
+
+      wrapper.vm.startGame()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.started).toBe(true)
+      expect(wrapper.findComponent({ name: 'farkle-game' }).exists()).toBe(true)
+    })
+  })
 })
