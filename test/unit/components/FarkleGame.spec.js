@@ -508,7 +508,7 @@ describe('FarkleGame.vue', () => {
       expect(wrapper.vm.winner.score).toBe(11500)
     })
 
-    it('returns first player in case of tie', async () => {
+    it('enters tie-breaker mode in case of tie', async () => {
       players[0].score = 9500
       wrapper.vm.score(500)
       await wrapper.vm.$nextTick()
@@ -521,8 +521,10 @@ describe('FarkleGame.vue', () => {
       await wrapper.vm.$nextTick()
 
       expect(wrapper.vm.gameOver).toBe(true)
-      expect(wrapper.vm.winner).toBe(players[0])
-      expect(wrapper.vm.winner.score).toBe(10000)
+      expect(wrapper.vm.inTieBreaker).toBe(true)
+      expect(wrapper.vm.tiedPlayerIndices).toEqual([0, 1])
+      expect(wrapper.vm.winner).toBe(null)
+      expect(players[0].score).toBe(10000)
       expect(players[1].score).toBe(10000)
     })
 
@@ -647,6 +649,226 @@ describe('FarkleGame.vue', () => {
       await wrapper.vm.$nextTick()
 
       expect(wrapper.findComponent({ name: 'score' }).exists()).toBe(true)
+    })
+  })
+
+  describe('Tie-breaker logic', () => {
+    describe('findTiedPlayers', () => {
+      it('returns empty array when one player has highest score', () => {
+        players[0].score = 5000
+        players[1].score = 3000
+        players[2].score = 2000
+
+        const tiedIndices = wrapper.vm.findTiedPlayers()
+        expect(tiedIndices).toEqual([0])
+      })
+
+      it('returns array of 2 indices when two players tied', () => {
+        players[0].score = 10000
+        players[1].score = 10000
+        players[2].score = 5000
+
+        const tiedIndices = wrapper.vm.findTiedPlayers()
+        expect(tiedIndices).toEqual([0, 1])
+      })
+
+      it('returns array of 3 indices when three players tied', () => {
+        players[0].score = 10000
+        players[1].score = 10000
+        players[2].score = 10000
+
+        const tiedIndices = wrapper.vm.findTiedPlayers()
+        expect(tiedIndices).toEqual([0, 1, 2])
+      })
+
+      it('handles different player orders for ties', () => {
+        players[0].score = 5000
+        players[1].score = 10000
+        players[2].score = 10000
+
+        const tiedIndices = wrapper.vm.findTiedPlayers()
+        expect(tiedIndices).toEqual([1, 2])
+      })
+
+      it('handles all players at zero score', () => {
+        players[0].score = 0
+        players[1].score = 0
+        players[2].score = 0
+
+        const tiedIndices = wrapper.vm.findTiedPlayers()
+        expect(tiedIndices).toEqual([0, 1, 2])
+      })
+
+      it('handles negative scores correctly', () => {
+        players[0].score = -100
+        players[1].score = 0
+        players[2].score = 0
+
+        const tiedIndices = wrapper.vm.findTiedPlayers()
+        expect(tiedIndices).toEqual([1, 2])
+      })
+    })
+
+    describe('checkForTie', () => {
+      it('sets inTieBreaker to true when tie detected', () => {
+        players[0].score = 10000
+        players[1].score = 10000
+        players[2].score = 5000
+
+        wrapper.vm.checkForTie()
+
+        expect(wrapper.vm.inTieBreaker).toBe(true)
+      })
+
+      it('sets tiedPlayerIndices correctly', () => {
+        players[0].score = 10000
+        players[1].score = 10000
+        players[2].score = 5000
+
+        wrapper.vm.checkForTie()
+
+        expect(wrapper.vm.tiedPlayerIndices).toEqual([0, 1])
+      })
+
+      it('does not set inTieBreaker when no tie', () => {
+        players[0].score = 12000
+        players[1].score = 10000
+        players[2].score = 5000
+
+        wrapper.vm.checkForTie()
+
+        expect(wrapper.vm.inTieBreaker).toBe(false)
+        expect(wrapper.vm.tiedPlayerIndices).toEqual([])
+      })
+    })
+
+    describe('selectTieBreakerWinner', () => {
+      beforeEach(() => {
+        wrapper.vm.inTieBreaker = true
+        wrapper.vm.tiedPlayerIndices = [0, 1]
+      })
+
+      it('exits tie-breaker mode', () => {
+        wrapper.vm.selectTieBreakerWinner(1)
+
+        expect(wrapper.vm.inTieBreaker).toBe(false)
+      })
+
+      it('clears tiedPlayerIndices', () => {
+        wrapper.vm.selectTieBreakerWinner(1)
+
+        expect(wrapper.vm.tiedPlayerIndices).toEqual([])
+      })
+
+      it('sets selectedWinner to correct index', () => {
+        wrapper.vm.selectTieBreakerWinner(1)
+
+        expect(wrapper.vm.selectedWinner).toBe(1)
+      })
+
+      it('allows selecting any tied player', () => {
+        wrapper.vm.selectTieBreakerWinner(0)
+
+        expect(wrapper.vm.selectedWinner).toBe(0)
+        expect(wrapper.vm.inTieBreaker).toBe(false)
+      })
+    })
+
+    describe('Integration with score() method', () => {
+      it('enters tie-breaker mode when game ends with tie', async () => {
+        players[0].score = 9500
+        wrapper.vm.score(500)
+        await wrapper.vm.$nextTick()
+
+        players[1].score = 9500
+        wrapper.vm.score(500)
+        await wrapper.vm.$nextTick()
+
+        wrapper.vm.score(100)
+        await wrapper.vm.$nextTick()
+
+        expect(wrapper.vm.gameOver).toBe(true)
+        expect(wrapper.vm.inTieBreaker).toBe(true)
+        expect(wrapper.vm.tiedPlayerIndices).toEqual([0, 1])
+      })
+
+      it('does not enter tie-breaker when game ends without tie', async () => {
+        players[0].score = 9500
+        wrapper.vm.score(500)
+        await wrapper.vm.$nextTick()
+
+        players[1].score = 8000
+        wrapper.vm.score(1000)
+        await wrapper.vm.$nextTick()
+
+        wrapper.vm.score(100)
+        await wrapper.vm.$nextTick()
+
+        expect(wrapper.vm.gameOver).toBe(true)
+        expect(wrapper.vm.inTieBreaker).toBe(false)
+      })
+    })
+
+    describe('winner computed property with tie-breaker', () => {
+      it('returns null when inTieBreaker is true', async () => {
+        players[0].score = 9500
+        players[1].score = 9500
+        wrapper.vm.score(500)
+        wrapper.vm.score(500)
+        wrapper.vm.score(100)
+        await wrapper.vm.$nextTick()
+
+        expect(wrapper.vm.gameOver).toBe(true)
+        expect(wrapper.vm.inTieBreaker).toBe(true)
+        expect(wrapper.vm.winner).toBe(null)
+      })
+
+      it('returns selected winner after tie-breaker resolution', async () => {
+        players[0].score = 10000
+        players[1].score = 10000
+        wrapper.vm.gameOver = true
+        wrapper.vm.inTieBreaker = true
+        wrapper.vm.tiedPlayerIndices = [0, 1]
+        await wrapper.vm.$nextTick()
+
+        wrapper.vm.selectTieBreakerWinner(1)
+        await wrapper.vm.$nextTick()
+
+        expect(wrapper.vm.winner).toBe(players[1])
+        expect(wrapper.vm.winner.name).toBe('Bob')
+      })
+
+      it('returns normal winner when no tie occurred', async () => {
+        players[0].score = 12000
+        players[1].score = 10000
+        wrapper.vm.gameOver = true
+        await wrapper.vm.$nextTick()
+
+        expect(wrapper.vm.inTieBreaker).toBe(false)
+        expect(wrapper.vm.winner).toBe(players[0])
+      })
+    })
+
+    describe('highestScore computed property', () => {
+      it('returns correct max score', () => {
+        players[0].score = 5000
+        players[1].score = 8000
+        players[2].score = 3000
+
+        expect(wrapper.vm.highestScore).toBe(8000)
+      })
+
+      it('handles all zero scores', () => {
+        expect(wrapper.vm.highestScore).toBe(0)
+      })
+
+      it('handles negative scores', () => {
+        players[0].score = -100
+        players[1].score = -50
+        players[2].score = -200
+
+        expect(wrapper.vm.highestScore).toBe(-50)
+      })
     })
   })
 })

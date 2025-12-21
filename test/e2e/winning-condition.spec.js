@@ -250,7 +250,7 @@ test.describe('Winning Condition - 10,000 Point Game', () => {
     await expect(page.locator('text=Current Player:')).not.toBeVisible()
   })
 
-  test('tie game: first player to reach 10k wins on tie', async ({ page }) => {
+  test('tie game: shows tie-breaker UI and allows winner selection', async ({ page }) => {
     await page.goto('/')
 
     // Setup 2 players
@@ -287,11 +287,112 @@ test.describe('Winning Condition - 10,000 Point Game', () => {
     await page.getByRole('button', { name: 'Done', exact: true }).click()
     await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('10000')
 
-    // Game should be over
-    await expect(page.locator('text=Game Over!')).toBeVisible()
+    // Verify tie-breaker UI is shown
+    await expect(page.locator('text=It\'s a Tie!')).toBeVisible()
+    await expect(page.locator('text=Roll a die to determine the winner!')).toBeVisible()
 
-    // Alice should win (first player in tie, per tiebreaker rules)
+    // Verify NO normal game over UI yet
+    await expect(page.locator('text=Game Over!')).not.toBeVisible()
+
+    // Verify tie-breaker buttons are present with correct labels
+    await expect(page.locator('button:has-text("Alice - 10000 points")')).toBeVisible()
+    await expect(page.locator('button:has-text("Bob - 10000 points")')).toBeVisible()
+
+    // Click Alice's button to select her as winner
+    await page.locator('button:has-text("Alice - 10000 points")').click()
+
+    // Now normal game over UI should appear
+    await expect(page.locator('text=Game Over!')).toBeVisible()
     await expect(page.locator('h4')).toContainText('Winner: Alice')
     await expect(page.locator('h4')).toContainText('10000 points')
+
+    // Tie-breaker UI should be hidden
+    await expect(page.locator('text=It\'s a Tie!')).not.toBeVisible()
+  })
+
+  test('tie-breaker: three players tied, select winner', async ({ page }) => {
+    await page.goto('/')
+
+    // Setup 3 players
+    const nameInput = page.locator('input[type="text"]')
+    await nameInput.fill('Alice')
+    await page.locator('button:has-text("Add")').click()
+    await nameInput.fill('Bob')
+    await page.locator('button:has-text("Add")').click()
+    await nameInput.fill('Charlie')
+    await page.locator('button:has-text("Add")').click()
+    await page.locator('button:has-text("Start Game")').click()
+
+    // Build all three players to 10,000
+    // Alice: 10,000
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Four of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Done', exact: true }).click()
+
+    // Bob: 10,000
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Four of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Done', exact: true }).click()
+
+    // Charlie: 10,000
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Four of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Done', exact: true }).click()
+
+    // Verify tie-breaker UI with all three players
+    await expect(page.locator('text=It\'s a Tie!')).toBeVisible()
+    await expect(page.locator('button:has-text("Alice - 10000 points")')).toBeVisible()
+    await expect(page.locator('button:has-text("Bob - 10000 points")')).toBeVisible()
+    await expect(page.locator('button:has-text("Charlie - 10000 points")')).toBeVisible()
+
+    // Select Charlie as winner
+    await page.locator('button:has-text("Charlie - 10000 points")').click()
+
+    // Verify Charlie wins
+    await expect(page.locator('text=Game Over!')).toBeVisible()
+    await expect(page.locator('h4')).toContainText('Winner: Charlie')
+  })
+
+  test('no tie-breaker when one player clearly wins', async ({ page }) => {
+    await page.goto('/')
+
+    // Setup 3 players
+    const nameInput = page.locator('input[type="text"]')
+    await nameInput.fill('Alice')
+    await page.locator('button:has-text("Add")').click()
+    await nameInput.fill('Bob')
+    await page.locator('button:has-text("Add")').click()
+    await nameInput.fill('Charlie')
+    await page.locator('button:has-text("Add")').click()
+    await page.locator('button:has-text("Start Game")').click()
+
+    // Alice: 12,000
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
+    await page.getByRole('button', { name: 'Done', exact: true }).click()
+
+    // Bob: 300
+    await page.getByRole('button', { name: '111', exact: true }).click()
+    await page.getByRole('button', { name: 'Done', exact: true }).click()
+
+    // Charlie: 200
+    await page.getByRole('button', { name: '222', exact: true }).click()
+    await page.getByRole('button', { name: 'Done', exact: true }).click()
+
+    // Verify NO tie-breaker UI appears
+    await expect(page.locator('text=It\'s a Tie!')).not.toBeVisible()
+
+    // Verify normal game over with clear winner
+    await expect(page.locator('text=Game Over!')).toBeVisible()
+    await expect(page.locator('h4')).toContainText('Winner: Alice')
+    await expect(page.locator('h4')).toContainText('12000 points')
   })
 })
