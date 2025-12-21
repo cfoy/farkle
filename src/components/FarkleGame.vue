@@ -36,12 +36,14 @@ export default {
 
   data () {
     return {
-      currentPlayer: 0
+      currentPlayer: 0,
+      totalTurns: 0
     }
   },
 
   methods: {
     nextPlayer () {
+      this.totalTurns += 1
       this.currentPlayer += 1
       this.currentPlayer %= this.players.length
     },

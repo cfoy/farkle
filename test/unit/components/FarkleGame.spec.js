@@ -30,6 +30,10 @@ describe('FarkleGame.vue', () => {
     expect(wrapper.vm.currentPlayer).toBe(0)
   })
 
+  it('initializes totalTurns to 0', () => {
+    expect(wrapper.vm.totalTurns).toBe(0)
+  })
+
   it('displays current player name', () => {
     expect(wrapper.vm.currentPlayerName).toBe('Alice')
   })
@@ -82,6 +86,67 @@ describe('FarkleGame.vue', () => {
       await wrapper.vm.$nextTick()
 
       expect(wrapper.vm.currentPlayer).toBe(1)
+    })
+  })
+
+  describe('Turn counting', () => {
+    it('increments totalTurns when nextPlayer is called', async () => {
+      wrapper.vm.nextPlayer()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.totalTurns).toBe(1)
+    })
+
+    it('tracks totalTurns across multiple player rotations', async () => {
+      wrapper.vm.nextPlayer()
+      wrapper.vm.nextPlayer()
+      wrapper.vm.nextPlayer()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.totalTurns).toBe(3)
+      expect(wrapper.vm.currentPlayer).toBe(0)
+    })
+
+    it('increments totalTurns when scoring', async () => {
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.totalTurns).toBe(1)
+    })
+
+    it('tracks totalTurns correctly over multiple rounds', async () => {
+      for (let i = 0; i < 10; i++) {
+        wrapper.vm.score(100)
+      }
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.totalTurns).toBe(10)
+    })
+
+    it('allows calculating round number from totalTurns', async () => {
+      for (let i = 0; i < 7; i++) {
+        wrapper.vm.nextPlayer()
+      }
+      await wrapper.vm.$nextTick()
+
+      const roundNumber = Math.floor(wrapper.vm.totalTurns / players.length)
+      expect(roundNumber).toBe(2)
+      expect(wrapper.vm.currentPlayer).toBe(1)
+    })
+
+    it('determines if all players have had equal turns', async () => {
+      wrapper.vm.nextPlayer()
+      wrapper.vm.nextPlayer()
+      await wrapper.vm.$nextTick()
+
+      let equalTurns = wrapper.vm.totalTurns % players.length === 0
+      expect(equalTurns).toBe(false)
+
+      wrapper.vm.nextPlayer()
+      await wrapper.vm.$nextTick()
+
+      equalTurns = wrapper.vm.totalTurns % players.length === 0
+      expect(equalTurns).toBe(true)
     })
   })
 
