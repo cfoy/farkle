@@ -13,14 +13,20 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.{js,vue}'],
       exclude: [
         'node_modules/',
         'test/',
         'build/',
         'config/',
         '*.config.js',
-        'dist/'
-      ]
+        'dist/',
+        'src/main.js',
+        'src/router/index.js',
+        'src/App.vue'
+      ],
+      reportsDirectory: './coverage',
+      all: true
     }
   },
   resolve: {
