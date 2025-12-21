@@ -67,6 +67,19 @@ export default {
       if (this.inLastRound && this.totalTurns % this.players.length === 0) {
         this.gameOver = true
       }
+    },
+    findWinnerIndex () {
+      let maxScore = -1
+      let winnerIndex = -1
+
+      for (let i = 0; i < this.players.length; i++) {
+        if (this.players[i].score > maxScore) {
+          maxScore = this.players[i].score
+          winnerIndex = i
+        }
+      }
+
+      return winnerIndex
     }
   },
 
@@ -79,16 +92,7 @@ export default {
         return null
       }
 
-      let maxScore = -1
-      let winnerIndex = -1
-
-      for (let i = 0; i < this.players.length; i++) {
-        if (this.players[i].score > maxScore) {
-          maxScore = this.players[i].score
-          winnerIndex = i
-        }
-      }
-
+      const winnerIndex = this.findWinnerIndex()
       return winnerIndex >= 0 ? this.players[winnerIndex] : null
     }
   }

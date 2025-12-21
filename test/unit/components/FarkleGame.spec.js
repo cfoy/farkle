@@ -406,6 +406,44 @@ describe('FarkleGame.vue', () => {
     })
   })
 
+  describe('findWinnerIndex', () => {
+    it('returns index of player with highest score', () => {
+      players[0].score = 5000
+      players[1].score = 8000
+      players[2].score = 3000
+
+      expect(wrapper.vm.findWinnerIndex()).toBe(1)
+    })
+
+    it('returns first player index when all scores are zero', () => {
+      expect(wrapper.vm.findWinnerIndex()).toBe(0)
+    })
+
+    it('returns first player index when tied for highest score', () => {
+      players[0].score = 10000
+      players[1].score = 10000
+      players[2].score = 5000
+
+      expect(wrapper.vm.findWinnerIndex()).toBe(0)
+    })
+
+    it('returns last player index when they have highest score', () => {
+      players[0].score = 5000
+      players[1].score = 6000
+      players[2].score = 12000
+
+      expect(wrapper.vm.findWinnerIndex()).toBe(2)
+    })
+
+    it('handles negative scores correctly', () => {
+      players[0].score = -100
+      players[1].score = 0
+      players[2].score = -50
+
+      expect(wrapper.vm.findWinnerIndex()).toBe(1)
+    })
+  })
+
   describe('Winner determination', () => {
     it('returns null when game is not over', () => {
       expect(wrapper.vm.winner).toBe(null)
