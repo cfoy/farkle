@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2025-12-21
+## [Unreleased]
+
+### Added
+- Comprehensive CHANGELOG documenting project history
+
+## [1.1.0] - 2025-12-21
 
 ### Added
 
@@ -21,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Restart Game Functionality (PR #2)
 - Restart button to begin new game without refreshing page
 - Game state reset while preserving player list
-- Confirmation flow for restarting an in-progress game
+- Score reset on game restart
 
 #### Testing Infrastructure (PR #1)
 - Vitest unit testing framework with happy-dom environment
@@ -42,40 +47,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Project Configuration
 - Node.js version management with .nvmrc (20.18.1)
 - ESLint configuration for code quality
-- Webpack 2 build system with hot reload
 - Vuetify 0.12.7 pinned for UI consistency
 - Production build with Caddy file server
 - Comprehensive CLAUDE.md documentation for AI-assisted development
 - Beads workflow integration for issue tracking
+- Feature branch workflow documentation
 
 ### Fixed
 - All unit test failures resolved
 - Components updated for Vuetify 0.x compatibility
 - Testing infrastructure configured to work without Java dependency
 
+## [1.0.0]
+
+### Added
+- Initial Farkle dice game implementation
+- Vue.js 2.3.3 with Vue Router
+- Vuetify 0.12.7 Material Design UI framework
+- Player creation and management
+- Turn-based gameplay with dice rolling
+- Score tracking and accumulation
+- Farkle game rules implementation
+- Responsive design with meta viewport
+- Webpack 2 build system with hot reload
+
 ### Technical Details
 
-**Stack:**
+**Core Stack:**
 - Vue.js 2.3.3 with Vue Router 2.3.1
 - Vuetify 0.12.7 (Material Design UI)
 - Webpack 2.6.1 with Babel 6
-- Vitest 4.x for unit testing
-- Playwright 1.57.0 for E2E testing
+- ESLint 3.x with Standard config
 
-**Test Coverage:**
-- Unit tests for all major components
-- E2E tests covering complete game flows
-- Edge case validation
-- Special scoring combinations
-- Multi-player scenarios
-
-## [Unreleased]
-
-### Planned
-- Multiplayer mode enhancements
-- Additional scoring variations
-- Game statistics and history
+**Component Architecture:**
+- App.vue root component with Vuetify layout
+- Farkle.vue game coordinator
+- CreatePlayer.vue for player setup
+- PlayerList.vue for player display
+- FarkleGame.vue main game screen
+- FarkleTurn.vue for turn scoring
+- Score.vue scoreboard display
 
 ---
 
-[1.0.0]: https://github.com/cfoy/farkle/releases/tag/v1.0.0
+[Unreleased]: https://github.com/cfoy/farkle/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/cfoy/farkle/compare/1.0.0...1.1.0
+[1.0.0]: https://github.com/cfoy/farkle/releases/tag/1.0.0
