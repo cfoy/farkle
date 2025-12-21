@@ -8,6 +8,8 @@
       <v-list-tile-content>
         <v-list-tile-title>
           {{ player.name }}
+          <v-chip small v-if="player.onBoard" success>On Board</v-chip>
+          <v-chip small v-else warning>Not On Board</v-chip>
         </v-list-tile-title>
       </v-list-tile-content>
       <v-list-tile-action>

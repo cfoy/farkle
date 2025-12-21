@@ -8,9 +8,9 @@ describe('FarkleGame.vue', () => {
 
   beforeEach(() => {
     players = [
-      { name: 'Alice', score: 0 },
-      { name: 'Bob', score: 0 },
-      { name: 'Charlie', score: 0 }
+      { name: 'Alice', score: 0, onBoard: false },
+      { name: 'Bob', score: 0, onBoard: false },
+      { name: 'Charlie', score: 0, onBoard: false }
     ]
 
     wrapper = mount(FarkleGame, {
@@ -574,6 +574,97 @@ describe('FarkleGame.vue', () => {
     it('displays current player name in header', () => {
       const header = wrapper.find('h5')
       expect(header.text()).toContain('Alice')
+    })
+  })
+
+  describe('500 point minimum to get on board', () => {
+    it('players start with onBoard as false', () => {
+      expect(players[0].onBoard).toBe(false)
+      expect(players[1].onBoard).toBe(false)
+      expect(players[2].onBoard).toBe(false)
+    })
+
+    it('sets onBoard to true when player banks 500+ points', async () => {
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(players[0].onBoard).toBe(true)
+      expect(players[0].score).toBe(500)
+    })
+
+    it('sets onBoard to true when player banks more than 500 points', async () => {
+      wrapper.vm.score(1000)
+      await wrapper.vm.$nextTick()
+
+      expect(players[0].onBoard).toBe(true)
+      expect(players[0].score).toBe(1000)
+    })
+
+    it('does not set onBoard when player banks less than 500 points', async () => {
+      wrapper.vm.score(100)
+      await wrapper.vm.$nextTick()
+
+      expect(players[0].onBoard).toBe(false)
+      expect(players[0].score).toBe(100)
+    })
+
+    it('allows banking any amount after player is on board', async () => {
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(players[0].onBoard).toBe(true)
+
+      wrapper.vm.nextPlayer()
+      wrapper.vm.nextPlayer()
+      await wrapper.vm.$nextTick()
+
+      wrapper.vm.score(50)
+      await wrapper.vm.$nextTick()
+
+      expect(players[0].score).toBe(550)
+      expect(players[0].onBoard).toBe(true)
+    })
+
+    it('tracks onBoard status independently for each player', async () => {
+      wrapper.vm.score(100)
+      await wrapper.vm.$nextTick()
+
+      expect(players[0].onBoard).toBe(false)
+
+      wrapper.vm.score(600)
+      await wrapper.vm.$nextTick()
+
+      expect(players[1].onBoard).toBe(true)
+      expect(players[0].onBoard).toBe(false)
+
+      wrapper.vm.score(50)
+      await wrapper.vm.$nextTick()
+
+      expect(players[2].onBoard).toBe(false)
+    })
+
+    it('farkle does not set onBoard status', async () => {
+      wrapper.vm.score(0)
+      await wrapper.vm.$nextTick()
+
+      expect(players[0].onBoard).toBe(false)
+      expect(players[0].score).toBe(0)
+    })
+
+    it('sets onBoard exactly once per player', async () => {
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(players[0].onBoard).toBe(true)
+
+      wrapper.vm.nextPlayer()
+      wrapper.vm.nextPlayer()
+      await wrapper.vm.$nextTick()
+
+      wrapper.vm.score(100)
+      await wrapper.vm.$nextTick()
+
+      expect(players[0].onBoard).toBe(true)
     })
   })
 

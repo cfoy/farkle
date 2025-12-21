@@ -49,6 +49,7 @@ export default {
     restartGame () {
       this.players.forEach(function (player) {
         player.score = 0
+        player.onBoard = false
       })
       this.started = false
     }

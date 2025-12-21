@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import FarkleTurn from '@/components/FarkleTurn.vue'
 
@@ -6,7 +6,11 @@ describe('FarkleTurn.vue', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(FarkleTurn)
+    wrapper = mount(FarkleTurn, {
+      propsData: {
+        currentPlayer: { name: 'Alice', score: 0, onBoard: true }
+      }
+    })
   })
 
   it('renders the component', () => {
@@ -160,6 +164,118 @@ describe('FarkleTurn.vue', () => {
 
       expect(wrapper.emitted('score')).toBeTruthy()
       expect(wrapper.emitted('score')[0][0]).toBe(0)
+    })
+  })
+
+  describe('500 point minimum validation', () => {
+    it('prevents banking less than 500 when not on board', async () => {
+      const wrapperWithPlayer = mount(FarkleTurn, {
+        propsData: {
+          currentPlayer: { name: 'Alice', score: 0, onBoard: false }
+        }
+      })
+
+      // Mock alert
+      const alertSpy = vi.fn()
+      vi.stubGlobal('alert', alertSpy)
+
+      wrapperWithPlayer.vm.points = 400
+      wrapperWithPlayer.vm.done()
+      await wrapperWithPlayer.vm.$nextTick()
+
+      expect(alertSpy).toHaveBeenCalledWith('You need 500 points to get on the board. Keep rolling or Farkle!')
+      expect(wrapperWithPlayer.emitted('score')).toBeFalsy()
+      expect(wrapperWithPlayer.vm.points).toBe(400)
+
+      vi.unstubAllGlobals()
+    })
+
+    it('allows banking 500+ points when not on board', async () => {
+      const wrapperWithPlayer = mount(FarkleTurn, {
+        propsData: {
+          currentPlayer: { name: 'Alice', score: 0, onBoard: false }
+        }
+      })
+
+      wrapperWithPlayer.vm.points = 500
+      wrapperWithPlayer.vm.done()
+      await wrapperWithPlayer.vm.$nextTick()
+
+      expect(wrapperWithPlayer.emitted('score')).toBeTruthy()
+      expect(wrapperWithPlayer.emitted('score')[0][0]).toBe(500)
+      expect(wrapperWithPlayer.vm.points).toBe(0)
+    })
+
+    it('allows banking any amount when player is on board', async () => {
+      const wrapperWithPlayer = mount(FarkleTurn, {
+        propsData: {
+          currentPlayer: { name: 'Alice', score: 1000, onBoard: true }
+        }
+      })
+
+      wrapperWithPlayer.vm.points = 50
+      wrapperWithPlayer.vm.done()
+      await wrapperWithPlayer.vm.$nextTick()
+
+      expect(wrapperWithPlayer.emitted('score')).toBeTruthy()
+      expect(wrapperWithPlayer.emitted('score')[0][0]).toBe(50)
+      expect(wrapperWithPlayer.vm.points).toBe(0)
+    })
+
+    it('allows farkle at any time regardless of onBoard status', async () => {
+      const wrapperWithPlayer = mount(FarkleTurn, {
+        propsData: {
+          currentPlayer: { name: 'Alice', score: 0, onBoard: false }
+        }
+      })
+
+      // Mock alert (should not be called, but farkle sets points to 0 first)
+      vi.stubGlobal('alert', vi.fn())
+
+      wrapperWithPlayer.vm.points = 400
+      wrapperWithPlayer.vm.farkle()
+      await wrapperWithPlayer.vm.$nextTick()
+
+      expect(wrapperWithPlayer.emitted('score')).toBeTruthy()
+      expect(wrapperWithPlayer.emitted('score')[0][0]).toBe(0)
+      expect(wrapperWithPlayer.vm.points).toBe(0)
+
+      vi.unstubAllGlobals()
+    })
+
+    it('allows banking exactly 500 when not on board', async () => {
+      const wrapperWithPlayer = mount(FarkleTurn, {
+        propsData: {
+          currentPlayer: { name: 'Alice', score: 0, onBoard: false }
+        }
+      })
+
+      wrapperWithPlayer.vm.points = 500
+      wrapperWithPlayer.vm.done()
+      await wrapperWithPlayer.vm.$nextTick()
+
+      expect(wrapperWithPlayer.emitted('score')).toBeTruthy()
+      expect(wrapperWithPlayer.emitted('score')[0][0]).toBe(500)
+    })
+
+    it('prevents banking 499 when not on board', async () => {
+      const wrapperWithPlayer = mount(FarkleTurn, {
+        propsData: {
+          currentPlayer: { name: 'Alice', score: 0, onBoard: false }
+        }
+      })
+
+      const alertSpy = vi.fn()
+      vi.stubGlobal('alert', alertSpy)
+
+      wrapperWithPlayer.vm.points = 499
+      wrapperWithPlayer.vm.done()
+      await wrapperWithPlayer.vm.$nextTick()
+
+      expect(alertSpy).toHaveBeenCalled()
+      expect(wrapperWithPlayer.emitted('score')).toBeFalsy()
+
+      vi.unstubAllGlobals()
     })
   })
 
