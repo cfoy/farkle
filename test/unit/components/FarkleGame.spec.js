@@ -38,6 +38,14 @@ describe('FarkleGame.vue', () => {
     expect(wrapper.vm.winningPlayerIndex).toBe(null)
   })
 
+  it('initializes inLastRound to false', () => {
+    expect(wrapper.vm.inLastRound).toBe(false)
+  })
+
+  it('initializes gameOver to false', () => {
+    expect(wrapper.vm.gameOver).toBe(false)
+  })
+
   it('displays current player name', () => {
     expect(wrapper.vm.currentPlayerName).toBe('Alice')
   })
@@ -151,6 +159,130 @@ describe('FarkleGame.vue', () => {
 
       equalTurns = wrapper.vm.totalTurns % players.length === 0
       expect(equalTurns).toBe(true)
+    })
+  })
+
+  describe('Last round logic', () => {
+    it('enters last round when player reaches 10,000', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.inLastRound).toBe(true)
+    })
+
+    it('does not end game immediately when first player reaches 10k', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(false)
+    })
+
+    it('allows remaining players to take their turns in last round', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.inLastRound).toBe(true)
+      expect(wrapper.vm.currentPlayer).toBe(1)
+
+      wrapper.vm.score(200)
+      await wrapper.vm.$nextTick()
+
+      expect(players[1].score).toBe(200)
+      expect(wrapper.vm.gameOver).toBe(false)
+    })
+
+    it('ends game after all players have equal turns', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(false)
+
+      wrapper.vm.score(200)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(false)
+
+      wrapper.vm.score(300)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
+      expect(wrapper.vm.totalTurns).toBe(3)
+    })
+
+    it('ends game immediately when last player reaches 10k', async () => {
+      wrapper.vm.score(100)
+      wrapper.vm.score(200)
+      await wrapper.vm.$nextTick()
+
+      players[2].score = 9500
+      wrapper.vm.score(1000)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.inLastRound).toBe(true)
+      expect(wrapper.vm.gameOver).toBe(true)
+      expect(wrapper.vm.totalTurns).toBe(3)
+    })
+
+    it('handles second player reaching 10k with proper last round', async () => {
+      wrapper.vm.score(500)
+      await wrapper.vm.$nextTick()
+
+      players[1].score = 9000
+      wrapper.vm.score(1500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.inLastRound).toBe(true)
+      expect(wrapper.vm.gameOver).toBe(false)
+
+      wrapper.vm.score(400)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
+      expect(players[2].score).toBe(400)
+    })
+
+    it('prevents scoring after game is over', async () => {
+      players[0].score = 9500
+      wrapper.vm.score(500)
+      wrapper.vm.score(200)
+      wrapper.vm.score(300)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
+      const player0Score = players[0].score
+
+      wrapper.vm.score(1000)
+      await wrapper.vm.$nextTick()
+
+      expect(players[0].score).toBe(player0Score)
+    })
+
+    it('tracks correct state through multiple rounds before winning', async () => {
+      for (let i = 0; i < 6; i++) {
+        wrapper.vm.score(1500)
+      }
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.inLastRound).toBe(false)
+      expect(wrapper.vm.gameOver).toBe(false)
+      expect(wrapper.vm.totalTurns).toBe(6)
+
+      players[0].score = 9000
+      wrapper.vm.score(1500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.inLastRound).toBe(true)
+      expect(wrapper.vm.gameOver).toBe(false)
+
+      wrapper.vm.score(1500)
+      wrapper.vm.score(1500)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.gameOver).toBe(true)
     })
   })
 

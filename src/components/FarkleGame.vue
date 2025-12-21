@@ -38,7 +38,9 @@ export default {
     return {
       currentPlayer: 0,
       totalTurns: 0,
-      winningPlayerIndex: null
+      winningPlayerIndex: null,
+      inLastRound: false,
+      gameOver: false
     }
   },
 
@@ -49,13 +51,22 @@ export default {
       this.currentPlayer %= this.players.length
     },
     score (points) {
+      if (this.gameOver) {
+        return
+      }
+
       this.players[this.currentPlayer].score += points
 
       if (this.winningPlayerIndex === null && this.players[this.currentPlayer].score >= 10000) {
         this.winningPlayerIndex = this.currentPlayer
+        this.inLastRound = true
       }
 
       this.nextPlayer()
+
+      if (this.inLastRound && this.totalTurns % this.players.length === 0) {
+        this.gameOver = true
+      }
     }
   },
 
