@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+#### Vue 2.7 Upgrade (PR #7)
+- Upgraded Vue from 2.3.3 to 2.7.16 (latest Vue 2.x release)
+- Upgraded Vue Router from 2.3.1 to 2.8.1
+- Upgraded Vue Template Compiler from 2.3.3 to 2.7.16
+- Enables Composition API compatibility layer for future migration
+- Provides foundation for eventual Vue 3 upgrade
+- All 302 unit tests and 82 E2E tests passing with zero compatibility issues
+- Unblocks Webpack to Vite migration
+
+## [1.3.0] - 2025-12-22
+
 ### Added
 
 #### Win Tracking (PR #6)
@@ -120,7 +133,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/cfoy/farkle/compare/1.2.0...HEAD
+[Unreleased]: https://github.com/cfoy/farkle/compare/1.3.0...HEAD
+[1.3.0]: https://github.com/cfoy/farkle/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/cfoy/farkle/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/cfoy/farkle/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/cfoy/farkle/releases/tag/1.0.0
