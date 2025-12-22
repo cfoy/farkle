@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+#### Win Tracking (PR #6)
+- Track games won by each player across multiple game sessions
+- `wins` field added to player data model (initialized to 0 for new players)
+- Win count automatically increments when player wins a game
+- localStorage persistence for win data across browser sessions
+- Display win counts in PlayerList, Score, and GameOver components
+- Winner's total wins prominently displayed in Game Over screen
+- Win data loads automatically when adding existing players
+- Comprehensive unit test suite for win tracking logic (191 lines)
+- E2E test suite for win tracking across multiple games (325 lines)
+  - Tests win increment functionality
+  - Tests localStorage persistence
+  - Tests wins persist after page reload
+  - Tests multiple winners accumulating wins correctly
+
 ## [1.2.0] - 2025-12-21
 
 ### Added
