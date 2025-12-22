@@ -7,8 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-12-21
+
 ### Added
-- Comprehensive CHANGELOG documenting project history
+
+#### 500 Point Minimum to Get on Board (PR #4)
+- Classic Farkle house rule requiring 500 point minimum to start banking points
+- `onBoard` property added to player data structure (defaults to false)
+- Players must score at least 500 points in a single turn before banking allowed
+- Visual indicators in Score component showing onBoard status
+- User feedback alerts when attempting to bank insufficient points
+- After getting on board, players can bank any valid score (minimum 50 points)
+- Farkles (0 points) allowed at any time regardless of onBoard status
+- Comprehensive E2E test suite in on-board-feature.spec.js
+- Updated unit tests for FarkleGame and FarkleTurn components
+- Updated integration tests for new onBoard property
 
 ## [1.1.0] - 2025-12-21
 
@@ -90,6 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/cfoy/farkle/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/cfoy/farkle/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/cfoy/farkle/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/cfoy/farkle/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/cfoy/farkle/releases/tag/1.0.0
