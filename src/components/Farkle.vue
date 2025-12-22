@@ -13,6 +13,7 @@
       <v-card-text>
         <player-list v-bind:players="players"></player-list>
         <v-btn color="primary" v-on:click.native="startGame">Start Game</v-btn>
+        <v-btn flat v-on:click.native="resetWinStatistics">Reset Win Statistics</v-btn>
       </v-card-text>
     </v-card>
   </div>
@@ -57,7 +58,34 @@ export default {
       // Increment the winner's wins count
       if (winner && winner.wins !== undefined) {
         winner.wins += 1
+        // Save to localStorage
+        this.saveWinsToLocalStorage()
       }
+    },
+    saveWinsToLocalStorage () {
+      const winsData = {}
+      this.players.forEach(player => {
+        winsData[player.name] = player.wins
+      })
+      localStorage.setItem('farkle-wins', JSON.stringify(winsData))
+    },
+    loadWinsFromLocalStorage (playerName) {
+      const stored = localStorage.getItem('farkle-wins')
+      if (stored) {
+        try {
+          const winsData = JSON.parse(stored)
+          return winsData[playerName] || 0
+        } catch (e) {
+          return 0
+        }
+      }
+      return 0
+    },
+    resetWinStatistics () {
+      localStorage.removeItem('farkle-wins')
+      this.players.forEach(player => {
+        player.wins = 0
+      })
     }
   }
 }
