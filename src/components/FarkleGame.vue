@@ -1,85 +1,42 @@
 <template>
   <div>
-    <div v-if="gameOver && inTieBreaker">
-      <v-layout row wrap>
-        <v-flex xs12>
-          <v-card>
-            <v-card-title>
-              <h3>It's a Tie!</h3>
-            </v-card-title>
-            <v-card-text>
-              <p>The following players are tied with {{ highestScore }} points:</p>
-              <p><strong>Roll a die to determine the winner!</strong></p>
-              <p>Each tied player should roll one die. The player with the highest roll wins.</p>
-              <p>If there's still a tie, re-roll until there's a winner.</p>
-              <p>Click the button for the player who rolled the highest:</p>
-
-              <v-layout row wrap>
-                <v-flex xs12 sm6 md4 v-for="index in tiedPlayerIndices" v-bind:key="index">
-                  <v-btn
-                    primary
-                    light
-                    large
-                    block
-                    v-on:click.native="selectTieBreakerWinner(index)">
-                    {{ players[index].name }} - {{ players[index].score }} points
-                  </v-btn>
-                </v-flex>
-              </v-layout>
-
-              <score v-bind:players="players"></score>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </div>
-    <div v-else-if="gameOver">
-      <v-layout row wrap>
-        <v-flex xs12>
-          <v-card>
-            <v-card-title>
-              <h3>Game Over!</h3>
-            </v-card-title>
-            <v-card-text>
-              <h4 v-if="winner">Winner: {{ winner.name }} with {{ winner.score }} points!</h4>
-              <score v-bind:players="players"></score>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </div>
+    <tie-breaker
+      v-if="gameOver && inTieBreaker"
+      v-bind:players="players"
+      v-bind:tied-player-indices="tiedPlayerIndices"
+      v-bind:highest-score="highestScore"
+      v-on:select-winner="selectTieBreakerWinner">
+    </tie-breaker>
+    <game-over
+      v-else-if="gameOver"
+      v-bind:players="players"
+      v-bind:winner="winner">
+    </game-over>
     <div v-else>
-      <h5>Current Player: {{ currentPlayerName }}</h5>
-      </v-card-title>
-      <v-layout row wrap>
-        <v-flex xs12 sm12 md6 lg6>
-          <v-card>
-            <v-card-text>
-              <farkle-turn v-on:score="score" v-bind:current-player="players[currentPlayer]"></farkle-turn>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-        <v-flex xs12 sm12 md6 lg6>
-          <v-card>
-            <v-card-text>
-              <score v-bind:players="players"></score>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
+      <current-player-header v-bind:player-name="currentPlayerName"></current-player-header>
+      <active-game
+        v-bind:current-player="players[currentPlayer]"
+        v-bind:current-player-name="currentPlayerName"
+        v-bind:players="players"
+        v-on:score="score">
+      </active-game>
     </div>
   </div>
 </template>
 
 <script>
-import Score from './Score.vue'
-import FarkleTurn from './FarkleTurn.vue'
+import CurrentPlayerHeader from './CurrentPlayerHeader.vue'
+import TieBreaker from './TieBreaker.vue'
+import GameOver from './GameOver.vue'
+import ActiveGame from './ActiveGame.vue'
 
 export default {
   name: 'farkle-game',
   components: {
-    Score,
-    FarkleTurn
+    CurrentPlayerHeader,
+    TieBreaker,
+    GameOver,
+    ActiveGame
   },
 
   props: ['players'],
