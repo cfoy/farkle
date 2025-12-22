@@ -25,7 +25,8 @@ export default {
         this.$emit('create-player', {
           name: this.name,
           score: 0,
-          onBoard: false
+          onBoard: false,
+          wins: 0
         })
         this.name = ''
       }

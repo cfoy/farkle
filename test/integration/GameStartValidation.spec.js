@@ -189,8 +189,8 @@ describe('Game Start Validation Integration', () => {
       const gameComponent = wrapper.findComponent(FarkleGame)
       expect(gameComponent.exists()).toBe(true)
       expect(gameComponent.props('players')).toEqual([
-        { name: 'Alice', score: 0, onBoard: false },
-        { name: 'Bob', score: 0, onBoard: false }
+        { name: 'Alice', score: 0, onBoard: false, wins: 0 },
+        { name: 'Bob', score: 0, onBoard: false, wins: 0 }
       ])
     })
 
