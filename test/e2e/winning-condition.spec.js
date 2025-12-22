@@ -23,17 +23,17 @@ test.describe('Winning Condition - 10,000 Point Game', () => {
     await page.getByRole('button', { name: 'Done', exact: true }).click()
     await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('3000')
 
-    // Bob turn 1: 111 (300)
+    // Bob turn 1: Get on board with 555 (500)
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
-    await page.getByRole('button', { name: '111', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('300')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('500')
 
-    // Charlie turn 1: 222 (200)
+    // Charlie turn 1: Get on board with 500
     await expect(page.locator('text=Current Player: Charlie')).toBeVisible()
-    await page.getByRole('button', { name: '222', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('200')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('500')
 
     // Round 2: Continue building Alice's score
     // Alice turn 2: Six of a Kind (3000) - total: 6000
@@ -42,17 +42,17 @@ test.describe('Winning Condition - 10,000 Point Game', () => {
     await page.getByRole('button', { name: 'Done', exact: true }).click()
     await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('6000')
 
-    // Bob turn 2: 333 (300) - total: 600
+    // Bob turn 2: 333 (300) - total: 800
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
     await page.getByRole('button', { name: '333', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('600')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('800')
 
-    // Charlie turn 2: 444 (400) - total: 600
+    // Charlie turn 2: 444 (400) - total: 900
     await expect(page.locator('text=Current Player: Charlie')).toBeVisible()
     await page.getByRole('button', { name: '444', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('600')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('900')
 
     // Round 3: Get Alice close to 10,000
     // Alice turn 3: Six of a Kind (3000) - total: 9000
@@ -61,17 +61,17 @@ test.describe('Winning Condition - 10,000 Point Game', () => {
     await page.getByRole('button', { name: 'Done', exact: true }).click()
     await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('9000')
 
-    // Bob turn 3: 555 (500) - total: 1100
+    // Bob turn 3: 555 (500) - total: 1300
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
     await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('1100')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('1300')
 
-    // Charlie turn 3: 666 (600) - total: 1200
+    // Charlie turn 3: 666 (600) - total: 1500
     await expect(page.locator('text=Current Player: Charlie')).toBeVisible()
     await page.getByRole('button', { name: '666', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('1200')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('1500')
 
     // Round 4: Alice reaches 10,000 - TRIGGERS LAST ROUND
     // Alice turn 4: Four of a Kind (1000) - total: 10,000
@@ -84,19 +84,19 @@ test.describe('Winning Condition - 10,000 Point Game', () => {
     await expect(page.locator('text=Game Over!')).not.toBeVisible()
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
 
-    // Bob turn 4 (LAST ROUND): Five of a Kind (2000) - total: 3100
+    // Bob turn 4 (LAST ROUND): Five of a Kind (2000) - total: 3300
     await page.getByRole('button', { name: 'Five of a Kind', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('3100')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('3300')
 
     // Game should STILL not be over - Charlie needs final turn
     await expect(page.locator('text=Game Over!')).not.toBeVisible()
     await expect(page.locator('text=Current Player: Charlie')).toBeVisible()
 
-    // Charlie turn 4 (LAST ROUND): Straight (1500) - total: 2700
+    // Charlie turn 4 (LAST ROUND): Straight (1500) - total: 3000
     await page.getByRole('button', { name: 'Straight', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('2700')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('3000')
 
     // NOW game should be over - all players had equal turns
     await expect(page.locator('text=Game Over!')).toBeVisible()
@@ -115,9 +115,9 @@ test.describe('Winning Condition - 10,000 Point Game', () => {
     await expect(scoreTiles.nth(0).locator('.list__tile__title')).toContainText('Alice')
     await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('10000')
     await expect(scoreTiles.nth(1).locator('.list__tile__title')).toContainText('Bob')
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('3100')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('3300')
     await expect(scoreTiles.nth(2).locator('.list__tile__title')).toContainText('Charlie')
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('2700')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('3000')
   })
 
   test('second player reaches 10k first, third player wins with higher score', async ({ page }) => {
@@ -222,12 +222,12 @@ test.describe('Winning Condition - 10,000 Point Game', () => {
 
     const scoreTiles = page.locator('.list__tile')
 
-    // Alice turn 1: 111 (300)
-    await page.getByRole('button', { name: '111', exact: true }).click()
+    // Alice turn 1: Get on board with 555 (500)
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Bob turn 1: 222 (200)
-    await page.getByRole('button', { name: '222', exact: true }).click()
+    // Bob turn 1: Get on board with 555 (500)
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
     // Charlie turn 1: Six of a Kind (3000) x 3 + Four of a Kind (1000) = 10,000
@@ -379,12 +379,12 @@ test.describe('Winning Condition - 10,000 Point Game', () => {
     await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Bob: 300
-    await page.getByRole('button', { name: '111', exact: true }).click()
+    // Bob: Get on board with 500
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Charlie: 200
-    await page.getByRole('button', { name: '222', exact: true }).click()
+    // Charlie: Get on board with 500
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
     // Verify NO tie-breaker UI appears

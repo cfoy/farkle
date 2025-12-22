@@ -44,35 +44,34 @@ test.describe('Complete Game Turn with Scoring', () => {
     // Click Done to end turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Verify Alice's score updated (should show 250 in scoreboard)
+    // Verify Alice's score updated (should show 500 in scoreboard)
     // The score is in .list__tile__action, name is in .list__tile__title
     const scoreTiles = page.locator('.list__tile')
     await expect(scoreTiles.nth(0).locator('.list__tile__title')).toContainText('Alice')
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('250')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('500')
 
     // Verify player rotation: Bob is now current player
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
 
     // Verify points reset to 0 for new turn
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 0')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 0')
   })
 
   test('scores multiple turns with different scoring combinations', async ({ page }) => {
-    // Alice's first turn: One (100) + Five (50) = 150
-    await page.getByRole('button', { name: 'One', exact: true }).click()
-    await page.getByRole('button', { name: 'Five', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 150')
+    // Alice's first turn: Get on board with 500 points
+    await page.getByRole('button', { name: '555', exact: true }).click()
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 500')
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
     // Verify Alice's score
     const scoreTiles = page.locator('.list__tile')
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('150')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('500')
 
-    // Bob's turn: 111 (300) + 222 (200) = 500
+    // Bob's turn: Get on board with 111 (300) + 222 (200) = 500
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
     await page.getByRole('button', { name: '111', exact: true }).click()
     await page.getByRole('button', { name: '222', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 500')
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
     // Verify Bob's score
@@ -81,13 +80,13 @@ test.describe('Complete Game Turn with Scoring', () => {
     // Should rotate back to Alice
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
 
-    // Alice's second turn: 333 (300) = 300
+    // Alice's second turn: 333 (300) = 300 - can bank any amount now
     await page.getByRole('button', { name: '333', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 300')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 300')
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Verify Alice's score accumulated (150 + 300 = 450)
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('450')
+    // Verify Alice's score accumulated (500 + 300 = 800)
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('800')
 
     // Should be Bob's turn again
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
@@ -96,13 +95,13 @@ test.describe('Complete Game Turn with Scoring', () => {
   test('handles triple scoring buttons correctly', async ({ page }) => {
     // Test various triple combinations
     await page.getByRole('button', { name: '111', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 300')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 300')
 
     await page.getByRole('button', { name: '222', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 500')
 
     await page.getByRole('button', { name: '333', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 800')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 800')
 
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
@@ -114,12 +113,12 @@ test.describe('Complete Game Turn with Scoring', () => {
   test('handles high-value scoring combinations', async ({ page }) => {
     // Test Four of a Kind (1000 points)
     await page.getByRole('button', { name: 'Four of a Kind', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1000')
 
     // Add more points
     await page.getByRole('button', { name: 'Five', exact: true }).click()
     await page.getByRole('button', { name: 'Five', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1100')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1100')
 
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
@@ -144,19 +143,19 @@ test.describe('Complete Game Turn with Scoring', () => {
 
     await page.locator('button:has-text("Start Game")').click()
 
-    // Alice's turn
+    // Alice's turn - get on board with 500 points
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
-    await page.getByRole('button', { name: 'One', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Bob's turn
+    // Bob's turn - get on board with 500 points
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
-    await page.getByRole('button', { name: 'Five', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Charlie's turn
+    // Charlie's turn - get on board with 600 points
     await expect(page.locator('text=Current Player: Charlie')).toBeVisible()
-    await page.getByRole('button', { name: '111', exact: true }).click()
+    await page.getByRole('button', { name: '666', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
     // Should rotate back to Alice
@@ -165,11 +164,11 @@ test.describe('Complete Game Turn with Scoring', () => {
     // Verify all scores
     const scoreTiles = page.locator('.list__tile')
     await expect(scoreTiles.nth(0).locator('.list__tile__title')).toContainText('Alice')
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('100')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('500')
     await expect(scoreTiles.nth(1).locator('.list__tile__title')).toContainText('Bob')
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('50')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('500')
     await expect(scoreTiles.nth(2).locator('.list__tile__title')).toContainText('Charlie')
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('300')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('600')
   })
 
   test('Farkle button resets points and ends turn', async ({ page }) => {
@@ -177,7 +176,7 @@ test.describe('Complete Game Turn with Scoring', () => {
     await page.getByRole('button', { name: 'One', exact: true }).click()
     await page.getByRole('button', { name: 'Five', exact: true }).click()
     await page.getByRole('button', { name: '111', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 450')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 450')
 
     // Click Farkle button
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
@@ -191,6 +190,6 @@ test.describe('Complete Game Turn with Scoring', () => {
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
 
     // Points should be reset to 0
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 0')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 0')
   })
 })

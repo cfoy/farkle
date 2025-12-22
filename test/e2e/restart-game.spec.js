@@ -54,13 +54,13 @@ test.describe('Restart Game Feature', () => {
     await page.locator('button:has-text("Add")').click()
     await page.locator('button:has-text("Start Game")').click()
 
-    // Score some points (roll ones)
-    await page.getByRole('button', { name: 'One', exact: true }).click()
+    // Score some points (get on board with 500)
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Verify score updated (Player 1 should have 100 points)
+    // Verify score updated (Player 1 should have 500 points)
     const scoreTiles = page.locator('.list__tile')
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('100')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('500')
 
     // Click restart
     await page.locator('button:has-text("Restart Game")').click()

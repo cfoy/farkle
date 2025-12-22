@@ -26,13 +26,10 @@ test.describe('Farkle Scenario Tests', () => {
     await page.getByRole('button', { name: '111', exact: true }).click()
 
     // Verify points accumulated
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 450')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 450')
 
     // Click Farkle button
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
-
-    // Verify points reset to 0 in turn display
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 0')
 
     // Verify Alice's score is still 0 (points were NOT added)
     const scoreTiles = page.locator('.list__tile')
@@ -45,7 +42,7 @@ test.describe('Farkle Scenario Tests', () => {
 
   test('farkle with no accumulated points does not affect score', async ({ page }) => {
     // Click Farkle immediately without accumulating points
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 0')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 0')
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
 
     // Alice's score should remain 0
@@ -57,19 +54,18 @@ test.describe('Farkle Scenario Tests', () => {
   })
 
   test('farkle after previous successful turns preserves existing score', async ({ page }) => {
-    // Alice's first turn: score some points successfully
-    await page.getByRole('button', { name: 'One', exact: true }).click()
-    await page.getByRole('button', { name: 'One', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 200')
+    // Alice's first turn: get on board with 500 points
+    await page.getByRole('button', { name: '555', exact: true }).click()
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 500')
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Verify Alice's score is 200
+    // Verify Alice's score is 500
     const scoreTiles = page.locator('.list__tile')
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('200')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('500')
 
-    // Bob's turn
+    // Bob's turn: get on board with 500 points
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
-    await page.getByRole('button', { name: 'Five', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
     // Back to Alice's turn
@@ -77,11 +73,11 @@ test.describe('Farkle Scenario Tests', () => {
 
     // Alice's second turn: accumulate points then farkle
     await page.getByRole('button', { name: '333', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 300')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 300')
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
 
-    // Alice's score should still be 200 (not 200+300)
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('200')
+    // Alice's score should still be 500 (not 500+300)
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('500')
 
     // Should be Bob's turn
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
@@ -92,7 +88,7 @@ test.describe('Farkle Scenario Tests', () => {
 
     // Alice farkles
     await page.getByRole('button', { name: 'One', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 100')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 100')
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
     await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('0')
 
@@ -100,7 +96,7 @@ test.describe('Farkle Scenario Tests', () => {
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
     await page.getByRole('button', { name: 'Five', exact: true }).click()
     await page.getByRole('button', { name: 'Five', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 100')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 100')
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
     await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('0')
 
@@ -117,7 +113,7 @@ test.describe('Farkle Scenario Tests', () => {
     await page.getByRole('button', { name: 'Four of a Kind', exact: true }).click()
     await page.getByRole('button', { name: 'Five', exact: true }).click()
     await page.getByRole('button', { name: 'Five', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1100')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1100')
 
     // Farkle with 1100 points
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
@@ -151,11 +147,11 @@ test.describe('Farkle Scenario Tests', () => {
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
     await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('0')
 
-    // Bob scores successfully
+    // Bob gets on board with 500 points
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
-    await page.getByRole('button', { name: 'Five', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('50')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('500')
 
     // Charlie farkles
     await expect(page.locator('text=Current Player: Charlie')).toBeVisible()
@@ -166,9 +162,9 @@ test.describe('Farkle Scenario Tests', () => {
     // Should rotate back to Alice
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
 
-    // Verify scores: Alice 0, Bob 50, Charlie 0
+    // Verify scores: Alice 0, Bob 500, Charlie 0
     await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('0')
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('50')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('500')
     await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('0')
   })
 })

@@ -14,51 +14,50 @@ test.describe('Multi-Turn Game Progression', () => {
 
     const scoreTiles = page.locator('.list__tile')
 
-    // Turn 1: Alice scores 150
+    // Turn 1: Alice gets on board with 500
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
-    await page.getByRole('button', { name: 'One', exact: true }).click()
-    await page.getByRole('button', { name: 'Five', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('150')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('500')
 
-    // Turn 2: Bob scores 200
+    // Turn 2: Bob gets on board with 500
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
-    await page.getByRole('button', { name: '222', exact: true }).click()
-    await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('200')
-
-    // Turn 3: Alice scores another 100 (total: 250)
-    await expect(page.locator('text=Current Player: Alice')).toBeVisible()
-    await page.getByRole('button', { name: 'One', exact: true }).click()
-    await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('250')
-
-    // Turn 4: Bob scores another 300 (total: 500)
-    await expect(page.locator('text=Current Player: Bob')).toBeVisible()
-    await page.getByRole('button', { name: '333', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
     await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('500')
 
-    // Turn 5: Alice scores another 50 (total: 300)
+    // Turn 3: Alice scores another 100 (total: 600)
+    await expect(page.locator('text=Current Player: Alice')).toBeVisible()
+    await page.getByRole('button', { name: 'One', exact: true }).click()
+    await page.getByRole('button', { name: 'Done', exact: true }).click()
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('600')
+
+    // Turn 4: Bob scores another 300 (total: 800)
+    await expect(page.locator('text=Current Player: Bob')).toBeVisible()
+    await page.getByRole('button', { name: '333', exact: true }).click()
+    await page.getByRole('button', { name: 'Done', exact: true }).click()
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('800')
+
+    // Turn 5: Alice scores another 50 (total: 650)
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
     await page.getByRole('button', { name: 'Five', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('300')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('650')
 
-    // Turn 6: Bob scores another 100 (total: 600)
+    // Turn 6: Bob scores another 100 (total: 900)
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
     await page.getByRole('button', { name: 'One', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('600')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('900')
 
     // Verify rotation continues - should be Alice's turn
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
 
     // Final score verification
     await expect(scoreTiles.nth(0).locator('.list__tile__title')).toContainText('Alice')
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('300')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('650')
     await expect(scoreTiles.nth(1).locator('.list__tile__title')).toContainText('Bob')
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('600')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('900')
   })
 
   test('completes 4 full turns with 3 players and verifies rotation cycles', async ({ page }) => {
@@ -76,20 +75,20 @@ test.describe('Multi-Turn Game Progression', () => {
 
     const scoreTiles = page.locator('.list__tile')
 
-    // Round 1: Each player takes one turn
-    // Alice turn 1
+    // Round 1: Each player gets on board with 500+
+    // Alice turn 1: Get on board with 500
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
-    await page.getByRole('button', { name: 'One', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Bob turn 1
+    // Bob turn 1: Get on board with 500
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
-    await page.getByRole('button', { name: 'Five', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    // Charlie turn 1
+    // Charlie turn 1: Get on board with 600
     await expect(page.locator('text=Current Player: Charlie')).toBeVisible()
-    await page.getByRole('button', { name: '111', exact: true }).click()
+    await page.getByRole('button', { name: '666', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
     // Verify rotation back to Alice
@@ -150,12 +149,12 @@ test.describe('Multi-Turn Game Progression', () => {
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
 
     // Verify final scores
-    // Alice: 100 + 50 + 100 + 50 = 300
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('300')
-    // Bob: 50 + 100 + 50 + 100 = 300
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('300')
-    // Charlie: 300 + 200 + 300 + 400 = 1200
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('1200')
+    // Alice: 500 + 50 + 100 + 50 = 700
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('700')
+    // Bob: 500 + 100 + 50 + 100 = 750
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('750')
+    // Charlie: 600 + 200 + 300 + 400 = 1500
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('1500')
   })
 
   test('mixed turns with scores and farkles maintains accurate scoreboard', async ({ page }) => {
@@ -173,65 +172,66 @@ test.describe('Multi-Turn Game Progression', () => {
 
     const scoreTiles = page.locator('.list__tile')
 
-    // Alice scores 100
+    // Round 1: Get all players on board
+    // Alice gets on board with 500
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
-    await page.getByRole('button', { name: 'One', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('100')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('500')
 
-    // Bob farkles (stays at 0)
+    // Bob farkles (stays at 0, not on board)
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
     await page.getByRole('button', { name: 'Five', exact: true }).click()
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
     await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('0')
 
-    // Charlie scores 300
+    // Charlie gets on board with 600
     await expect(page.locator('text=Current Player: Charlie')).toBeVisible()
-    await page.getByRole('button', { name: '333', exact: true }).click()
+    await page.getByRole('button', { name: '666', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('300')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('600')
 
-    // Round 2: Alice farkles (stays at 100)
+    // Round 2: Alice farkles (stays at 500)
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
     await page.getByRole('button', { name: 'One', exact: true }).click()
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('100')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('500')
 
-    // Bob scores 200 (total: 200)
+    // Bob gets on board with 500 (total: 500)
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
-    await page.getByRole('button', { name: '222', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('200')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('500')
 
-    // Charlie scores 50 (total: 350)
+    // Charlie scores 50 (total: 650)
     await expect(page.locator('text=Current Player: Charlie')).toBeVisible()
     await page.getByRole('button', { name: 'Five', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('350')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('650')
 
-    // Round 3: Alice scores 100 (total: 200)
+    // Round 3: Alice scores 100 (total: 600)
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
     await page.getByRole('button', { name: 'One', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('200')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('600')
 
-    // Bob farkles (stays at 200)
+    // Bob farkles (stays at 500)
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
     await page.getByRole('button', { name: 'One', exact: true }).click()
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('200')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('500')
 
-    // Charlie farkles (stays at 350)
+    // Charlie farkles (stays at 650)
     await expect(page.locator('text=Current Player: Charlie')).toBeVisible()
     await page.getByRole('button', { name: 'Five', exact: true }).click()
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('350')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('650')
 
     // Verify rotation and final scores
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('200')
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('200')
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('350')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('600')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('500')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('650')
   })
 
   test('long game progression with 4 players over 5 rounds', async ({ page }) => {
@@ -250,40 +250,40 @@ test.describe('Multi-Turn Game Progression', () => {
 
     // 5 rounds, each player plays once per round
     const rounds = [
-      // Round 1
+      // Round 1: Get all players on board with 500+
       [
-        { player: 'Alice', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '100' },
-        { player: 'Bob', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '50' },
-        { player: 'Charlie', action: () => page.getByRole('button', { name: '111', exact: true }).click(), expected: '300' },
-        { player: 'Dave', action: () => page.getByRole('button', { name: '222', exact: true }).click(), expected: '200' }
+        { player: 'Alice', action: () => page.getByRole('button', { name: '555', exact: true }).click(), expected: '500' },
+        { player: 'Bob', action: () => page.getByRole('button', { name: '555', exact: true }).click(), expected: '500' },
+        { player: 'Charlie', action: () => page.getByRole('button', { name: '666', exact: true }).click(), expected: '600' },
+        { player: 'Dave', action: () => page.getByRole('button', { name: '555', exact: true }).click(), expected: '500' }
       ],
       // Round 2
       [
-        { player: 'Alice', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '150' },
-        { player: 'Bob', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '150' },
-        { player: 'Charlie', action: () => page.getByRole('button', { name: '333', exact: true }).click(), expected: '600' },
-        { player: 'Dave', action: () => page.getByRole('button', { name: '444', exact: true }).click(), expected: '600' }
+        { player: 'Alice', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '550' },
+        { player: 'Bob', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '600' },
+        { player: 'Charlie', action: () => page.getByRole('button', { name: '333', exact: true }).click(), expected: '900' },
+        { player: 'Dave', action: () => page.getByRole('button', { name: '444', exact: true }).click(), expected: '900' }
       ],
       // Round 3
       [
-        { player: 'Alice', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '250' },
-        { player: 'Bob', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '200' },
-        { player: 'Charlie', action: () => page.getByRole('button', { name: '555', exact: true }).click(), expected: '1100' },
-        { player: 'Dave', action: () => page.getByRole('button', { name: '666', exact: true }).click(), expected: '1200' }
+        { player: 'Alice', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '650' },
+        { player: 'Bob', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '650' },
+        { player: 'Charlie', action: () => page.getByRole('button', { name: '555', exact: true }).click(), expected: '1400' },
+        { player: 'Dave', action: () => page.getByRole('button', { name: '666', exact: true }).click(), expected: '1500' }
       ],
       // Round 4
       [
-        { player: 'Alice', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '300' },
-        { player: 'Bob', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '300' },
-        { player: 'Charlie', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '1200' },
-        { player: 'Dave', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '1250' }
+        { player: 'Alice', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '700' },
+        { player: 'Bob', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '750' },
+        { player: 'Charlie', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '1500' },
+        { player: 'Dave', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '1550' }
       ],
       // Round 5
       [
-        { player: 'Alice', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '400' },
-        { player: 'Bob', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '350' },
-        { player: 'Charlie', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '1250' },
-        { player: 'Dave', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '1350' }
+        { player: 'Alice', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '800' },
+        { player: 'Bob', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '800' },
+        { player: 'Charlie', action: () => page.getByRole('button', { name: 'Five', exact: true }).click(), expected: '1550' },
+        { player: 'Dave', action: () => page.getByRole('button', { name: 'One', exact: true }).click(), expected: '1650' }
       ]
     ]
 
@@ -308,10 +308,10 @@ test.describe('Multi-Turn Game Progression', () => {
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
 
     // Verify all final scores
-    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('400')
-    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('350')
-    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('1250')
-    await expect(scoreTiles.nth(3).locator('.list__tile__action')).toContainText('1350')
+    await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('800')
+    await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('800')
+    await expect(scoreTiles.nth(2).locator('.list__tile__action')).toContainText('1550')
+    await expect(scoreTiles.nth(3).locator('.list__tile__action')).toContainText('1650')
   })
 
   test('scoreboard displays correct player names throughout game', async ({ page }) => {
@@ -334,14 +334,14 @@ test.describe('Multi-Turn Game Progression', () => {
     await expect(scoreTiles.nth(1).locator('.list__tile__title')).toContainText('PlayerTwo')
     await expect(scoreTiles.nth(2).locator('.list__tile__title')).toContainText('PlayerThree')
 
-    // Play a few turns
-    await page.getByRole('button', { name: 'One', exact: true }).click()
+    // Play a few turns - get all players on board first
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    await page.getByRole('button', { name: 'Five', exact: true }).click()
+    await page.getByRole('button', { name: '555', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
-    await page.getByRole('button', { name: '111', exact: true }).click()
+    await page.getByRole('button', { name: '666', exact: true }).click()
     await page.getByRole('button', { name: 'Done', exact: true }).click()
 
     // Verify names remain correct after turns
