@@ -7,7 +7,7 @@
       </v-list-tile-avatar>
       <v-list-tile-content>
         <v-list-tile-title>
-          {{ player.name }}
+          {{ player.name }} ({{ player.wins || 0 }} wins)
         </v-list-tile-title>
       </v-list-tile-content>
       <v-list-tile-action>

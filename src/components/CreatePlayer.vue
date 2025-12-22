@@ -25,10 +25,23 @@ export default {
         this.$emit('create-player', {
           name: this.name,
           score: 0,
-          onBoard: false
+          onBoard: false,
+          wins: this.loadWinsFromLocalStorage(this.name)
         })
         this.name = ''
       }
+    },
+    loadWinsFromLocalStorage (playerName) {
+      const stored = localStorage.getItem('farkle-wins')
+      if (stored) {
+        try {
+          const winsData = JSON.parse(stored)
+          return winsData[playerName] || 0
+        } catch (e) {
+          return 0
+        }
+      }
+      return 0
     }
   }
 }

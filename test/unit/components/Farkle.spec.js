@@ -226,4 +226,195 @@ describe('Farkle.vue', () => {
       expect(wrapper.findComponent({ name: 'farkle-game' }).exists()).toBe(true)
     })
   })
+
+  describe('Win tracking', () => {
+    beforeEach(() => {
+      localStorage.clear()
+      wrapper.vm.players = [
+        { name: 'Alice', score: 10500, wins: 2 },
+        { name: 'Bob', score: 9500, wins: 3 }
+      ]
+    })
+
+    it('increments winner wins count when handleGameEnd is called', async () => {
+      const winner = wrapper.vm.players[0]
+      expect(winner.wins).toBe(2)
+
+      wrapper.vm.handleGameEnd(winner)
+      await wrapper.vm.$nextTick()
+
+      expect(winner.wins).toBe(3)
+    })
+
+    it('handles different winner correctly', async () => {
+      const winner = wrapper.vm.players[1]
+      expect(winner.wins).toBe(3)
+
+      wrapper.vm.handleGameEnd(winner)
+      await wrapper.vm.$nextTick()
+
+      expect(winner.wins).toBe(4)
+    })
+
+    it('does not increment wins for null winner', async () => {
+      const initialWins = [...wrapper.vm.players.map(p => p.wins)]
+
+      wrapper.vm.handleGameEnd(null)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.players[0].wins).toBe(initialWins[0])
+      expect(wrapper.vm.players[1].wins).toBe(initialWins[1])
+    })
+
+    it('does not increment wins for undefined winner', async () => {
+      const initialWins = [...wrapper.vm.players.map(p => p.wins)]
+
+      wrapper.vm.handleGameEnd(undefined)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.players[0].wins).toBe(initialWins[0])
+      expect(wrapper.vm.players[1].wins).toBe(initialWins[1])
+    })
+
+    it('increments wins from 0 correctly', async () => {
+      wrapper.vm.players[0].wins = 0
+      const winner = wrapper.vm.players[0]
+
+      wrapper.vm.handleGameEnd(winner)
+      await wrapper.vm.$nextTick()
+
+      expect(winner.wins).toBe(1)
+    })
+  })
+
+  describe('localStorage persistence', () => {
+    beforeEach(() => {
+      localStorage.clear()
+      wrapper.vm.players = [
+        { name: 'Alice', score: 10500, wins: 5 },
+        { name: 'Bob', score: 9500, wins: 3 },
+        { name: 'Charlie', score: 8000, wins: 7 }
+      ]
+    })
+
+    it('saves wins to localStorage when game ends', async () => {
+      const winner = wrapper.vm.players[0]
+      wrapper.vm.handleGameEnd(winner)
+      await wrapper.vm.$nextTick()
+
+      const stored = localStorage.getItem('farkle-wins')
+      expect(stored).toBeTruthy()
+
+      const winsData = JSON.parse(stored)
+      expect(winsData.Alice).toBe(6)
+      expect(winsData.Bob).toBe(3)
+      expect(winsData.Charlie).toBe(7)
+    })
+
+    it('saves all players wins to localStorage', async () => {
+      wrapper.vm.saveWinsToLocalStorage()
+      await wrapper.vm.$nextTick()
+
+      const stored = localStorage.getItem('farkle-wins')
+      const winsData = JSON.parse(stored)
+
+      expect(winsData.Alice).toBe(5)
+      expect(winsData.Bob).toBe(3)
+      expect(winsData.Charlie).toBe(7)
+    })
+
+    it('overwrites previous localStorage data', async () => {
+      localStorage.setItem('farkle-wins', JSON.stringify({ 'OldPlayer': 10 }))
+
+      wrapper.vm.saveWinsToLocalStorage()
+      await wrapper.vm.$nextTick()
+
+      const stored = localStorage.getItem('farkle-wins')
+      const winsData = JSON.parse(stored)
+
+      expect(winsData.OldPlayer).toBeUndefined()
+      expect(winsData.Alice).toBe(5)
+    })
+
+    it('loads wins from localStorage correctly', () => {
+      localStorage.setItem('farkle-wins', JSON.stringify({
+        'Alice': 10,
+        'Bob': 5
+      }))
+
+      const aliceWins = wrapper.vm.loadWinsFromLocalStorage('Alice')
+      const bobWins = wrapper.vm.loadWinsFromLocalStorage('Bob')
+
+      expect(aliceWins).toBe(10)
+      expect(bobWins).toBe(5)
+    })
+
+    it('returns 0 for unknown player when loading from localStorage', () => {
+      localStorage.setItem('farkle-wins', JSON.stringify({
+        'Alice': 10
+      }))
+
+      const wins = wrapper.vm.loadWinsFromLocalStorage('Unknown')
+      expect(wins).toBe(0)
+    })
+
+    it('returns 0 when localStorage is empty', () => {
+      const wins = wrapper.vm.loadWinsFromLocalStorage('Alice')
+      expect(wins).toBe(0)
+    })
+
+    it('handles corrupted localStorage gracefully', () => {
+      localStorage.setItem('farkle-wins', 'invalid json')
+
+      const wins = wrapper.vm.loadWinsFromLocalStorage('Alice')
+      expect(wins).toBe(0)
+    })
+  })
+
+  describe('Reset win statistics', () => {
+    beforeEach(() => {
+      localStorage.clear()
+      wrapper.vm.players = [
+        { name: 'Alice', score: 500, wins: 5 },
+        { name: 'Bob', score: 300, wins: 3 }
+      ]
+    })
+
+    it('clears localStorage when reset is called', async () => {
+      localStorage.setItem('farkle-wins', JSON.stringify({ 'Alice': 5, 'Bob': 3 }))
+
+      wrapper.vm.resetWinStatistics()
+      await wrapper.vm.$nextTick()
+
+      const stored = localStorage.getItem('farkle-wins')
+      expect(stored).toBeNull()
+    })
+
+    it('resets all player wins to 0', async () => {
+      wrapper.vm.resetWinStatistics()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.players[0].wins).toBe(0)
+      expect(wrapper.vm.players[1].wins).toBe(0)
+    })
+
+    it('preserves player names and scores when resetting wins', async () => {
+      wrapper.vm.resetWinStatistics()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.players[0].name).toBe('Alice')
+      expect(wrapper.vm.players[0].score).toBe(500)
+      expect(wrapper.vm.players[1].name).toBe('Bob')
+      expect(wrapper.vm.players[1].score).toBe(300)
+    })
+
+    it('displays reset button in setup phase', async () => {
+      wrapper.vm.started = false
+      await wrapper.vm.$nextTick()
+
+      const buttons = wrapper.findAll('button')
+      const resetButton = buttons.filter(btn => btn.text().includes('Reset Win Statistics'))
+      expect(resetButton.length).toBeGreaterThan(0)
+    })
+  })
 })
