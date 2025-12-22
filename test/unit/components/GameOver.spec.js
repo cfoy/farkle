@@ -8,9 +8,9 @@ describe('GameOver.vue', () => {
 
   beforeEach(() => {
     players = [
-      { name: 'Alice', score: 10500, onBoard: true },
-      { name: 'Bob', score: 9000, onBoard: true },
-      { name: 'Charlie', score: 8500, onBoard: true }
+      { name: 'Alice', score: 10500, onBoard: true, wins: 5 },
+      { name: 'Bob', score: 9000, onBoard: true, wins: 3 },
+      { name: 'Charlie', score: 8500, onBoard: true, wins: 7 }
     ]
 
     wrapper = mount(GameOver, {
@@ -141,5 +141,88 @@ describe('GameOver.vue', () => {
     const cardTitle = wrapper.find('.card__title')
     expect(cardTitle.exists()).toBe(true)
     expect(cardTitle.text()).toContain('Game Over!')
+  })
+
+  describe('Win tracking display', () => {
+    it('displays winner total wins count', () => {
+      const winCount = wrapper.find('.win-count')
+      expect(winCount.exists()).toBe(true)
+      expect(winCount.text()).toContain('Total Wins: 5')
+    })
+
+    it('displays correct wins for different winner', () => {
+      const newWrapper = mount(GameOver, {
+        propsData: {
+          players,
+          winner: players[2]
+        },
+        stubs: {
+          'score': true
+        }
+      })
+
+      const winCount = newWrapper.find('.win-count')
+      expect(winCount.text()).toContain('Total Wins: 7')
+    })
+
+    it('displays wins as 1 for first-time winner', () => {
+      const firstTimeWinner = [
+        { name: 'NewPlayer', score: 10000, onBoard: true, wins: 1 }
+      ]
+
+      const newWrapper = mount(GameOver, {
+        propsData: {
+          players: firstTimeWinner,
+          winner: firstTimeWinner[0]
+        },
+        stubs: {
+          'score': true
+        }
+      })
+
+      const winCount = newWrapper.find('.win-count')
+      expect(winCount.text()).toContain('Total Wins: 1')
+    })
+
+    it('displays high win counts correctly', () => {
+      const champion = [
+        { name: 'Champion', score: 15000, onBoard: true, wins: 50 }
+      ]
+
+      const newWrapper = mount(GameOver, {
+        propsData: {
+          players: champion,
+          winner: champion[0]
+        },
+        stubs: {
+          'score': true
+        }
+      })
+
+      const winCount = newWrapper.find('.win-count')
+      expect(winCount.text()).toContain('Total Wins: 50')
+    })
+
+    it('does not display win count when winner is null', () => {
+      const newWrapper = mount(GameOver, {
+        propsData: {
+          players,
+          winner: null
+        },
+        stubs: {
+          'score': true
+        }
+      })
+
+      const winCount = newWrapper.find('.win-count')
+      expect(winCount.exists()).toBe(false)
+    })
+
+    it('displays win count with strong emphasis', () => {
+      const winCount = wrapper.find('.win-count')
+      const strong = winCount.find('strong')
+      expect(strong.exists()).toBe(true)
+      expect(strong.text()).toContain('Total Wins: 5')
+    })
   })
 })

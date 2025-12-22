@@ -8,9 +8,9 @@ describe('Score.vue', () => {
 
   beforeEach(() => {
     players = [
-      { name: 'Alice', score: 1500 },
-      { name: 'Bob', score: 2300 },
-      { name: 'Charlie', score: 800 }
+      { name: 'Alice', score: 1500, wins: 3 },
+      { name: 'Bob', score: 2300, wins: 5 },
+      { name: 'Charlie', score: 800, wins: 1 }
     ]
 
     wrapper = mount(Score, {
@@ -77,5 +77,51 @@ describe('Score.vue', () => {
     const icons = wrapper.findAll('.icon')
     const faceIcons = icons.filter(icon => icon.text() === 'face')
     expect(faceIcons.length).toBe(3)
+  })
+
+  describe('Win tracking display', () => {
+    it('displays wins count for each player', () => {
+      const subTitles = wrapper.findAll('.list__tile__sub-title')
+      expect(subTitles.at(0).text()).toContain('Wins: 3')
+      expect(subTitles.at(1).text()).toContain('Wins: 5')
+      expect(subTitles.at(2).text()).toContain('Wins: 1')
+    })
+
+    it('displays 0 wins for player with no wins', () => {
+      const newPlayers = [{ name: 'NewPlayer', score: 100, wins: 0 }]
+      const newWrapper = mount(Score, {
+        propsData: { players: newPlayers }
+      })
+
+      const subTitle = newWrapper.find('.list__tile__sub-title')
+      expect(subTitle.text()).toContain('Wins: 0')
+    })
+
+    it('displays high win counts correctly', () => {
+      const highWinPlayers = [{ name: 'Champion', score: 5000, wins: 25 }]
+      const newWrapper = mount(Score, {
+        propsData: { players: highWinPlayers }
+      })
+
+      const subTitle = newWrapper.find('.list__tile__sub-title')
+      expect(subTitle.text()).toContain('Wins: 25')
+    })
+
+    it('updates wins display when player wins change', async () => {
+      players[0].wins = 10
+      await wrapper.vm.$nextTick()
+
+      const subTitle = wrapper.findAll('.list__tile__sub-title').at(0)
+      expect(subTitle.text()).toContain('Wins: 10')
+    })
+
+    it('displays wins for all players in scoreboard', () => {
+      const subTitles = wrapper.findAll('.list__tile__sub-title')
+      expect(subTitles.length).toBe(3)
+
+      subTitles.wrappers.forEach(subTitle => {
+        expect(subTitle.text()).toContain('Wins:')
+      })
+    })
   })
 })

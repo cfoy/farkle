@@ -75,4 +75,92 @@ describe('CreatePlayer.vue', () => {
     expect(wrapper.emitted('create-player')).toBeTruthy()
     expect(wrapper.emitted('create-player')[0][0].name).toBe('Charlie')
   })
+
+  describe('Win tracking with localStorage', () => {
+    beforeEach(() => {
+      // Clear localStorage before each test
+      localStorage.clear()
+    })
+
+    it('initializes new player with 0 wins when no localStorage data exists', async () => {
+      wrapper.setData({ name: 'NewPlayer' })
+      await wrapper.vm.$nextTick()
+
+      wrapper.vm.addPlayer()
+      await wrapper.vm.$nextTick()
+
+      const emittedPlayer = wrapper.emitted('create-player')[0][0]
+      expect(emittedPlayer.wins).toBe(0)
+    })
+
+    it('loads existing wins from localStorage for known player', async () => {
+      // Setup localStorage with existing win data
+      localStorage.setItem('farkle-wins', JSON.stringify({
+        'Alice': 5,
+        'Bob': 3
+      }))
+
+      wrapper.setData({ name: 'Alice' })
+      await wrapper.vm.$nextTick()
+
+      wrapper.vm.addPlayer()
+      await wrapper.vm.$nextTick()
+
+      const emittedPlayer = wrapper.emitted('create-player')[0][0]
+      expect(emittedPlayer.wins).toBe(5)
+    })
+
+    it('initializes with 0 wins for unknown player when localStorage has other players', async () => {
+      localStorage.setItem('farkle-wins', JSON.stringify({
+        'Alice': 5,
+        'Bob': 3
+      }))
+
+      wrapper.setData({ name: 'Charlie' })
+      await wrapper.vm.$nextTick()
+
+      wrapper.vm.addPlayer()
+      await wrapper.vm.$nextTick()
+
+      const emittedPlayer = wrapper.emitted('create-player')[0][0]
+      expect(emittedPlayer.wins).toBe(0)
+    })
+
+    it('handles corrupted localStorage data gracefully', async () => {
+      localStorage.setItem('farkle-wins', 'invalid json')
+
+      wrapper.setData({ name: 'Alice' })
+      await wrapper.vm.$nextTick()
+
+      wrapper.vm.addPlayer()
+      await wrapper.vm.$nextTick()
+
+      const emittedPlayer = wrapper.emitted('create-player')[0][0]
+      expect(emittedPlayer.wins).toBe(0)
+    })
+
+    it('loads correct wins for multiple different players', async () => {
+      localStorage.setItem('farkle-wins', JSON.stringify({
+        'Alice': 10,
+        'Bob': 7,
+        'Charlie': 2
+      }))
+
+      // Add Alice
+      wrapper.setData({ name: 'Alice' })
+      await wrapper.vm.$nextTick()
+      wrapper.vm.addPlayer()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.emitted('create-player')[0][0].wins).toBe(10)
+
+      // Add Bob
+      wrapper.setData({ name: 'Bob' })
+      await wrapper.vm.$nextTick()
+      wrapper.vm.addPlayer()
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.emitted('create-player')[1][0].wins).toBe(7)
+    })
+  })
 })
