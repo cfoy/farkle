@@ -1,6 +1,6 @@
 <template>
   <div v-if="started">
-      <farkle-game v-bind:players="players"></farkle-game>
+      <farkle-game v-bind:players="players" v-on:game-end="handleGameEnd"></farkle-game>
       <v-card>
         <v-btn color="primary" v-on:click.native="restartGame">Restart Game</v-btn>
       </v-card>
@@ -52,6 +52,12 @@ export default {
         player.onBoard = false
       })
       this.started = false
+    },
+    handleGameEnd (winner) {
+      // Increment the winner's wins count
+      if (winner && winner.wins !== undefined) {
+        winner.wins += 1
+      }
     }
   }
 }

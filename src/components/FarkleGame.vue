@@ -50,7 +50,8 @@ export default {
       gameOver: false,
       inTieBreaker: false,
       tiedPlayerIndices: [],
-      selectedWinner: null
+      selectedWinner: null,
+      winnerEmitted: false
     }
   },
 
@@ -82,6 +83,10 @@ export default {
       if (this.inLastRound && this.totalTurns % this.players.length === 0) {
         this.gameOver = true
         this.checkForTie()
+        // If no tie-breaker, emit the winner
+        if (!this.inTieBreaker && !this.winnerEmitted) {
+          this.emitWinner()
+        }
       }
     },
     findWinnerIndex () {
@@ -128,6 +133,17 @@ export default {
       this.inTieBreaker = false
       this.tiedPlayerIndices = []
       this.selectedWinner = playerIndex
+      // Emit winner after tie-breaker selection
+      if (!this.winnerEmitted) {
+        this.emitWinner()
+      }
+    },
+    emitWinner () {
+      const winnerPlayer = this.winner
+      if (winnerPlayer && !this.winnerEmitted) {
+        this.winnerEmitted = true
+        this.$emit('game-end', winnerPlayer)
+      }
     }
   },
 
