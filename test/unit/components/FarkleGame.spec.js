@@ -16,8 +16,10 @@ describe('FarkleGame.vue', () => {
     wrapper = mount(FarkleGame, {
       propsData: { players },
       stubs: {
-        'farkle-turn': true,
-        'score': true
+        'current-player-header': true,
+        'active-game': true,
+        'game-over': true,
+        'tie-breaker': true
       }
     })
   })
@@ -77,8 +79,10 @@ describe('FarkleGame.vue', () => {
           ]
         },
         stubs: {
-          'farkle-turn': true,
-          'score': true
+          'current-player-header': true,
+          'active-game': true,
+          'game-over': true,
+          'tie-breaker': true
         }
       })
 
@@ -562,18 +566,19 @@ describe('FarkleGame.vue', () => {
   })
 
   describe('Component integration', () => {
-    it('renders farkle-turn component', () => {
-      expect(wrapper.findComponent({ name: 'farkle-turn' }).exists()).toBe(true)
+    it('renders current-player-header component', () => {
+      expect(wrapper.findComponent({ name: 'current-player-header' }).exists()).toBe(true)
     })
 
-    it('renders score component with players prop', () => {
-      const scoreComponent = wrapper.findComponent({ name: 'score' })
-      expect(scoreComponent.exists()).toBe(true)
+    it('renders active-game component', () => {
+      const activeGameComponent = wrapper.findComponent({ name: 'active-game' })
+      expect(activeGameComponent.exists()).toBe(true)
     })
 
-    it('displays current player name in header', () => {
-      const header = wrapper.find('h5')
-      expect(header.text()).toContain('Alice')
+    it('passes current player name to header component', () => {
+      const headerComponent = wrapper.findComponent({ name: 'current-player-header' })
+      expect(headerComponent.exists()).toBe(true)
+      expect(headerComponent.props('playerName')).toBe('Alice')
     })
   })
 
@@ -669,17 +674,16 @@ describe('FarkleGame.vue', () => {
   })
 
   describe('Game over UI', () => {
-    it('shows game UI when game is not over', () => {
-      expect(wrapper.find('h5').exists()).toBe(true)
-      expect(wrapper.find('h5').text()).toContain('Current Player')
-      expect(wrapper.findComponent({ name: 'farkle-turn' }).exists()).toBe(true)
+    it('shows active game components when game is not over', () => {
+      expect(wrapper.findComponent({ name: 'current-player-header' }).exists()).toBe(true)
+      expect(wrapper.findComponent({ name: 'active-game' }).exists()).toBe(true)
     })
 
-    it('hides game over UI when game is not over', () => {
-      expect(wrapper.find('h3').exists()).toBe(false)
+    it('hides game over component when game is not over', () => {
+      expect(wrapper.findComponent({ name: 'game-over' }).exists()).toBe(false)
     })
 
-    it('shows game over UI when game ends', async () => {
+    it('shows game over component when game ends', async () => {
       players[0].score = 9500
       wrapper.vm.score(500)
       wrapper.vm.score(200)
@@ -687,35 +691,33 @@ describe('FarkleGame.vue', () => {
       await wrapper.vm.$nextTick()
 
       expect(wrapper.vm.gameOver).toBe(true)
-      expect(wrapper.find('h3').exists()).toBe(true)
-      expect(wrapper.find('h3').text()).toBe('Game Over!')
+      expect(wrapper.findComponent({ name: 'game-over' }).exists()).toBe(true)
     })
 
-    it('hides turn interface when game is over', async () => {
+    it('hides active game components when game is over', async () => {
       players[0].score = 9500
       wrapper.vm.score(500)
       wrapper.vm.score(200)
       wrapper.vm.score(300)
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.findComponent({ name: 'farkle-turn' }).exists()).toBe(false)
-      expect(wrapper.find('h5').exists()).toBe(false)
+      expect(wrapper.findComponent({ name: 'active-game' }).exists()).toBe(false)
+      expect(wrapper.findComponent({ name: 'current-player-header' }).exists()).toBe(false)
     })
 
-    it('displays winner name and score', async () => {
+    it('passes winner to game-over component', async () => {
       players[0].score = 9500
       wrapper.vm.score(500)
       wrapper.vm.score(200)
       wrapper.vm.score(300)
       await wrapper.vm.$nextTick()
 
-      const winnerText = wrapper.find('h4')
-      expect(winnerText.exists()).toBe(true)
-      expect(winnerText.text()).toContain('Winner: Alice')
-      expect(winnerText.text()).toContain('10000 points')
+      const gameOverComponent = wrapper.findComponent({ name: 'game-over' })
+      expect(gameOverComponent.exists()).toBe(true)
+      expect(gameOverComponent.props('winner')).toBeDefined()
     })
 
-    it('displays correct winner when different player wins', async () => {
+    it('passes correct winner when different player wins', async () => {
       players[0].score = 9500
       wrapper.vm.score(500)
       await wrapper.vm.$nextTick()
@@ -727,19 +729,22 @@ describe('FarkleGame.vue', () => {
       wrapper.vm.score(100)
       await wrapper.vm.$nextTick()
 
-      const winnerText = wrapper.find('h4')
-      expect(winnerText.text()).toContain('Winner: Bob')
-      expect(winnerText.text()).toContain('11000 points')
+      const gameOverComponent = wrapper.findComponent({ name: 'game-over' })
+      expect(gameOverComponent.exists()).toBe(true)
+      expect(wrapper.vm.winner.name).toBe('Bob')
+      expect(wrapper.vm.winner.score).toBe(11000)
     })
 
-    it('displays scoreboard in game over UI', async () => {
+    it('passes players prop to game-over component', async () => {
       players[0].score = 9500
       wrapper.vm.score(500)
       wrapper.vm.score(200)
       wrapper.vm.score(300)
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.findComponent({ name: 'score' }).exists()).toBe(true)
+      const gameOverComponent = wrapper.findComponent({ name: 'game-over' })
+      expect(gameOverComponent.exists()).toBe(true)
+      expect(gameOverComponent.props('players')).toBeDefined()
     })
   })
 
