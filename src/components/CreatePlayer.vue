@@ -24,7 +24,8 @@ export default {
       if (this.name.trim().length > 0) {
         this.$emit('create-player', {
           name: this.name,
-          score: 0
+          score: 0,
+          onBoard: false
         })
         this.name = ''
       }

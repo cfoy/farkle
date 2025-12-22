@@ -29,7 +29,8 @@ describe('CreatePlayer.vue', () => {
     expect(wrapper.emitted('create-player')).toBeTruthy()
     expect(wrapper.emitted('create-player')[0][0]).toEqual({
       name: 'Alice',
-      score: 0
+      score: 0,
+      onBoard: false
     })
   })
 

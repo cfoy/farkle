@@ -26,7 +26,7 @@ describe('Player Creation Workflow Integration', () => {
 
     // Verify player was added to parent's data
     expect(wrapper.vm.players.length).toBe(1)
-    expect(wrapper.vm.players[0]).toEqual({ name: 'Alice', score: 0 })
+    expect(wrapper.vm.players[0]).toEqual({ name: 'Alice', score: 0, onBoard: false })
 
     // Verify PlayerList displays the new player
     const playerTiles = playerList.findAll('.list__tile__title')
@@ -86,8 +86,8 @@ describe('Player Creation Workflow Integration', () => {
 
     // Verify player data structure is correct
     expect(wrapper.vm.players).toEqual([
-      { name: 'Alice', score: 0 },
-      { name: 'Bob', score: 0 }
+      { name: 'Alice', score: 0, onBoard: false },
+      { name: 'Bob', score: 0, onBoard: false }
     ])
   })
 

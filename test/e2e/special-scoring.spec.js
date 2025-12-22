@@ -24,7 +24,7 @@ test.describe('Special Scoring Combinations', () => {
     await page.getByRole('button', { name: 'Four of a Kind', exact: true }).click()
 
     // Verify points accumulated
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1000')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -39,7 +39,7 @@ test.describe('Special Scoring Combinations', () => {
     await page.getByRole('button', { name: 'Five of a Kind', exact: true }).click()
 
     // Verify points accumulated
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 2000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 2000')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -54,7 +54,7 @@ test.describe('Special Scoring Combinations', () => {
     await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
 
     // Verify points accumulated
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 3000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 3000')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -69,7 +69,7 @@ test.describe('Special Scoring Combinations', () => {
     await page.getByRole('button', { name: 'Straight', exact: true }).click()
 
     // Verify points accumulated
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1500')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -84,7 +84,7 @@ test.describe('Special Scoring Combinations', () => {
     await page.getByRole('button', { name: 'Three Pairs', exact: true }).click()
 
     // Verify points accumulated
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1500')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -99,7 +99,7 @@ test.describe('Special Scoring Combinations', () => {
     await page.getByRole('button', { name: 'Four of a Kind Plus a Pair', exact: true }).click()
 
     // Verify points accumulated
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1500')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -114,7 +114,7 @@ test.describe('Special Scoring Combinations', () => {
     await page.getByRole('button', { name: 'Three of a Kind x 2', exact: true }).click()
 
     // Verify points accumulated
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 2500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 2500')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -127,10 +127,10 @@ test.describe('Special Scoring Combinations', () => {
   test('combining multiple special scoring combinations in one turn', async ({ page }) => {
     // Click Four of a Kind (1000) + Three Pairs (1500) = 2500
     await page.getByRole('button', { name: 'Four of a Kind', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1000')
 
     await page.getByRole('button', { name: 'Three Pairs', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 2500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 2500')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -143,13 +143,13 @@ test.describe('Special Scoring Combinations', () => {
   test('combining special scoring with basic scoring buttons', async ({ page }) => {
     // Click Six of a Kind (3000) + One (100) + Five (50) = 3150
     await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 3000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 3000')
 
     await page.getByRole('button', { name: 'One', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 3100')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 3100')
 
     await page.getByRole('button', { name: 'Five', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 3150')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 3150')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -162,13 +162,13 @@ test.describe('Special Scoring Combinations', () => {
   test('combining special scoring with triple combinations', async ({ page }) => {
     // Click Straight (1500) + 111 (300) + 222 (200) = 2000
     await page.getByRole('button', { name: 'Straight', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1500')
 
     await page.getByRole('button', { name: '111', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1800')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1800')
 
     await page.getByRole('button', { name: '222', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 2000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 2000')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -221,7 +221,7 @@ test.describe('Special Scoring Combinations', () => {
     // Accumulate special scoring points
     await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
     await page.getByRole('button', { name: 'Five of a Kind', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 5000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 5000')
 
     // Farkle
     await page.getByRole('button', { name: 'Farkle!', exact: true }).click()
@@ -237,20 +237,20 @@ test.describe('Special Scoring Combinations', () => {
   test('high scoring combination with maximum points in single turn', async ({ page }) => {
     // Maximize points: Six of a Kind (3000) + Five of a Kind (2000) + Four of a Kind (1000) = 6000
     await page.getByRole('button', { name: 'Six of a Kind', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 3000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 3000')
 
     await page.getByRole('button', { name: 'Five of a Kind', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 5000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 5000')
 
     await page.getByRole('button', { name: 'Four of a Kind', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 6000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 6000')
 
     // Add more combinations
     await page.getByRole('button', { name: 'Straight', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 7500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 7500')
 
     await page.getByRole('button', { name: 'Three of a Kind x 2', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 10000')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 10000')
 
     // Complete turn
     await page.getByRole('button', { name: 'Done', exact: true }).click()
@@ -265,21 +265,21 @@ test.describe('Special Scoring Combinations', () => {
 
     // Test Straight = 1500
     await page.getByRole('button', { name: 'Straight', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1500')
     await page.getByRole('button', { name: 'Done', exact: true }).click()
     await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('1500')
 
     // Bob: Test Three Pairs = 1500
     await expect(page.locator('text=Current Player: Bob')).toBeVisible()
     await page.getByRole('button', { name: 'Three Pairs', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1500')
     await page.getByRole('button', { name: 'Done', exact: true }).click()
     await expect(scoreTiles.nth(1).locator('.list__tile__action')).toContainText('1500')
 
     // Alice: Test Four of a Kind Plus a Pair = 1500 (total: 3000)
     await expect(page.locator('text=Current Player: Alice')).toBeVisible()
     await page.getByRole('button', { name: 'Four of a Kind Plus a Pair', exact: true }).click()
-    await expect(page.locator('h5:has-text("Points:")')).toContainText('Points: 1500')
+    await expect(page.locator('h5:has-text("Turn Total:")')).toContainText('Turn Total: 1500')
     await page.getByRole('button', { name: 'Done', exact: true }).click()
     await expect(scoreTiles.nth(0).locator('.list__tile__action')).toContainText('3000')
 

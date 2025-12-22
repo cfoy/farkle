@@ -1,7 +1,13 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <h5>Points: {{ points }}</h5>
+      <h5>Turn Total: {{ points }} points</h5>
+      <v-alert warning v-if="!currentPlayer.onBoard">
+        <strong>Not on board yet!</strong> You need 500 points in this turn to start scoring.
+      </v-alert>
+      <v-alert success v-if="!currentPlayer.onBoard && points >= 500">
+        <strong>Ready to get on board!</strong> You have {{ points }} points - click Done to bank them!
+      </v-alert>
     </v-flex>
     <v-flex xs12>
       <v-btn flat v-on:click.native="one">One</v-btn>
@@ -36,6 +42,8 @@
 <script>
 export default {
   name: 'farkle-turn',
+
+  props: ['currentPlayer'],
 
   data () {
     return {
@@ -94,6 +102,13 @@ export default {
       this.done()
     },
     done () {
+      // Check if player is not on board and trying to bank less than 500
+      // Allow farkles (0 points) to always go through
+      if (!this.currentPlayer.onBoard && this.points > 0 && this.points < 500) {
+        alert('You need 500 points to get on the board. Keep rolling or Farkle!')
+        return
+      }
+
       this.$emit('score', this.points)
       this.points = 0
     }

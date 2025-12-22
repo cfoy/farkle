@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import FarkleGame from '@/components/FarkleGame.vue'
 import FarkleTurn from '@/components/FarkleTurn.vue'
@@ -9,10 +9,13 @@ describe('Complete Player Turn Lifecycle Integration', () => {
   let players
 
   beforeEach(() => {
+    // Mock alert to prevent interruption during tests
+    vi.stubGlobal('alert', vi.fn())
+
     players = [
-      { name: 'Alice', score: 0 },
-      { name: 'Bob', score: 0 },
-      { name: 'Charlie', score: 0 }
+      { name: 'Alice', score: 0, onBoard: true },
+      { name: 'Bob', score: 0, onBoard: true },
+      { name: 'Charlie', score: 0, onBoard: true }
     ]
     wrapper = mount(FarkleGame, {
       propsData: { players }

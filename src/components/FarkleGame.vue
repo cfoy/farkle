@@ -55,7 +55,7 @@
         <v-flex xs12 sm12 md6 lg6>
           <v-card>
             <v-card-text>
-              <farkle-turn v-on:score="score"></farkle-turn>
+              <farkle-turn v-on:score="score" v-bind:current-player="players[currentPlayer]"></farkle-turn>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -109,6 +109,11 @@ export default {
       }
 
       this.players[this.currentPlayer].score += points
+
+      // Set onBoard status when player banks 500+ points for the first time
+      if (!this.players[this.currentPlayer].onBoard && points >= 500) {
+        this.players[this.currentPlayer].onBoard = true
+      }
 
       if (this.winningPlayerIndex === null && this.players[this.currentPlayer].score >= 10000) {
         this.winningPlayerIndex = this.currentPlayer
