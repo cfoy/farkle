@@ -4,6 +4,9 @@ import path from 'path'
 
 export default defineConfig(({ mode }) => {
   return {
+    // Base path for assets (relative for Cloudflare Pages compatibility)
+    base: './',
+
     // Development server configuration
     server: {
       port: 8080,
