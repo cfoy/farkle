@@ -1,6 +1,7 @@
 .DS_Store
 node_modules/
 dist/
+dist-ssr/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -12,6 +13,11 @@ playwright-report/
 test-results/
 logs/
 .perles/
+
+# Vite
+*.local
+.vite/
+node_modules/.vite/
 
 # Editor directories and files
 .idea

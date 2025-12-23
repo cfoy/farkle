@@ -4,18 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Farkle is a Vue.js 2.x dice game application built with Vuetify 0.12.7 for the UI framework. The codebase uses legacy tooling (Webpack 2, Babel 6) with modern testing infrastructure (Vitest, Playwright).
+Farkle is a Vue.js 2.7 dice game application built with Vuetify 0.12.7 for the UI framework. The codebase uses modern tooling (Vite 5.4, esbuild) with modern testing infrastructure (Vitest, Playwright).
 
 ## Essential Commands
 
 ### Development
 ```bash
 npm install              # Install dependencies
-npm run dev             # Start dev server at localhost:8080 with hot reload
+npm run dev             # Start Vite dev server at localhost:8080 with HMR
 npm start               # Alias for npm run dev
-npm run build           # Production build with minification
-npm run build --report  # Build with bundle analyzer
-npm run serve           # Serve production build using Caddy
+npm run build           # Production build with Vite
+npm run preview         # Preview production build locally on port 8080
+npm run serve           # Alias for preview
 ```
 
 ### Testing
@@ -60,10 +60,10 @@ App.vue (root with Vuetify layout)
 
 ### Technology Stack
 
-- **Vue 2.3.3**: Uses full build with template compiler (vue.esm.js)
-- **Vuetify 0.12.7**: Material design components (pinned version - see index.html CDN)
-- **Vue Router 2.3.1**: Single route to Farkle component
-- **Build**: Webpack 2.6.1 with Babel 6
+- **Vue 2.7.16**: Uses full build with template compiler (vue.esm.js)
+- **Vuetify 0.12.7**: Material design components (CDN-loaded, see index.html)
+- **Vue Router 2.8.1**: Single route to Farkle component
+- **Build**: Vite 5.4+ with esbuild transpilation
 - **Testing**: Vitest 4.x with @vue/test-utils 1.3.6, Playwright for E2E
 - **Environment**: happy-dom for unit tests
 
@@ -71,7 +71,7 @@ App.vue (root with Vuetify layout)
 
 The project uses `@` alias for src directory:
 - `@/components/Farkle` → `src/components/Farkle.vue`
-- Configured in both `vitest.config.js` and `build/webpack.base.conf.js`
+- Configured in `vite.config.js`
 
 ### Testing Structure
 
@@ -103,15 +103,41 @@ This project uses **Vuetify 0.12.7** (not modern 2.x or 3.x). Key differences:
 - Component API differs significantly from modern Vuetify
 - CDN is pinned in index.html - do not upgrade without testing
 
-### Legacy Dependencies
+### Vite Configuration
+
+**Configuration file:** `vite.config.js` (unified dev/build/test config)
+
+**Key settings:**
+- Dev server port: 8080 (required for E2E tests)
+- Full Vue build with template compiler via alias
+- `@` alias pointing to `src/`
+- Public assets in `public/` directory
+- Build output to `dist/` with assets in `dist/static/`
+- PostCSS autoprefixer support
+- Integrated Vitest configuration
+
+**Build output structure:**
+```
+dist/
+  index.html
+  static/
+    js/
+      vendor.[hash].js    # node_modules dependencies
+      index.[hash].js     # application code
+    css/
+      index.[hash].css    # extracted styles
+```
+
+**Dev server:**
+- Vite dev server runs on port 8080 with instant HMR
+- E2E tests expect this port
+- Auto-opens browser by default
+
+### Dependencies
 
 - Node.js 18.0.0+ required (20.18.1 recommended, see .nvmrc)
-- Webpack 2.x and Babel 6.x - do not upgrade without migration plan
-- ESLint 3.x with Standard config - old syntax
-
-### Development Server
-
-The webpack dev server (build/dev-server.js) runs on port 8080. E2E tests expect this port.
+- Vite 5.4+ with esbuild for fast builds
+- ESLint 3.x with Standard config (legacy)
 
 ## Node Version Management
 
