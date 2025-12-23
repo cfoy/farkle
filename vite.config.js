@@ -23,9 +23,16 @@ export default defineConfig(({ mode }) => {
 
       // Chunk splitting strategy (replaces CommonsChunkPlugin)
       rollupOptions: {
+        // External dependencies loaded via CDN
+        external: ['vue', 'vue-router'],
         output: {
+          // Globals for external dependencies
+          globals: {
+            vue: 'Vue',
+            'vue-router': 'VueRouter'
+          },
           manualChunks: (id) => {
-            // Vendor chunk for all node_modules
+            // Vendor chunk for all node_modules (except externals)
             if (id.includes('node_modules')) {
               return 'vendor'
             }
@@ -59,9 +66,7 @@ export default defineConfig(({ mode }) => {
     // Module resolution
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src'),
-        // Use full Vue build with template compiler (critical for Vue 2.7)
-        vue: 'vue/dist/vue.esm.js'
+        '@': path.resolve(__dirname, './src')
       },
       extensions: ['.js', '.json', '.vue']
     },
@@ -111,8 +116,7 @@ export default defineConfig(({ mode }) => {
 
     // Optimize dependencies
     optimizeDeps: {
-      include: ['vue', 'vue-router'],
-      exclude: ['vuetify'] // Loaded via CDN
+      exclude: ['vue', 'vue-router', 'vuetify'] // All loaded via CDN
     }
   }
 })
