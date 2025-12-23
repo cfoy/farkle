@@ -14,7 +14,7 @@ describe('GameOver.vue', () => {
     ]
 
     wrapper = mount(GameOver, {
-      propsData: {
+      props: {
         players,
         winner: players[0]
       },
@@ -60,7 +60,7 @@ describe('GameOver.vue', () => {
 
   it('displays different winner correctly', () => {
     const newWrapper = mount(GameOver, {
-      propsData: {
+      props: {
         players,
         winner: players[1]
       },
@@ -76,7 +76,7 @@ describe('GameOver.vue', () => {
 
   it('displays third player as winner correctly', () => {
     const newWrapper = mount(GameOver, {
-      propsData: {
+      props: {
         players,
         winner: players[2]
       },
@@ -92,7 +92,7 @@ describe('GameOver.vue', () => {
 
   it('handles null winner gracefully', () => {
     const newWrapper = mount(GameOver, {
-      propsData: {
+      props: {
         players,
         winner: null
       },
@@ -111,7 +111,7 @@ describe('GameOver.vue', () => {
     ]
 
     const newWrapper = mount(GameOver, {
-      propsData: {
+      props: {
         players: highScorePlayers,
         winner: highScorePlayers[0]
       },
@@ -152,7 +152,7 @@ describe('GameOver.vue', () => {
 
     it('displays correct wins for different winner', () => {
       const newWrapper = mount(GameOver, {
-        propsData: {
+        props: {
           players,
           winner: players[2]
         },
@@ -171,7 +171,7 @@ describe('GameOver.vue', () => {
       ]
 
       const newWrapper = mount(GameOver, {
-        propsData: {
+        props: {
           players: firstTimeWinner,
           winner: firstTimeWinner[0]
         },
@@ -190,7 +190,7 @@ describe('GameOver.vue', () => {
       ]
 
       const newWrapper = mount(GameOver, {
-        propsData: {
+        props: {
           players: champion,
           winner: champion[0]
         },
@@ -205,7 +205,7 @@ describe('GameOver.vue', () => {
 
     it('does not display win count when winner is null', () => {
       const newWrapper = mount(GameOver, {
-        propsData: {
+        props: {
           players,
           winner: null
         },

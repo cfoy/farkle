@@ -14,7 +14,7 @@ describe('Score.vue', () => {
     ]
 
     wrapper = mount(Score, {
-      propsData: { players }
+      props: { players }
     })
   })
 
@@ -48,7 +48,7 @@ describe('Score.vue', () => {
 
   it('handles empty player list', () => {
     const emptyWrapper = mount(Score, {
-      propsData: { players: [] }
+      props: { players: [] }
     })
 
     const playerItems = emptyWrapper.findAll('.list__tile')
@@ -58,7 +58,7 @@ describe('Score.vue', () => {
   it('displays score of 0 correctly', () => {
     const zeroScorePlayers = [{ name: 'Test', score: 0 }]
     const zeroWrapper = mount(Score, {
-      propsData: { players: zeroScorePlayers }
+      props: { players: zeroScorePlayers }
     })
 
     const action = zeroWrapper.find('.list__tile__action')
@@ -90,7 +90,7 @@ describe('Score.vue', () => {
     it('displays 0 wins for player with no wins', () => {
       const newPlayers = [{ name: 'NewPlayer', score: 100, wins: 0 }]
       const newWrapper = mount(Score, {
-        propsData: { players: newPlayers }
+        props: { players: newPlayers }
       })
 
       const subTitle = newWrapper.find('.list__tile__sub-title')
@@ -100,7 +100,7 @@ describe('Score.vue', () => {
     it('displays high win counts correctly', () => {
       const highWinPlayers = [{ name: 'Champion', score: 5000, wins: 25 }]
       const newWrapper = mount(Score, {
-        propsData: { players: highWinPlayers }
+        props: { players: highWinPlayers }
       })
 
       const subTitle = newWrapper.find('.list__tile__sub-title')

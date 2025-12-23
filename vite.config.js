@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue2'
+import vue from '@vitejs/plugin-vue'
 import path from 'path'
 
 export default defineConfig(({ mode }) => {
@@ -66,7 +66,9 @@ export default defineConfig(({ mode }) => {
     // Module resolution
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src')
+        '@': path.resolve(__dirname, './src'),
+        // Use @vue/compat build for gradual migration
+        vue: '@vue/compat'
       },
       extensions: ['.js', '.json', '.vue']
     },
@@ -74,10 +76,13 @@ export default defineConfig(({ mode }) => {
     // Plugin configuration
     plugins: [
       vue({
-        // Vue 2 template options
         template: {
           compilerOptions: {
-            whitespace: 'condense'
+            whitespace: 'condense',
+            // Enable compat mode for Vue 2 features
+            compatConfig: {
+              MODE: 2
+            }
           }
         }
       })

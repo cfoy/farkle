@@ -14,7 +14,7 @@ describe('Turn Scoring and Player Rotation Integration', () => {
       { name: 'Charlie', score: 0 }
     ]
     wrapper = mount(FarkleGame, {
-      propsData: { players }
+      props: { players }
     })
   })
 
@@ -233,7 +233,7 @@ describe('Turn Scoring and Player Rotation Integration', () => {
         { name: 'Bob', score: 0 }
       ]
       wrapper = mount(FarkleGame, {
-        propsData: { players }
+        props: { players }
       })
     })
 
@@ -272,7 +272,7 @@ describe('Turn Scoring and Player Rotation Integration', () => {
         { name: 'Dave', score: 0 }
       ]
       wrapper = mount(FarkleGame, {
-        propsData: { players }
+        props: { players }
       })
     })
 

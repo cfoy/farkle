@@ -14,7 +14,7 @@ describe('PlayerList.vue', () => {
     ]
 
     wrapper = mount(PlayerList, {
-      propsData: { players }
+      props: { players }
     })
   })
 
@@ -67,7 +67,7 @@ describe('PlayerList.vue', () => {
 
   it('handles empty player list', () => {
     const emptyWrapper = mount(PlayerList, {
-      propsData: { players: [] }
+      props: { players: [] }
     })
 
     const playerItems = emptyWrapper.findAll('.list__tile')
@@ -80,7 +80,7 @@ describe('PlayerList.vue', () => {
     ]
 
     const wrapperWithoutWins = mount(PlayerList, {
-      propsData: { players: playersWithoutWins }
+      props: { players: playersWithoutWins }
     })
 
     const title = wrapperWithoutWins.find('.list__tile__title')

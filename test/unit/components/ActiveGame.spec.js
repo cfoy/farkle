@@ -17,7 +17,7 @@ describe('ActiveGame.vue', () => {
     currentPlayer = players[0]
 
     wrapper = mount(ActiveGame, {
-      propsData: {
+      props: {
         currentPlayer,
         currentPlayerName: 'Alice',
         players
@@ -122,7 +122,7 @@ describe('ActiveGame.vue', () => {
 
   it('handles currentPlayer with no score', () => {
     const newWrapper = mount(ActiveGame, {
-      propsData: {
+      props: {
         currentPlayer: players[2],
         currentPlayerName: 'Charlie',
         players

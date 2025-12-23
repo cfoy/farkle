@@ -14,7 +14,7 @@ describe('TieBreaker.vue', () => {
     ]
 
     wrapper = mount(TieBreaker, {
-      propsData: {
+      props: {
         players,
         tiedPlayerIndices: [0, 1],
         highestScore: 10000
@@ -92,7 +92,7 @@ describe('TieBreaker.vue', () => {
 
   it('handles three-way tie', () => {
     const threeWayWrapper = mount(TieBreaker, {
-      propsData: {
+      props: {
         players: [
           { name: 'Alice', score: 10000 },
           { name: 'Bob', score: 10000 },
@@ -112,7 +112,7 @@ describe('TieBreaker.vue', () => {
 
   it('handles tie with different player indices', () => {
     const tieWrapper = mount(TieBreaker, {
-      propsData: {
+      props: {
         players: [
           { name: 'Alice', score: 8000 },
           { name: 'Bob', score: 12000 },
@@ -134,7 +134,7 @@ describe('TieBreaker.vue', () => {
 
   it('emits correct index for non-sequential tied players', async () => {
     const tieWrapper = mount(TieBreaker, {
-      propsData: {
+      props: {
         players: [
           { name: 'Alice', score: 8000 },
           { name: 'Bob', score: 12000 },

@@ -14,7 +14,7 @@ describe('FarkleGame.vue', () => {
     ]
 
     wrapper = mount(FarkleGame, {
-      propsData: { players },
+      props: { players },
       stubs: {
         'current-player-header': true,
         'active-game': true,
@@ -72,7 +72,7 @@ describe('FarkleGame.vue', () => {
 
     it('handles rotation with 2 players', async () => {
       const twoPlayerWrapper = mount(FarkleGame, {
-        propsData: {
+        props: {
           players: [
             { name: 'Player 1', score: 0 },
             { name: 'Player 2', score: 0 }

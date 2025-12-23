@@ -18,7 +18,7 @@ describe('Complete Player Turn Lifecycle Integration', () => {
       { name: 'Charlie', score: 0, onBoard: true }
     ]
     wrapper = mount(FarkleGame, {
-      propsData: { players }
+      props: { players }
     })
   })
 

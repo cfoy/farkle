@@ -1,12 +1,15 @@
-// Vue, Vue Router, and Vuetify are loaded globally via CDN in index.html
+// Vue and Vue Router are loaded globally via CDN in index.html
 /* global Vue, VueRouter */
 import App from './App'
 import Farkle from './components/Farkle'
 
-Vue.config.productionTip = false
+// Vue 3 API
+const { createApp } = Vue
+const { createRouter, createWebHashHistory } = VueRouter
 
 // Create router instance
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
@@ -16,10 +19,7 @@ const router = new VueRouter({
   ]
 })
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
-})
+// Create and mount app
+const app = createApp(App)
+app.use(router)
+app.mount('#app')

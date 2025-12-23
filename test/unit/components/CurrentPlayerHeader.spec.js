@@ -7,7 +7,7 @@ describe('CurrentPlayerHeader.vue', () => {
 
   beforeEach(() => {
     wrapper = mount(CurrentPlayerHeader, {
-      propsData: { playerName: 'Alice' }
+      props: { playerName: 'Alice' }
     })
   })
 
@@ -35,7 +35,7 @@ describe('CurrentPlayerHeader.vue', () => {
 
   it('handles empty player name', () => {
     const emptyWrapper = mount(CurrentPlayerHeader, {
-      propsData: { playerName: '' }
+      props: { playerName: '' }
     })
 
     const header = emptyWrapper.find('h5')

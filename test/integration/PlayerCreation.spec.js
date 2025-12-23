@@ -18,7 +18,7 @@ describe('Player Creation Workflow Integration', () => {
 
     // Find CreatePlayer component and add a player
     const createPlayer = wrapper.findComponent(CreatePlayer)
-    createPlayer.setData({ name: 'Alice' })
+    createPlayer.vm.name = 'Alice'
     await wrapper.vm.$nextTick()
 
     createPlayer.vm.addPlayer()
@@ -44,13 +44,13 @@ describe('Player Creation Workflow Integration', () => {
     await wrapper.vm.$nextTick()
 
     // Add second player
-    createPlayer.setData({ name: 'Bob' })
+    createPlayer.vm.name = 'Bob'
     await wrapper.vm.$nextTick()
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
 
     // Add third player
-    createPlayer.setData({ name: 'Charlie' })
+    createPlayer.vm.name = 'Charlie'
     await wrapper.vm.$nextTick()
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
@@ -79,7 +79,7 @@ describe('Player Creation Workflow Integration', () => {
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
 
-    createPlayer.setData({ name: 'Bob' })
+    createPlayer.vm.name = 'Bob'
     await wrapper.vm.$nextTick()
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
@@ -115,7 +115,7 @@ describe('Player Creation Workflow Integration', () => {
   it('clears CreatePlayer input after adding player while PlayerList updates', async () => {
     const createPlayer = wrapper.findComponent(CreatePlayer)
 
-    createPlayer.setData({ name: 'Alice' })
+    createPlayer.vm.name = 'Alice'
     await wrapper.vm.$nextTick()
 
     createPlayer.vm.addPlayer()
@@ -140,12 +140,12 @@ describe('Player Creation Workflow Integration', () => {
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
 
-    createPlayer.setData({ name: 'Bob' })
+    createPlayer.vm.name = 'Bob'
     await wrapper.vm.$nextTick()
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
 
-    createPlayer.setData({ name: 'Charlie' })
+    createPlayer.vm.name = 'Charlie'
     await wrapper.vm.$nextTick()
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()

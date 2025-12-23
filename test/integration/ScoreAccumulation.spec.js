@@ -15,7 +15,7 @@ describe('Score Accumulation Integration', () => {
       { name: 'Charlie', score: 0 }
     ]
     wrapper = mount(FarkleGame, {
-      propsData: { players }
+      props: { players }
     })
   })
 
@@ -246,7 +246,7 @@ describe('Score Accumulation Integration', () => {
         { name: 'Bob', score: 0 }
       ]
       wrapper = mount(FarkleGame, {
-        propsData: { players }
+        props: { players }
       })
 
       const scoreComponent = wrapper.findComponent(Score)
@@ -276,7 +276,7 @@ describe('Score Accumulation Integration', () => {
         { name: 'Dave', score: 0 }
       ]
       wrapper = mount(FarkleGame, {
-        propsData: { players }
+        props: { players }
       })
 
       const scoreComponent = wrapper.findComponent(Score)
