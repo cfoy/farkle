@@ -23,14 +23,7 @@ export default defineConfig(({ mode }) => {
 
       // Chunk splitting strategy (replaces CommonsChunkPlugin)
       rollupOptions: {
-        // External dependencies loaded via CDN
-        external: ['vue', 'vue-router'],
         output: {
-          // Globals for external dependencies
-          globals: {
-            vue: 'Vue',
-            'vue-router': 'VueRouter'
-          },
           manualChunks: (id) => {
             // Vendor chunk for all node_modules (except externals)
             if (id.includes('node_modules')) {
@@ -121,7 +114,7 @@ export default defineConfig(({ mode }) => {
 
     // Optimize dependencies
     optimizeDeps: {
-      exclude: ['vue', 'vue-router', 'vuetify'] // All loaded via CDN
+      exclude: ['vuetify'] // Vuetify loaded via CDN, Vue bundled from node_modules
     }
   }
 })
