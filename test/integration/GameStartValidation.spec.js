@@ -4,12 +4,17 @@ import Farkle from '@/components/Farkle.vue'
 import CreatePlayer from '@/components/CreatePlayer.vue'
 import PlayerList from '@/components/PlayerList.vue'
 import FarkleGame from '@/components/FarkleGame.vue'
+import { vuetifyStubs } from '../setup.js'
 
 describe('Game Start Validation Integration', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(Farkle)
+    wrapper = mount(Farkle, {
+      global: {
+        stubs: vuetifyStubs
+      }
+    })
   })
 
   describe('Preventing game start with insufficient players', () => {
