@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Farkle is a Vue.js 2.7 dice game application built with Vuetify 0.12.7 for the UI framework. The codebase uses modern tooling (Vite 5.4, esbuild) with modern testing infrastructure (Vitest, Playwright).
+Farkle is a Vue.js 3.5 dice game application built with Vuetify 0.12.7 for the UI framework. The codebase uses modern tooling (Vite 5.4, esbuild) with modern testing infrastructure (Vitest, Playwright). Vue 3 is configured in compat mode via @vue/compat to maintain compatibility with legacy Vuetify 0.x components.
 
 ## Essential Commands
 
@@ -60,11 +60,13 @@ App.vue (root with Vuetify layout)
 
 ### Technology Stack
 
-- **Vue 2.7.16**: Uses full build with template compiler (vue.esm.js)
+- **Vue 3.5.26**: Uses @vue/compat migration build for compatibility mode
 - **Vuetify 0.12.7**: Material design components (CDN-loaded, see index.html)
-- **Vue Router 2.8.1**: Single route to Farkle component
-- **Build**: Vite 5.4+ with esbuild transpilation
-- **Testing**: Vitest 4.x with @vue/test-utils 1.3.6, Playwright for E2E
+  - Legacy version (0.x) not compatible with Vue 3 - requires compat mode
+  - Upgrade to Vuetify 3.x planned in separate migration (blocks farkle-6an)
+- **Vue Router 4.6.4**: Single route to Farkle component
+- **Build**: Vite 5.4+ with @vitejs/plugin-vue and esbuild transpilation
+- **Testing**: Vitest 4.x with @vue/test-utils 2.4.6, Playwright for E2E
 - **Environment**: happy-dom for unit tests
 
 ### Module Resolution
@@ -77,9 +79,10 @@ The project uses `@` alias for src directory:
 
 **Unit tests** (`test/unit/components/*.spec.js`):
 - Use Vitest with happy-dom environment
-- Setup file at `test/setup.js` installs Vuetify globally
-- Component tests use `mount()` from @vue/test-utils
+- Setup file at `test/setup.js` provides Vuetify component stubs (Vuetify 0.x not Vue 3 compatible)
+- Component tests use `mount()` from @vue/test-utils v2
 - Stub child components to isolate testing
+- API changes from v1: use `props` instead of `propsData`, direct VM assignment instead of `setData()`
 
 **E2E tests** (`test/e2e/*.spec.js`):
 - Playwright with Chromium
