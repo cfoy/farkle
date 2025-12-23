@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2025-12-23
+
+### Changed
+
+#### Build System Migration (PR #5)
+- Migrated build system from Webpack 2 to Vite 5.4
+- Replaced webpack-dev-server with Vite dev server (instant HMR)
+- Replaced Webpack plugins with native Vite features
+- Build time improved from ~3s to <1s
+- Dev server startup nearly instant with Vite
+- Modern esbuild-based transpilation
+- All 302 unit tests and 82 E2E tests passing
+
+#### Cloudflare Pages Deployment (PR #8)
+- Fixed unstyled site issue on Cloudflare Pages deployment
+- Converted to CDN-based dependency loading for Vue, Vue Router, and Vuetify
+- Ensures correct script loading order for ES modules
+- Fixed protocol-relative URLs for Google Fonts (// → https://)
+- Added relative asset paths (base: './') for compatibility
+- Added _headers file for Cloudflare Pages security headers
+- Bundle size reduced from 141 KB to 13.96 KB
+- Build output optimized for static deployment
+
+### Technical Improvements
+- Vue 2.7.16, Vue Router 2.8.1, and Vuetify 0.12.7 now loaded via CDN
+- Proper global scope handling for Vuetify auto-installation
+- Eliminated vendor bundle (dependencies loaded from CDN)
+- Faster page loads with CDN caching
+- Simplified dependency management
+
+## [1.4.0] - 2025-12-22
+
 ### Changed
 
 #### Vue 2.7 Upgrade (PR #7)
@@ -133,7 +165,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/cfoy/farkle/compare/1.3.0...HEAD
+[Unreleased]: https://github.com/cfoy/farkle/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/cfoy/farkle/compare/1.4.0...1.5.0
+[1.4.0]: https://github.com/cfoy/farkle/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/cfoy/farkle/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/cfoy/farkle/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/cfoy/farkle/compare/1.0.0...1.1.0
