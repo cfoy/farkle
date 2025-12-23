@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import Score from '@/components/Score.vue'
 
 describe('Score.vue', () => {
@@ -14,6 +15,9 @@ describe('Score.vue', () => {
     ]
 
     wrapper = mount(Score, {
+      global: {
+        stubs: vuetifyStubs
+      },
       props: { players }
     })
   })

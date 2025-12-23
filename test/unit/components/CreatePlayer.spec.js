@@ -1,12 +1,17 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import CreatePlayer from '@/components/CreatePlayer.vue'
 
 describe('CreatePlayer.vue', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(CreatePlayer)
+    wrapper = mount(CreatePlayer, {
+      global: {
+        stubs: vuetifyStubs
+      }
+    })
   })
 
   it('renders the component', () => {

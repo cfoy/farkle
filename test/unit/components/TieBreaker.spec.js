@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import TieBreaker from '@/components/TieBreaker.vue'
 
 describe('TieBreaker.vue', () => {
@@ -19,7 +20,9 @@ describe('TieBreaker.vue', () => {
         tiedPlayerIndices: [0, 1],
         highestScore: 10000
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -101,7 +104,9 @@ describe('TieBreaker.vue', () => {
         tiedPlayerIndices: [0, 1, 2],
         highestScore: 10000
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -121,7 +126,9 @@ describe('TieBreaker.vue', () => {
         tiedPlayerIndices: [1, 2],
         highestScore: 12000
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -143,7 +150,9 @@ describe('TieBreaker.vue', () => {
         tiedPlayerIndices: [1, 2],
         highestScore: 12000
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })

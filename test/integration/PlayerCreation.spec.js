@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../setup'
 import Farkle from '@/components/Farkle.vue'
 import CreatePlayer from '@/components/CreatePlayer.vue'
 import PlayerList from '@/components/PlayerList.vue'
@@ -8,7 +9,11 @@ describe('Player Creation Workflow Integration', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(Farkle)
+    wrapper = mount(Farkle, {
+      global: {
+        stubs: vuetifyStubs
+      }
+    })
   })
 
   it('adds player through CreatePlayer and updates PlayerList', async () => {

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import FarkleTurn from '@/components/FarkleTurn.vue'
 
 describe('FarkleTurn.vue', () => {

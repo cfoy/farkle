@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import GameOver from '@/components/GameOver.vue'
 
 describe('GameOver.vue', () => {
@@ -18,7 +19,9 @@ describe('GameOver.vue', () => {
         players,
         winner: players[0]
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -64,7 +67,9 @@ describe('GameOver.vue', () => {
         players,
         winner: players[1]
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -80,7 +85,9 @@ describe('GameOver.vue', () => {
         players,
         winner: players[2]
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -96,7 +103,9 @@ describe('GameOver.vue', () => {
         players,
         winner: null
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -115,7 +124,9 @@ describe('GameOver.vue', () => {
         players: highScorePlayers,
         winner: highScorePlayers[0]
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -156,7 +167,9 @@ describe('GameOver.vue', () => {
           players,
           winner: players[2]
         },
-        stubs: {
+        global: {
+      stubs: {
+        ...vuetifyStubs,
           'score': true
         }
       })
@@ -175,7 +188,9 @@ describe('GameOver.vue', () => {
           players: firstTimeWinner,
           winner: firstTimeWinner[0]
         },
-        stubs: {
+        global: {
+      stubs: {
+        ...vuetifyStubs,
           'score': true
         }
       })
@@ -194,7 +209,9 @@ describe('GameOver.vue', () => {
           players: champion,
           winner: champion[0]
         },
-        stubs: {
+        global: {
+      stubs: {
+        ...vuetifyStubs,
           'score': true
         }
       })
@@ -209,7 +226,9 @@ describe('GameOver.vue', () => {
           players,
           winner: null
         },
-        stubs: {
+        global: {
+      stubs: {
+        ...vuetifyStubs,
           'score': true
         }
       })

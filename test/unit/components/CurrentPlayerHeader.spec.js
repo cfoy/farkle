@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import CurrentPlayerHeader from '@/components/CurrentPlayerHeader.vue'
 
 describe('CurrentPlayerHeader.vue', () => {
@@ -7,6 +8,9 @@ describe('CurrentPlayerHeader.vue', () => {
 
   beforeEach(() => {
     wrapper = mount(CurrentPlayerHeader, {
+      global: {
+        stubs: vuetifyStubs
+      },
       props: { playerName: 'Alice' }
     })
   })

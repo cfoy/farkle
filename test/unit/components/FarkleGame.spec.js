@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import FarkleGame from '@/components/FarkleGame.vue'
 
 describe('FarkleGame.vue', () => {
@@ -15,7 +16,9 @@ describe('FarkleGame.vue', () => {
 
     wrapper = mount(FarkleGame, {
       props: { players },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'current-player-header': true,
         'active-game': true,
         'game-over': true,
@@ -78,7 +81,9 @@ describe('FarkleGame.vue', () => {
             { name: 'Player 2', score: 0 }
           ]
         },
-        stubs: {
+        global: {
+      stubs: {
+        ...vuetifyStubs,
           'current-player-header': true,
           'active-game': true,
           'game-over': true,

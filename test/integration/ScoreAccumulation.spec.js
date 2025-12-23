@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../setup'
 import FarkleGame from '@/components/FarkleGame.vue'
 import Score from '@/components/Score.vue'
 import FarkleTurn from '@/components/FarkleTurn.vue'
@@ -15,6 +16,9 @@ describe('Score Accumulation Integration', () => {
       { name: 'Charlie', score: 0 }
     ]
     wrapper = mount(FarkleGame, {
+      global: {
+        stubs: vuetifyStubs
+      },
       props: { players }
     })
   })
