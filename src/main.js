@@ -5,9 +5,8 @@ import App from './App'
 import router from './router'
 
 // Vuetify is loaded globally via CDN in index.html
-/* global Vuetify */
 Vue.config.productionTip = false
-Vue.use(Vuetify)
+Vue.use(window.Vuetify)
 
 /* eslint-disable no-new */
 new Vue({
