@@ -7,7 +7,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://unpkg.com/vuetify@0.12.7/dist/vuetify.min.css" rel="stylesheet" type="text/css">
-    <script src="https://unpkg.com/vue@3.5/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/@vue/compat@3.5/dist/vue.global.js"></script>
+    <script>
+      // Configure Vue 3 compat mode for Vuetify 0.x compatibility
+      Vue.configureCompat({
+        MODE: 2 // Vue 2 compat mode
+      })
+    </script>
     <script src="https://unpkg.com/vue-router@4.4/dist/vue-router.global.js"></script>
     <script src="https://unpkg.com/vuetify@0.12.7/dist/vuetify.min.js"></script>
   </head>
