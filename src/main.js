@@ -1,13 +1,20 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
+// Vue, Vue Router, and Vuetify are loaded globally via CDN in index.html
+/* global Vue, VueRouter */
 import App from './App'
-import router from './router'
+import Farkle from './components/Farkle'
 
-// Vuetify is loaded globally via CDN in index.html
-/* global Vuetify */
 Vue.config.productionTip = false
-Vue.use(Vuetify)
+
+// Create router instance
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/',
+      name: 'Farkle',
+      component: Farkle
+    }
+  ]
+})
 
 /* eslint-disable no-new */
 new Vue({
