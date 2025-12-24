@@ -14,22 +14,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded Vue Router from 2.8.1 to 4.6.4
 - Upgraded @vue/test-utils from 1.3.6 to 2.4.6
 - Migrated to Vue 3 API: `createApp()` instead of `new Vue()`
-- Using Vue 3 compat mode (MODE: 2) for backward compatibility
-- All core functionality working (82/162 tests passing)
-
-### Known Issues
-
-#### Vuetify 0.x Incompatibility with Vue 3
-- **Current state**: Application is functional but unstyled
-- Vuetify 0.12.7 is incompatible with Vue 3 (designed for Vue 2 internals)
-- Styling will be restored in next release with Vuetify 3.x upgrade
-- See issue farkle-6an for Vuetify 3 migration tracking
+- Using Vue 3 compat mode (MODE: 2) for full backward compatibility
+- **Vuetify 0.12.7 continues to work correctly** when loaded from CDN with compat mode
+- All functionality working including styling (82/162 tests passing)
+- Production deployment: https://fc08f2f1.farkle-dyc.pages.dev/#/
 
 ### Technical Details
 - Using @vue/compat migration build for Vue 2 compatibility layer
-- Vue Router 4 requires ESM-only named imports (no default export)
+- Vue Router 4 requires ESM-only named imports (`createRouter`, `createWebHashHistory`)
 - Test infrastructure updated for @vue/test-utils v2 API changes
 - Bundle size: 216KB vendor chunk (Vue 3 bundled from node_modules)
+- Vuetify 0.x from CDN installs successfully on Vue 3 app in compat mode
 
 ## [1.5.0] - 2025-12-23
 
