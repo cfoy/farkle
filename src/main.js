@@ -45,10 +45,8 @@ async function initApp() {
     ]
   })
 
-  // Install router plugin (Vue 2 style)
-  Vue.use(router)
-
   // Create Vue instance (Vue 2 constructor style via compat)
+  // Router is passed directly - no Vue.use() needed with new Vue()
   new Vue({
     el: '#app',
     router,
