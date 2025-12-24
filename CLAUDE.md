@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Farkle is a Vue.js 3.5 dice game application built with Vuetify 0.12.7 for the UI framework. The codebase uses modern tooling (Vite 5.4, esbuild) with modern testing infrastructure (Vitest, Playwright). Vue 3 is configured in compat mode via @vue/compat to maintain compatibility with legacy Vuetify 0.x components.
+Farkle is a Vue.js 3.5 dice game application. The codebase uses modern tooling (Vite 5.4, esbuild) with modern testing infrastructure (Vitest, Playwright). Vue 3 is configured in compat mode via @vue/compat.
+
+**IMPORTANT**: The application is currently **functional but unstyled**. Vuetify 0.12.7 (loaded from CDN) is incompatible with Vue 3. Styling will be restored after upgrading to Vuetify 3.x (see issue farkle-6an).
 
 ## Essential Commands
 
@@ -60,11 +62,12 @@ App.vue (root with Vuetify layout)
 
 ### Technology Stack
 
-- **Vue 3.5.26**: Uses @vue/compat migration build for compatibility mode
-- **Vuetify 0.12.7**: Material design components (CDN-loaded, see index.html)
-  - Legacy version (0.x) not compatible with Vue 3 - requires compat mode
-  - Upgrade to Vuetify 3.x planned in separate migration (blocks farkle-6an)
-- **Vue Router 4.6.4**: Single route to Farkle component
+- **Vue 3.5.26**: Uses @vue/compat migration build with MODE: 2 (full Vue 2 compatibility)
+- **Vuetify 0.12.7**: Legacy UI framework (CDN-loaded from index.html)
+  - **NOT FUNCTIONAL**: Incompatible with Vue 3, even in compat mode
+  - App renders but is completely unstyled
+  - Will be replaced with Vuetify 3.x in next migration (issue farkle-6an)
+- **Vue Router 4.6.4**: Uses ESM-only named imports (`createRouter`, `createWebHashHistory`)
 - **Build**: Vite 5.4+ with @vitejs/plugin-vue and esbuild transpilation
 - **Testing**: Vitest 4.x with @vue/test-utils 2.4.6, Playwright for E2E
 - **Environment**: happy-dom for unit tests
