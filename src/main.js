@@ -1,24 +1,30 @@
-// Vue and Vue Router bundled from node_modules (@vue/compat)
-import * as Vue from 'vue'
-import { createApp, configureCompat } from 'vue'
+// Vue bundled from node_modules (@vue/compat), Vue Router 4 with named imports
+import Vue from '@vue/compat'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import App from './App'
 import Farkle from './components/Farkle'
 
-// Expose Vue globally for Vuetify 0.x CDN compatibility
-window.Vue = Vue
-
-// Configure Vue 3 compat mode for Vuetify 0.x
-configureCompat({
+// Configure Vue 3 compat mode for full Vue 2 compatibility
+Vue.configureCompat({
   MODE: 2 // Full Vue 2 compatibility mode
 })
+
+// Expose Vue globally for Vuetify 0.x CDN
+window.Vue = Vue
 
 // Load and install Vuetify dynamically
 function loadVuetify() {
   return new Promise((resolve) => {
     const script = document.createElement('script')
     script.src = 'https://unpkg.com/vuetify@0.12.7/dist/vuetify.min.js'
-    script.onload = () => resolve()
+    script.onload = () => {
+      // Vuetify auto-installs on window.Vue when loaded
+      setTimeout(resolve, 100)
+    }
+    script.onerror = () => {
+      console.error('Failed to load Vuetify')
+      resolve()
+    }
     document.head.appendChild(script)
   })
 }
@@ -27,7 +33,7 @@ function loadVuetify() {
 async function initApp() {
   await loadVuetify()
 
-  // Create router instance
+  // Create router instance with Vue Router 4 API
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -39,10 +45,15 @@ async function initApp() {
     ]
   })
 
-  // Create app
-  const app = createApp(App)
-  app.use(router)
-  app.mount('#app')
+  // Install router plugin (Vue 2 style)
+  Vue.use(router)
+
+  // Create Vue instance (Vue 2 constructor style via compat)
+  new Vue({
+    el: '#app',
+    router,
+    render: h => h(App)
+  })
 }
 
 // Start the app
