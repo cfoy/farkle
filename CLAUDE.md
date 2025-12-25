@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Farkle is a Vue.js 3.5 dice game application. The codebase uses modern tooling (Vite 5.4, esbuild) with modern testing infrastructure (Vitest, Playwright). Vue 3 is configured in compat mode via @vue/compat.
 
-**IMPORTANT**: The application is currently **functional but unstyled**. Vuetify 0.12.7 (loaded from CDN) is incompatible with Vue 3. Styling will be restored after upgrading to Vuetify 3.x (see issue farkle-6an).
+The application uses Vuetify 3.x for Material Design components and styling.
 
 ## Essential Commands
 
@@ -63,10 +63,10 @@ App.vue (root with Vuetify layout)
 ### Technology Stack
 
 - **Vue 3.5.26**: Uses @vue/compat migration build with MODE: 2 (full Vue 2 compatibility)
-- **Vuetify 0.12.7**: Legacy UI framework (CDN-loaded from index.html)
-  - **NOT FUNCTIONAL**: Incompatible with Vue 3, even in compat mode
-  - App renders but is completely unstyled
-  - Will be replaced with Vuetify 3.x in next migration (issue farkle-6an)
+- **Vuetify 3.11.x**: Material Design component framework
+  - Loaded as npm package with tree-shaking for optimal bundle size
+  - Icons: MDI (Material Design Icons) via @mdi/font
+  - Plugin configured in main.js with createVuetify()
 - **Vue Router 4.6.4**: Uses ESM-only named imports (`createRouter`, `createWebHashHistory`)
 - **Build**: Vite 5.4+ with @vitejs/plugin-vue and esbuild transpilation
 - **Testing**: Vitest 4.x with @vue/test-utils 2.4.6, Playwright for E2E
@@ -82,9 +82,10 @@ The project uses `@` alias for src directory:
 
 **Unit tests** (`test/unit/components/*.spec.js`):
 - Use Vitest with happy-dom environment
-- Setup file at `test/setup.js` provides Vuetify component stubs (Vuetify 0.x not Vue 3 compatible)
+- Setup file at `test/setup.js` provides Vuetify 3 component stubs for isolated testing
 - Component tests use `mount()` from @vue/test-utils v2
 - Stub child components to isolate testing
+- Vuetify stubs include v-row/v-col, v-btn, v-list-item (with slots), v-chip, v-alert, etc.
 - API changes from v1: use `props` instead of `propsData`, direct VM assignment instead of `setData()`
 
 **E2E tests** (`test/e2e/*.spec.js`):
@@ -100,14 +101,34 @@ npx playwright test test/e2e/game-flow.spec.js
 
 ## Important Constraints
 
-### Vuetify 0.x Compatibility
+### Vuetify 3 Usage
 
-This project uses **Vuetify 0.12.7** (not modern 2.x or 3.x). Key differences:
+This project uses **Vuetify 3.11.x** with the following conventions:
 
-- Uses `v-btn primary` instead of `color="primary"`
-- Uses `v-btn v-on:click.native` instead of `@click`
-- Component API differs significantly from modern Vuetify
-- CDN is pinned in index.html - do not upgrade without testing
+**Grid System:**
+- Use `<v-row>` and `<v-col>` for layout
+- Breakpoint props: `cols`, `sm`, `md`, `lg`, `xl` (e.g., `<v-col cols="12" md="6">`)
+
+**Buttons:**
+- Use `variant` prop: `"text"`, `"flat"`, `"elevated"`, `"outlined"`, `"tonal"` (e.g., `<v-btn variant="text">`)
+- Use `color` prop for theme colors: `"primary"`, `"error"`, `"success"`, `"warning"`
+- Use `size` prop: `"small"`, `"default"`, `"large"`, `"x-large"`
+
+**Event Handling:**
+- No `.native` modifier needed on Vuetify components (Vue 3 removed it)
+- Use `@click` instead of `v-on:click.native`
+
+**Lists:**
+- Use `<v-list-item>` with `<template v-slot:prepend>` and `<template v-slot:append>` for icons/actions
+- `v-list-item-title` and `v-list-item-subtitle` are direct children of v-list-item
+- `v-list-subheader` instead of `v-subheader`
+
+**Alerts:**
+- Use `type` prop: `"success"`, `"info"`, `"warning"`, `"error"` (e.g., `<v-alert type="warning">`)
+
+**Chips:**
+- Use `size` prop: `"small"`, `"default"`, `"large"`
+- Use `color` prop for theme colors (e.g., `<v-chip size="small" color="success">`)
 
 ### Vite Configuration
 

@@ -14,42 +14,55 @@ export const vuetifyStubs = {
   // Transitions
   transition: false,
   'transition-group': false,
-  // Vuetify components used in the app
+
+  // Layout
   'v-app': { template: '<div class="v-app"><slot /></div>' },
-  'v-navigation-drawer': { template: '<div class="v-navigation-drawer"><slot /></div>' },
-  'v-toolbar': { template: '<div class="v-toolbar"><slot /></div>' },
-  'v-toolbar-title': { template: '<div class="v-toolbar-title"><slot /></div>' },
+  'v-app-bar': { template: '<div class="v-app-bar"><slot /></div>' },
+  'v-app-bar-title': { template: '<div class="v-app-bar-title"><slot /></div>' },
+  'v-main': { template: '<main class="v-main"><slot /></main>' },
   'v-container': { template: '<div class="v-container"><slot /></div>' },
-  'v-footer': { template: '<div class="v-footer"><slot /></div>' },
+  'v-row': { template: '<div class="v-row"><slot /></div>' },
+  'v-col': { template: '<div class="v-col"><slot /></div>', props: ['cols', 'sm', 'md', 'lg', 'xl'] },
+
+  // Cards
   'v-card': { template: '<div class="v-card"><slot /></div>' },
   'v-card-title': { template: '<div class="v-card-title"><slot /></div>' },
   'v-card-text': { template: '<div class="v-card-text"><slot /></div>' },
+
+  // Buttons
   'v-btn': {
-    template: '<button class="v-btn btn" @click="$emit(\'click\')"><slot /></button>',
-    props: ['color', 'flat', 'primary', 'light', 'large', 'block', 'error'],
+    template: '<button class="v-btn" @click="$emit(\'click\')"><slot /></button>',
+    props: ['color', 'variant', 'size', 'block'],
     emits: ['click']
   },
+
+  // Forms
   'v-text-field': {
     template: '<input class="v-text-field" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />',
     props: ['label', 'modelValue'],
     emits: ['update:modelValue']
   },
-  'v-layout': { template: '<div class="v-layout"><slot /></div>', props: ['row', 'wrap'] },
-  'v-flex': { template: '<div class="v-flex"><slot /></div>', props: ['xs12', 'xs8', 'xs4', 'sm6', 'sm12', 'md4', 'md6', 'lg6'] },
+
+  // Lists (Vuetify 3 slot-based structure with legacy class names for tests)
   'v-list': { template: '<div class="v-list"><slot /></div>' },
-  'v-subheader': { template: '<div class="v-subheader"><slot /></div>' },
-  'v-list-tile': { template: '<div class="v-list-tile list__tile"><slot /></div>', props: ['avatar'] },
-  'v-list-tile-avatar': { template: '<div class="v-list-tile-avatar"><slot /></div>' },
-  'v-list-tile-content': { template: '<div class="v-list-tile-content list__tile__content"><slot /></div>' },
-  'v-list-tile-title': { template: '<div class="v-list-tile-title list__tile__title"><slot /></div>' },
-  'v-list-tile-sub-title': { template: '<div class="v-list-tile-sub-title"><slot /></div>' },
-  'v-list-tile-action': { template: '<div class="v-list-tile-action list__tile__action"><slot /></div>' },
+  'v-list-subheader': { template: '<div class="v-list-subheader subheader"><slot /></div>' },
+  'v-list-item': { template: '<div class="v-list-item list__tile"><slot name="prepend" /><slot /><slot name="append" /></div>' },
+  'v-list-item-title': { template: '<div class="v-list-item-title list__tile__title"><slot /></div>' },
+  'v-list-item-subtitle': { template: '<div class="v-list-item-subtitle list__tile__sub-title"><slot /></div>' },
+
+  // Misc
   'v-icon': {
     template: '<span class="v-icon"><slot /></span>',
     props: ['onClick']
   },
-  'v-chip': { template: '<span class="v-chip"><slot /></span>', props: ['small', 'success', 'warning'] },
-  'v-alert': { template: '<div class="v-alert"><slot /></div>', props: ['warning', 'success'] }
+  'v-chip': {
+    template: '<span class="v-chip"><slot /></span>',
+    props: ['size', 'color']
+  },
+  'v-alert': {
+    template: '<div class="v-alert"><slot /></div>',
+    props: ['type', 'color']
+  }
 }
 
 // Apply stubs globally only for transitions (never stub these)

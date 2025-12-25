@@ -1,15 +1,13 @@
 <template>
   <v-app>
-    <v-navigation-drawer></v-navigation-drawer>
-    <v-toolbar light>
-       <v-toolbar-title>Farkle</v-toolbar-title>
-    </v-toolbar>
-    <main>
-    <v-container fluid>
-      <router-view></router-view>
-    </v-container>
-    </main>
-    <v-footer></v-footer>
+    <v-app-bar color="primary">
+      <v-app-bar-title>Farkle</v-app-bar-title>
+    </v-app-bar>
+    <v-main>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
   </v-app>
 </template>
 

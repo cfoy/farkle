@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-layout row wrap>
-      <v-flex xs12>
+    <v-row>
+      <v-col cols="12">
         <v-card>
           <v-card-title>
             <h3>Game Over!</h3>
@@ -12,8 +12,8 @@
             <score v-bind:players="players"></score>
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </div>
 </template>
 

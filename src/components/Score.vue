@@ -1,22 +1,20 @@
 <template>
-  <v-list subheader>
-    <v-subheader>Players</v-subheader>
-    <v-list-tile avatar v-for="(player, index) in players" v-bind:key="index">
-      <v-list-tile-avatar>
-        <v-icon>face</v-icon>
-      </v-list-tile-avatar>
-      <v-list-tile-content>
-        <v-list-tile-title>
-          {{ player.name }}
-          <v-chip small v-if="player.onBoard" success>On Board</v-chip>
-          <v-chip small v-else warning>Not On Board</v-chip>
-        </v-list-tile-title>
-        <v-list-tile-sub-title>Wins: {{ player.wins }}</v-list-tile-sub-title>
-      </v-list-tile-content>
-      <v-list-tile-action>
+  <v-list>
+    <v-list-subheader>Players</v-list-subheader>
+    <v-list-item v-for="(player, index) in players" v-bind:key="index">
+      <template v-slot:prepend>
+        <v-icon>mdi-face</v-icon>
+      </template>
+      <v-list-item-title>
+        {{ player.name }}
+        <v-chip size="small" v-if="player.onBoard" color="success">On Board</v-chip>
+        <v-chip size="small" v-else color="warning">Not On Board</v-chip>
+      </v-list-item-title>
+      <v-list-item-subtitle>Wins: {{ player.wins }}</v-list-item-subtitle>
+      <template v-slot:append>
         {{ player.score }}
-      </v-list-tile-action>
-    </v-list-tile>
+      </template>
+    </v-list-item>
   </v-list>
 </template>
 <script>
