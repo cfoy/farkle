@@ -1,5 +1,5 @@
-// Vue 3 with compat mode, Vue Router 4 with named imports
-import { createApp, configureCompat } from '@vue/compat'
+// Vue 3 with Vue Router 4
+import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import App from './App'
 import Farkle from './components/Farkle'
@@ -10,11 +10,6 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
-
-// Configure Vue 3 compat mode for full Vue 2 compatibility
-configureCompat({
-  MODE: 2
-})
 
 // Create Vuetify instance
 const vuetify = createVuetify({

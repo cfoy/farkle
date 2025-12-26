@@ -59,9 +59,7 @@ export default defineConfig(({ mode }) => {
     // Module resolution
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src'),
-        // Use @vue/compat build for gradual migration
-        vue: '@vue/compat'
+        '@': path.resolve(__dirname, './src')
       },
       extensions: ['.js', '.json', '.vue']
     },
@@ -71,11 +69,7 @@ export default defineConfig(({ mode }) => {
       vue({
         template: {
           compilerOptions: {
-            whitespace: 'condense',
-            // Enable compat mode for Vue 2 features
-            compatConfig: {
-              MODE: 2
-            }
+            whitespace: 'condense'
           }
         }
       })
