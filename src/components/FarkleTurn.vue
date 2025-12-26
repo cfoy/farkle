@@ -2,9 +2,6 @@
   <v-row>
     <v-col cols="12">
       <h5>Turn Total: {{ points }} points</h5>
-      <v-alert type="success" v-if="!currentPlayer.onBoard && points >= 500">
-        <strong>Ready to get on board!</strong> You have {{ points }} points - click Done to bank them!
-      </v-alert>
     </v-col>
     <v-col cols="12">
       <v-btn variant="text" @click="one">One</v-btn>
