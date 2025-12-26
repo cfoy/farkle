@@ -15,7 +15,7 @@
 export default {
   data () {
     return {
-      name
+      name: ''
     }
   },
   name: 'create-player',
