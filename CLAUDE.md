@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Farkle is a Vue.js 3.5 dice game application. The codebase uses modern tooling (Vite 5.4, esbuild) with modern testing infrastructure (Vitest, Playwright). Vue 3 is configured in compat mode via @vue/compat.
+Farkle is a Vue.js 3.5 dice game application. The codebase uses modern tooling (Vite 5.4, esbuild) with modern testing infrastructure (Vitest, Playwright). The application is fully migrated to Vue 3 (no compat mode).
 
-The application uses Vuetify 3.x for Material Design components and styling.
+The application uses Vuetify 3.11.x for Material Design components and styling.
 
 ## Essential Commands
 
@@ -62,11 +62,12 @@ App.vue (root with Vuetify layout)
 
 ### Technology Stack
 
-- **Vue 3.5.26**: Uses @vue/compat migration build with MODE: 2 (full Vue 2 compatibility)
+- **Vue 3.5.26**: Pure Vue 3 (no compat mode) - fully migrated from Vue 2
 - **Vuetify 3.11.x**: Material Design component framework
   - Loaded as npm package with tree-shaking for optimal bundle size
   - Icons: MDI (Material Design Icons) via @mdi/font
   - Plugin configured in main.js with createVuetify()
+  - **Note**: Vuetify 3 is NOT compatible with Vue 3 compat mode - requires pure Vue 3
 - **Vue Router 4.6.4**: Uses ESM-only named imports (`createRouter`, `createWebHashHistory`)
 - **Build**: Vite 5.4+ with @vitejs/plugin-vue and esbuild transpilation
 - **Testing**: Vitest 4.x with @vue/test-utils 2.4.6, Playwright for E2E
