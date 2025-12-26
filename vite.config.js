@@ -114,7 +114,7 @@ export default defineConfig(({ mode }) => {
 
     // Optimize dependencies
     optimizeDeps: {
-      exclude: ['vuetify'] // Vuetify loaded via CDN, Vue bundled from node_modules
+      exclude: ['vuetify'] // Vuetify loaded via npm, exclude from pre-bundling
     }
   }
 })
