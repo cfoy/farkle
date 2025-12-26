@@ -2,9 +2,6 @@
   <v-row>
     <v-col cols="12">
       <h5>Turn Total: {{ points }} points</h5>
-      <v-alert type="warning" v-if="!currentPlayer.onBoard && points > 0 && points < 500">
-        <strong>Not on board yet!</strong> You need 500 points in this turn to start scoring.
-      </v-alert>
       <v-alert type="success" v-if="!currentPlayer.onBoard && points >= 500">
         <strong>Ready to get on board!</strong> You have {{ points }} points - click Done to bank them!
       </v-alert>
