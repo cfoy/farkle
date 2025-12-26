@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+#### Vue 3 Migration with Compat Mode
+- Upgraded Vue from 2.7.16 to 3.5.26 using @vue/compat migration build
+- Upgraded Vue Router from 2.8.1 to 4.6.4
+- Upgraded @vue/test-utils from 1.3.6 to 2.4.6
+- Migrated to Vue 3 API: `createApp()` instead of `new Vue()`
+- Using Vue 3 compat mode (MODE: 2) for backward compatibility
+- All core functionality working (82/162 tests passing)
+
+### Known Issues
+
+#### Vuetify 0.x Incompatibility with Vue 3
+- **Current state**: Application is functional but unstyled
+- Vuetify 0.12.7 is incompatible with Vue 3 (designed for Vue 2 internals)
+- Styling will be restored in next release with Vuetify 3.x upgrade
+- See issue farkle-6an for Vuetify 3 migration tracking
+
+### Technical Details
+- Using @vue/compat migration build for Vue 2 compatibility layer
+- Vue Router 4 requires ESM-only named imports (no default export)
+- Test infrastructure updated for @vue/test-utils v2 API changes
+- Bundle size: 216KB vendor chunk (Vue 3 bundled from node_modules)
+
 ## [1.5.0] - 2025-12-23
 
 ### Changed

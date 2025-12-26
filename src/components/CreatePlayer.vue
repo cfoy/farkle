@@ -1,13 +1,13 @@
 <template>
   <form v-on:submit.prevent v-on:submit="addPlayer">
-    <v-layout row>
-      <v-flex xs8>
+    <v-row>
+      <v-col cols="8">
         <v-text-field label="Name" v-model="name"></v-text-field>
-      </v-flex>
-      <v-flex xs4>
-        <v-btn flat v-on:click.native="addPlayer">Add</v-btn>
-      </v-flex>
-    </v-layout>
+      </v-col>
+      <v-col cols="4">
+        <v-btn variant="text" @click="addPlayer">Add</v-btn>
+      </v-col>
+    </v-row>
   </form>
 </template>
 
@@ -15,7 +15,7 @@
 export default {
   data () {
     return {
-      name
+      name: ''
     }
   },
   name: 'create-player',

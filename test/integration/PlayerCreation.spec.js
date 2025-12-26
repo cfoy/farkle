@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../setup'
 import Farkle from '@/components/Farkle.vue'
 import CreatePlayer from '@/components/CreatePlayer.vue'
 import PlayerList from '@/components/PlayerList.vue'
@@ -8,7 +9,11 @@ describe('Player Creation Workflow Integration', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(Farkle)
+    wrapper = mount(Farkle, {
+      global: {
+        stubs: vuetifyStubs
+      }
+    })
   })
 
   it('adds player through CreatePlayer and updates PlayerList', async () => {
@@ -18,7 +23,7 @@ describe('Player Creation Workflow Integration', () => {
 
     // Find CreatePlayer component and add a player
     const createPlayer = wrapper.findComponent(CreatePlayer)
-    createPlayer.setData({ name: 'Alice' })
+    createPlayer.vm.name = 'Alice'
     await wrapper.vm.$nextTick()
 
     createPlayer.vm.addPlayer()
@@ -44,13 +49,13 @@ describe('Player Creation Workflow Integration', () => {
     await wrapper.vm.$nextTick()
 
     // Add second player
-    createPlayer.setData({ name: 'Bob' })
+    createPlayer.vm.name = 'Bob'
     await wrapper.vm.$nextTick()
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
 
     // Add third player
-    createPlayer.setData({ name: 'Charlie' })
+    createPlayer.vm.name = 'Charlie'
     await wrapper.vm.$nextTick()
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
@@ -79,7 +84,7 @@ describe('Player Creation Workflow Integration', () => {
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
 
-    createPlayer.setData({ name: 'Bob' })
+    createPlayer.vm.name = 'Bob'
     await wrapper.vm.$nextTick()
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
@@ -115,7 +120,7 @@ describe('Player Creation Workflow Integration', () => {
   it('clears CreatePlayer input after adding player while PlayerList updates', async () => {
     const createPlayer = wrapper.findComponent(CreatePlayer)
 
-    createPlayer.setData({ name: 'Alice' })
+    createPlayer.vm.name = 'Alice'
     await wrapper.vm.$nextTick()
 
     createPlayer.vm.addPlayer()
@@ -140,12 +145,12 @@ describe('Player Creation Workflow Integration', () => {
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
 
-    createPlayer.setData({ name: 'Bob' })
+    createPlayer.vm.name = 'Bob'
     await wrapper.vm.$nextTick()
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()
 
-    createPlayer.setData({ name: 'Charlie' })
+    createPlayer.vm.name = 'Charlie'
     await wrapper.vm.$nextTick()
     createPlayer.vm.addPlayer()
     await wrapper.vm.$nextTick()

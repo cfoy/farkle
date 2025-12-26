@@ -1,12 +1,17 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import CreatePlayer from '@/components/CreatePlayer.vue'
 
 describe('CreatePlayer.vue', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(CreatePlayer)
+    wrapper = mount(CreatePlayer, {
+      global: {
+        stubs: vuetifyStubs
+      }
+    })
   })
 
   it('renders the component', () => {
@@ -20,7 +25,7 @@ describe('CreatePlayer.vue', () => {
   })
 
   it('emits create-player event with player data when name is provided', async () => {
-    wrapper.setData({ name: 'Alice' })
+    wrapper.vm.name = 'Alice'
     await wrapper.vm.$nextTick()
 
     wrapper.vm.addPlayer()
@@ -36,7 +41,7 @@ describe('CreatePlayer.vue', () => {
   })
 
   it('clears the name field after adding a player', async () => {
-    wrapper.setData({ name: 'Bob' })
+    wrapper.vm.name = 'Bob'
     await wrapper.vm.$nextTick()
 
     wrapper.vm.addPlayer()
@@ -46,7 +51,7 @@ describe('CreatePlayer.vue', () => {
   })
 
   it('does not emit create-player event when name is empty', async () => {
-    wrapper.setData({ name: '' })
+    wrapper.vm.name = ''
     await wrapper.vm.$nextTick()
 
     wrapper.vm.addPlayer()
@@ -56,7 +61,7 @@ describe('CreatePlayer.vue', () => {
   })
 
   it('does not emit create-player event when name is only whitespace', async () => {
-    wrapper.setData({ name: '   ' })
+    wrapper.vm.name = '   '
     await wrapper.vm.$nextTick()
 
     wrapper.vm.addPlayer()
@@ -66,7 +71,7 @@ describe('CreatePlayer.vue', () => {
   })
 
   it('handles form submit event', async () => {
-    wrapper.setData({ name: 'Charlie' })
+    wrapper.vm.name = 'Charlie'
     await wrapper.vm.$nextTick()
 
     const form = wrapper.find('form')
@@ -83,7 +88,7 @@ describe('CreatePlayer.vue', () => {
     })
 
     it('initializes new player with 0 wins when no localStorage data exists', async () => {
-      wrapper.setData({ name: 'NewPlayer' })
+      wrapper.vm.name = 'NewPlayer'
       await wrapper.vm.$nextTick()
 
       wrapper.vm.addPlayer()
@@ -100,7 +105,7 @@ describe('CreatePlayer.vue', () => {
         'Bob': 3
       }))
 
-      wrapper.setData({ name: 'Alice' })
+      wrapper.vm.name = 'Alice'
       await wrapper.vm.$nextTick()
 
       wrapper.vm.addPlayer()
@@ -116,7 +121,7 @@ describe('CreatePlayer.vue', () => {
         'Bob': 3
       }))
 
-      wrapper.setData({ name: 'Charlie' })
+      wrapper.vm.name = 'Charlie'
       await wrapper.vm.$nextTick()
 
       wrapper.vm.addPlayer()
@@ -129,7 +134,7 @@ describe('CreatePlayer.vue', () => {
     it('handles corrupted localStorage data gracefully', async () => {
       localStorage.setItem('farkle-wins', 'invalid json')
 
-      wrapper.setData({ name: 'Alice' })
+      wrapper.vm.name = 'Alice'
       await wrapper.vm.$nextTick()
 
       wrapper.vm.addPlayer()
@@ -147,7 +152,7 @@ describe('CreatePlayer.vue', () => {
       }))
 
       // Add Alice
-      wrapper.setData({ name: 'Alice' })
+      wrapper.vm.name = 'Alice'
       await wrapper.vm.$nextTick()
       wrapper.vm.addPlayer()
       await wrapper.vm.$nextTick()
@@ -155,7 +160,7 @@ describe('CreatePlayer.vue', () => {
       expect(wrapper.emitted('create-player')[0][0].wins).toBe(10)
 
       // Add Bob
-      wrapper.setData({ name: 'Bob' })
+      wrapper.vm.name = 'Bob'
       await wrapper.vm.$nextTick()
       wrapper.vm.addPlayer()
       await wrapper.vm.$nextTick()

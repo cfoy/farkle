@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import CurrentPlayerHeader from '@/components/CurrentPlayerHeader.vue'
 
 describe('CurrentPlayerHeader.vue', () => {
@@ -7,7 +8,10 @@ describe('CurrentPlayerHeader.vue', () => {
 
   beforeEach(() => {
     wrapper = mount(CurrentPlayerHeader, {
-      propsData: { playerName: 'Alice' }
+      global: {
+        stubs: vuetifyStubs
+      },
+      props: { playerName: 'Alice' }
     })
   })
 
@@ -35,7 +39,7 @@ describe('CurrentPlayerHeader.vue', () => {
 
   it('handles empty player name', () => {
     const emptyWrapper = mount(CurrentPlayerHeader, {
-      propsData: { playerName: '' }
+      props: { playerName: '' }
     })
 
     const header = emptyWrapper.find('h5')

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import TieBreaker from '@/components/TieBreaker.vue'
 
 describe('TieBreaker.vue', () => {
@@ -14,12 +15,14 @@ describe('TieBreaker.vue', () => {
     ]
 
     wrapper = mount(TieBreaker, {
-      propsData: {
+      props: {
         players,
         tiedPlayerIndices: [0, 1],
         highestScore: 10000
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -92,7 +95,7 @@ describe('TieBreaker.vue', () => {
 
   it('handles three-way tie', () => {
     const threeWayWrapper = mount(TieBreaker, {
-      propsData: {
+      props: {
         players: [
           { name: 'Alice', score: 10000 },
           { name: 'Bob', score: 10000 },
@@ -101,7 +104,9 @@ describe('TieBreaker.vue', () => {
         tiedPlayerIndices: [0, 1, 2],
         highestScore: 10000
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -112,7 +117,7 @@ describe('TieBreaker.vue', () => {
 
   it('handles tie with different player indices', () => {
     const tieWrapper = mount(TieBreaker, {
-      propsData: {
+      props: {
         players: [
           { name: 'Alice', score: 8000 },
           { name: 'Bob', score: 12000 },
@@ -121,7 +126,9 @@ describe('TieBreaker.vue', () => {
         tiedPlayerIndices: [1, 2],
         highestScore: 12000
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -134,7 +141,7 @@ describe('TieBreaker.vue', () => {
 
   it('emits correct index for non-sequential tied players', async () => {
     const tieWrapper = mount(TieBreaker, {
-      propsData: {
+      props: {
         players: [
           { name: 'Alice', score: 8000 },
           { name: 'Bob', score: 12000 },
@@ -143,7 +150,9 @@ describe('TieBreaker.vue', () => {
         tiedPlayerIndices: [1, 2],
         highestScore: 12000
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })

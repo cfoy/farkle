@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-layout row wrap>
-      <v-flex xs12>
+    <v-row>
+      <v-col cols="12">
         <v-card>
           <v-card-title>
             <h3>It's a Tie!</h3>
@@ -13,24 +13,23 @@
             <p>If there's still a tie, re-roll until there's a winner.</p>
             <p>Click the button for the player who rolled the highest:</p>
 
-            <v-layout row wrap>
-              <v-flex xs12 sm6 md4 v-for="index in tiedPlayerIndices" v-bind:key="index">
+            <v-row>
+              <v-col cols="12" sm="6" md="4" v-for="index in tiedPlayerIndices" v-bind:key="index">
                 <v-btn
-                  primary
-                  light
-                  large
+                  color="primary"
+                  size="large"
                   block
-                  v-on:click.native="selectWinner(index)">
+                  @click="selectWinner(index)">
                   {{ players[index].name }} - {{ players[index].score }} points
                 </v-btn>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
             <score v-bind:players="players"></score>
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </div>
 </template>
 

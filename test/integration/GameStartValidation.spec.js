@@ -4,12 +4,17 @@ import Farkle from '@/components/Farkle.vue'
 import CreatePlayer from '@/components/CreatePlayer.vue'
 import PlayerList from '@/components/PlayerList.vue'
 import FarkleGame from '@/components/FarkleGame.vue'
+import { vuetifyStubs } from '../setup.js'
 
 describe('Game Start Validation Integration', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(Farkle)
+    wrapper = mount(Farkle, {
+      global: {
+        stubs: vuetifyStubs
+      }
+    })
   })
 
   describe('Preventing game start with insufficient players', () => {
@@ -34,7 +39,7 @@ describe('Game Start Validation Integration', () => {
     it('does not start game with 1 player when Start Game clicked', async () => {
       // Add one player
       const createPlayer = wrapper.findComponent(CreatePlayer)
-      createPlayer.setData({ name: 'Alice' })
+      createPlayer.vm.name = 'Alice'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
@@ -59,12 +64,12 @@ describe('Game Start Validation Integration', () => {
       // Add two players
       const createPlayer = wrapper.findComponent(CreatePlayer)
 
-      createPlayer.setData({ name: 'Alice' })
+      createPlayer.vm.name = 'Alice'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
 
-      createPlayer.setData({ name: 'Bob' })
+      createPlayer.vm.name = 'Bob'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
@@ -85,17 +90,17 @@ describe('Game Start Validation Integration', () => {
       // Add three players
       const createPlayer = wrapper.findComponent(CreatePlayer)
 
-      createPlayer.setData({ name: 'Alice' })
+      createPlayer.vm.name = 'Alice'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
 
-      createPlayer.setData({ name: 'Bob' })
+      createPlayer.vm.name = 'Bob'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
 
-      createPlayer.setData({ name: 'Charlie' })
+      createPlayer.vm.name = 'Charlie'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
@@ -118,7 +123,7 @@ describe('Game Start Validation Integration', () => {
       const playerNames = ['Alice', 'Bob', 'Charlie', 'Dave']
 
       for (const name of playerNames) {
-        createPlayer.setData({ name })
+        createPlayer.vm.name = name
         await wrapper.vm.$nextTick()
         createPlayer.vm.addPlayer()
         await wrapper.vm.$nextTick()
@@ -142,12 +147,12 @@ describe('Game Start Validation Integration', () => {
       // Add two players
       const createPlayer = wrapper.findComponent(CreatePlayer)
 
-      createPlayer.setData({ name: 'Alice' })
+      createPlayer.vm.name = 'Alice'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
 
-      createPlayer.setData({ name: 'Bob' })
+      createPlayer.vm.name = 'Bob'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
@@ -170,12 +175,12 @@ describe('Game Start Validation Integration', () => {
       // Add players
       const createPlayer = wrapper.findComponent(CreatePlayer)
 
-      createPlayer.setData({ name: 'Alice' })
+      createPlayer.vm.name = 'Alice'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
 
-      createPlayer.setData({ name: 'Bob' })
+      createPlayer.vm.name = 'Bob'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
@@ -198,12 +203,12 @@ describe('Game Start Validation Integration', () => {
       // Add players
       const createPlayer = wrapper.findComponent(CreatePlayer)
 
-      createPlayer.setData({ name: 'Alice' })
+      createPlayer.vm.name = 'Alice'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
 
-      createPlayer.setData({ name: 'Bob' })
+      createPlayer.vm.name = 'Bob'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
@@ -236,7 +241,7 @@ describe('Game Start Validation Integration', () => {
 
       // Add 1 player
       const createPlayer = wrapper.findComponent(CreatePlayer)
-      createPlayer.setData({ name: 'Alice' })
+      createPlayer.vm.name = 'Alice'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()
@@ -248,7 +253,7 @@ describe('Game Start Validation Integration', () => {
       expect(wrapper.vm.started).toBe(false)
 
       // Add 2nd player
-      createPlayer.setData({ name: 'Bob' })
+      createPlayer.vm.name = 'Bob'
       await wrapper.vm.$nextTick()
       createPlayer.vm.addPlayer()
       await wrapper.vm.$nextTick()

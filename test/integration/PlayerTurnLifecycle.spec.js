@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../setup'
 import FarkleGame from '@/components/FarkleGame.vue'
 import FarkleTurn from '@/components/FarkleTurn.vue'
 import Score from '@/components/Score.vue'
@@ -18,7 +19,10 @@ describe('Complete Player Turn Lifecycle Integration', () => {
       { name: 'Charlie', score: 0, onBoard: true }
     ]
     wrapper = mount(FarkleGame, {
-      propsData: { players }
+      global: {
+        stubs: vuetifyStubs
+      },
+      props: { players }
     })
   })
 

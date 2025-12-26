@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import GameOver from '@/components/GameOver.vue'
 
 describe('GameOver.vue', () => {
@@ -14,11 +15,13 @@ describe('GameOver.vue', () => {
     ]
 
     wrapper = mount(GameOver, {
-      propsData: {
+      props: {
         players,
         winner: players[0]
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -60,11 +63,13 @@ describe('GameOver.vue', () => {
 
   it('displays different winner correctly', () => {
     const newWrapper = mount(GameOver, {
-      propsData: {
+      props: {
         players,
         winner: players[1]
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -76,11 +81,13 @@ describe('GameOver.vue', () => {
 
   it('displays third player as winner correctly', () => {
     const newWrapper = mount(GameOver, {
-      propsData: {
+      props: {
         players,
         winner: players[2]
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -92,11 +99,13 @@ describe('GameOver.vue', () => {
 
   it('handles null winner gracefully', () => {
     const newWrapper = mount(GameOver, {
-      propsData: {
+      props: {
         players,
         winner: null
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -111,11 +120,13 @@ describe('GameOver.vue', () => {
     ]
 
     const newWrapper = mount(GameOver, {
-      propsData: {
+      props: {
         players: highScorePlayers,
         winner: highScorePlayers[0]
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'score': true
       }
     })
@@ -152,11 +163,13 @@ describe('GameOver.vue', () => {
 
     it('displays correct wins for different winner', () => {
       const newWrapper = mount(GameOver, {
-        propsData: {
+        props: {
           players,
           winner: players[2]
         },
-        stubs: {
+        global: {
+      stubs: {
+        ...vuetifyStubs,
           'score': true
         }
       })
@@ -171,11 +184,13 @@ describe('GameOver.vue', () => {
       ]
 
       const newWrapper = mount(GameOver, {
-        propsData: {
+        props: {
           players: firstTimeWinner,
           winner: firstTimeWinner[0]
         },
-        stubs: {
+        global: {
+      stubs: {
+        ...vuetifyStubs,
           'score': true
         }
       })
@@ -190,11 +205,13 @@ describe('GameOver.vue', () => {
       ]
 
       const newWrapper = mount(GameOver, {
-        propsData: {
+        props: {
           players: champion,
           winner: champion[0]
         },
-        stubs: {
+        global: {
+      stubs: {
+        ...vuetifyStubs,
           'score': true
         }
       })
@@ -205,11 +222,13 @@ describe('GameOver.vue', () => {
 
     it('does not display win count when winner is null', () => {
       const newWrapper = mount(GameOver, {
-        propsData: {
+        props: {
           players,
           winner: null
         },
-        stubs: {
+        global: {
+      stubs: {
+        ...vuetifyStubs,
           'score': true
         }
       })

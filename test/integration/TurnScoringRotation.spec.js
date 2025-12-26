@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../setup'
 import FarkleGame from '@/components/FarkleGame.vue'
 import FarkleTurn from '@/components/FarkleTurn.vue'
 
@@ -14,7 +15,10 @@ describe('Turn Scoring and Player Rotation Integration', () => {
       { name: 'Charlie', score: 0 }
     ]
     wrapper = mount(FarkleGame, {
-      propsData: { players }
+      global: {
+        stubs: vuetifyStubs
+      },
+      props: { players }
     })
   })
 
@@ -233,7 +237,7 @@ describe('Turn Scoring and Player Rotation Integration', () => {
         { name: 'Bob', score: 0 }
       ]
       wrapper = mount(FarkleGame, {
-        propsData: { players }
+        props: { players }
       })
     })
 
@@ -272,7 +276,7 @@ describe('Turn Scoring and Player Rotation Integration', () => {
         { name: 'Dave', score: 0 }
       ]
       wrapper = mount(FarkleGame, {
-        propsData: { players }
+        props: { players }
       })
     })
 

@@ -1,16 +1,20 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import Farkle from '@/components/Farkle.vue'
+import { vuetifyStubs } from '../../setup'
 
 describe('Farkle.vue', () => {
   let wrapper
 
   beforeEach(() => {
     wrapper = mount(Farkle, {
-      stubs: {
-        'create-player': true,
-        'player-list': true,
-        'farkle-game': true
+      global: {
+        stubs: {
+          ...vuetifyStubs,
+          'create-player': true,
+          'player-list': true,
+          'farkle-game': true
+        }
       }
     })
   })

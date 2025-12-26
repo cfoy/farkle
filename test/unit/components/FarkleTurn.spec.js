@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import FarkleTurn from '@/components/FarkleTurn.vue'
 
 describe('FarkleTurn.vue', () => {
@@ -7,7 +8,7 @@ describe('FarkleTurn.vue', () => {
 
   beforeEach(() => {
     wrapper = mount(FarkleTurn, {
-      propsData: {
+      props: {
         currentPlayer: { name: 'Alice', score: 0, onBoard: true }
       }
     })
@@ -170,7 +171,7 @@ describe('FarkleTurn.vue', () => {
   describe('500 point minimum validation', () => {
     it('prevents banking less than 500 when not on board', async () => {
       const wrapperWithPlayer = mount(FarkleTurn, {
-        propsData: {
+        props: {
           currentPlayer: { name: 'Alice', score: 0, onBoard: false }
         }
       })
@@ -192,7 +193,7 @@ describe('FarkleTurn.vue', () => {
 
     it('allows banking 500+ points when not on board', async () => {
       const wrapperWithPlayer = mount(FarkleTurn, {
-        propsData: {
+        props: {
           currentPlayer: { name: 'Alice', score: 0, onBoard: false }
         }
       })
@@ -208,7 +209,7 @@ describe('FarkleTurn.vue', () => {
 
     it('allows banking any amount when player is on board', async () => {
       const wrapperWithPlayer = mount(FarkleTurn, {
-        propsData: {
+        props: {
           currentPlayer: { name: 'Alice', score: 1000, onBoard: true }
         }
       })
@@ -224,7 +225,7 @@ describe('FarkleTurn.vue', () => {
 
     it('allows farkle at any time regardless of onBoard status', async () => {
       const wrapperWithPlayer = mount(FarkleTurn, {
-        propsData: {
+        props: {
           currentPlayer: { name: 'Alice', score: 0, onBoard: false }
         }
       })
@@ -245,7 +246,7 @@ describe('FarkleTurn.vue', () => {
 
     it('allows banking exactly 500 when not on board', async () => {
       const wrapperWithPlayer = mount(FarkleTurn, {
-        propsData: {
+        props: {
           currentPlayer: { name: 'Alice', score: 0, onBoard: false }
         }
       })
@@ -260,7 +261,7 @@ describe('FarkleTurn.vue', () => {
 
     it('prevents banking 499 when not on board', async () => {
       const wrapperWithPlayer = mount(FarkleTurn, {
-        propsData: {
+        props: {
           currentPlayer: { name: 'Alice', score: 0, onBoard: false }
         }
       })

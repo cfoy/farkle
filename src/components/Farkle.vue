@@ -2,7 +2,7 @@
   <div v-if="started">
       <farkle-game v-bind:players="players" v-on:game-end="handleGameEnd"></farkle-game>
       <v-card>
-        <v-btn color="primary" v-on:click.native="restartGame">Restart Game</v-btn>
+        <v-btn color="primary" @click="restartGame">Restart Game</v-btn>
       </v-card>
   </div>
   <div v-else>
@@ -12,8 +12,8 @@
       </v-card-text>
       <v-card-text>
         <player-list v-bind:players="players"></player-list>
-        <v-btn color="primary" v-on:click.native="startGame">Start Game</v-btn>
-        <v-btn flat v-on:click.native="resetWinStatistics">Reset Win Statistics</v-btn>
+        <v-btn color="primary" @click="startGame">Start Game</v-btn>
+        <v-btn variant="text" @click="resetWinStatistics">Reset Win Statistics</v-btn>
       </v-card-text>
     </v-card>
   </div>

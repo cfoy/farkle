@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { vuetifyStubs } from '../../setup'
 import ActiveGame from '@/components/ActiveGame.vue'
 
 describe('ActiveGame.vue', () => {
@@ -17,12 +18,14 @@ describe('ActiveGame.vue', () => {
     currentPlayer = players[0]
 
     wrapper = mount(ActiveGame, {
-      propsData: {
+      props: {
         currentPlayer,
         currentPlayerName: 'Alice',
         players
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'farkle-turn': true,
         'score': true
       }
@@ -122,12 +125,14 @@ describe('ActiveGame.vue', () => {
 
   it('handles currentPlayer with no score', () => {
     const newWrapper = mount(ActiveGame, {
-      propsData: {
+      props: {
         currentPlayer: players[2],
         currentPlayerName: 'Charlie',
         players
       },
+      global: {
       stubs: {
+        ...vuetifyStubs,
         'farkle-turn': true,
         'score': true
       }
