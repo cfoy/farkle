@@ -7,29 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2025-12-26
+
 ### Changed
 
-#### Vue 3 Migration with Compat Mode
-- Upgraded Vue from 2.7.16 to 3.5.26 using @vue/compat migration build
+#### Complete Vue 3 + Vuetify 3 Migration (PR #10)
+- **Major framework upgrade**: Migrated to pure Vue 3 (no compat mode) with Vuetify 3.11.4
+- Upgraded Vue from 2.7.16 to 3.5.26 (pure Vue 3, removed compat mode)
+- Upgraded Vuetify from 0.12.7 to 3.11.4
 - Upgraded Vue Router from 2.8.1 to 4.6.4
 - Upgraded @vue/test-utils from 1.3.6 to 2.4.6
-- Migrated to Vue 3 API: `createApp()` instead of `new Vue()`
-- Using Vue 3 compat mode (MODE: 2) for backward compatibility
-- All core functionality working (82/162 tests passing)
+- Migrated to Vue 3 API: `createApp()`, `createRouter()`, `createWebHashHistory()`
+- Migrated all Vuetify components to v3 syntax (variant, type, slots, etc.)
+- Material Design Icons via @mdi/font package
 
-### Known Issues
+#### Critical Fixes
+- Fixed blank page issue caused by Vuetify 3/compat mode incompatibility
+  - Vuetify 3's LoaderSlot component fails with "Cannot read properties of undefined" in compat mode
+  - Solution: Disabled compat mode entirely (all Vue 2 patterns already Vue 3 compatible)
+- Fixed CreatePlayer data initialization error (`name` → `name: ''`)
+- Removed redundant on-board warning alerts (popup feedback sufficient)
 
-#### Vuetify 0.x Incompatibility with Vue 3
-- **Current state**: Application is functional but unstyled
-- Vuetify 0.12.7 is incompatible with Vue 3 (designed for Vue 2 internals)
-- Styling will be restored in next release with Vuetify 3.x upgrade
-- See issue farkle-6an for Vuetify 3 migration tracking
+#### Build System
+- Vite 5.4 configuration optimized for pure Vue 3
+- Removed @vue/compat alias and compat mode configuration
+- Tree-shaking enabled for Vuetify components
+- Vendor bundle: 646.91 KB (optimized from 762.14 KB with compat mode)
+
+#### Testing Infrastructure
+- All 82 E2E test suites passing with Playwright
+- Unit tests updated for Vue 3 and Vuetify 3 compatibility
+- Test setup with Vuetify 3 component stubs
 
 ### Technical Details
-- Using @vue/compat migration build for Vue 2 compatibility layer
-- Vue Router 4 requires ESM-only named imports (no default export)
-- Test infrastructure updated for @vue/test-utils v2 API changes
-- Bundle size: 216KB vendor chunk (Vue 3 bundled from node_modules)
+- **Breaking Change**: Removed Vue 3 compat mode (incompatible with Vuetify 3)
+- Vue Router 4 uses ESM-only named imports (no default export)
+- Vuetify 3 loaded as npm package with full tree-shaking support
+- All legacy Vue 2 patterns (v-bind:, v-on:, $emit) work in pure Vue 3
+- Material Design Icons loaded via @mdi/font instead of CDN
 
 ## [1.5.0] - 2025-12-23
 
