@@ -9,7 +9,10 @@
           <v-card-text>
             <h4 v-if="winner">Winner: {{ winner.name }} with {{ winner.score }} points!</h4>
             <p v-if="winner" class="win-count"><strong>Total Wins: {{ winner.wins }}</strong></p>
-            <score v-bind:players="players"></score>
+            <score
+              v-bind:players="players"
+              v-bind:next-starter-index="nextStarterIndex">
+            </score>
           </v-card-text>
         </v-card>
       </v-col>
@@ -32,6 +35,10 @@ export default {
     },
     winner: {
       type: Object,
+      default: null
+    },
+    nextStarterIndex: {
+      type: Number,
       default: null
     }
   }
