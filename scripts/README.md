@@ -12,7 +12,15 @@ After a PR is merged, run the release script to:
 7. Create version tag
 8. Push everything to remote
 
-### Usage
+## Two Release Scripts
+
+### 1. Interactive Release (`release.sh`)
+For manual releases where you want to edit the changelog yourself.
+
+### 2. Automated Release (`release-auto.sh`)
+For automated releases (e.g., Claude Code) where changelog content is provided programmatically.
+
+## Usage
 
 **Using npm:**
 ```bash
@@ -76,3 +84,60 @@ farkle-release 2.2.0
   - MINOR: New features (backward compatible)
   - PATCH: Bug fixes
 - The script will pause for you to edit CHANGELOG.md - don't forget to save!
+
+## Automated Release (for Claude Code)
+
+### Usage
+
+```bash
+./scripts/release-auto.sh "2.2.0" "### Added
+
+#### Feature Name (PR #12)
+- Description of change 1
+- Description of change 2
+- Related bd issues: farkle-abc, farkle-xyz
+"
+```
+
+### Parameters
+
+1. **Version** (required) - Semantic version number (e.g., "2.2.0")
+2. **Changelog content** (required) - Markdown content for this version's changelog entry
+
+### What It Does
+
+The automated script does everything the interactive script does, but:
+- ✅ No user prompts - fully automated
+- ✅ Changelog content provided as parameter
+- ✅ Automatically inserts content into CHANGELOG.md
+- ✅ Updates version comparison links
+- ✅ Perfect for CI/CD or AI-assisted workflows
+
+### Changelog Content Format
+
+The changelog content should follow Keep a Changelog format:
+
+```markdown
+### Added
+
+#### Feature Description (PR #XX)
+- Bullet point 1
+- Bullet point 2
+
+### Changed
+
+#### Another Change (PR #YY)
+- Change description
+```
+
+**Sections:**
+- `### Added` - New features
+- `### Changed` - Changes in existing functionality
+- `### Deprecated` - Soon-to-be removed features
+- `### Removed` - Removed features
+- `### Fixed` - Bug fixes
+- `### Security` - Security fixes
+
+### Claude Code Integration
+
+See `.claude/commands/release.md` for detailed instructions on how Claude Code should use this script.

@@ -206,3 +206,45 @@ gh pr create --title "Feature: Descriptive Title" --body "Description of changes
 ```
 
 See the GitHub CLI section in this file for more details on PR creation.
+
+### Release Workflow
+
+**IMPORTANT**: When a PR is merged and ready for release, use the automated release workflow.
+
+**Automated Release (for Claude Code)**:
+
+When the user says "PR merged" or requests a release:
+
+1. Pull and analyze changes:
+   ```bash
+   git pull origin master
+   git log --oneline -5
+   bd list --status=closed | head -20
+   ```
+
+2. Determine the semantic version number:
+   - Check CHANGELOG.md for current version
+   - MAJOR: Breaking changes
+   - MINOR: New features (backward compatible)
+   - PATCH: Bug fixes
+
+3. Generate changelog content based on merged changes
+
+4. Run the automated release script:
+   ```bash
+   ./scripts/release-auto.sh "X.Y.Z" "### Added
+
+   #### Feature Name (PR #XX)
+   - Description of changes
+   - Related bd issues closed
+   "
+   ```
+
+The script automatically:
+- Updates CHANGELOG.md with new version entry
+- Commits the changelog
+- Syncs beads
+- Creates and pushes git tag
+- Pushes all changes to remote
+
+**Detailed instructions**: See `.claude/commands/release.md` for the complete workflow template.
