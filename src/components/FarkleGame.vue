@@ -12,7 +12,9 @@
       v-else-if="gameOver"
       v-bind:players="players"
       v-bind:winner="winner"
-      v-bind:next-starter-index="nextStarterIndexAfterGame">
+      v-bind:next-starter-index="nextStarterIndexAfterGame"
+      v-on:play-again="handlePlayAgain"
+      v-on:change-players="handleChangePlayers">
     </game-over>
     <div v-else>
       <current-player-header v-bind:player-name="currentPlayerName"></current-player-header>
@@ -183,6 +185,12 @@ export default {
         this.winnerEmitted = true
         this.$emit('game-end', { winner: winnerPlayer, loser: loserPlayer })
       }
+    },
+    handlePlayAgain () {
+      this.$emit('play-again', this.nextStarterIndexAfterGame)
+    },
+    handleChangePlayers () {
+      this.$emit('change-players')
     }
   },
 

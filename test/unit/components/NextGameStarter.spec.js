@@ -108,7 +108,7 @@ describe('Farkle.vue - Next Game Starting Player State', () => {
     expect(wrapper.vm.players[0].wins).toBe(1) // Winner still incremented
   })
 
-  it('persists nextGameStartingPlayerIndex across game restarts', async () => {
+  it('resets nextGameStartingPlayerIndex when changing players', async () => {
     wrapper = createWrapper()
 
     wrapper.vm.players = [
@@ -118,14 +118,60 @@ describe('Farkle.vue - Next Game Starting Player State', () => {
     wrapper.vm.nextGameStartingPlayerIndex = 1
     wrapper.vm.started = true
 
-    // Restart game
+    // Restart game (Change Players button)
     wrapper.vm.restartGame()
     await wrapper.vm.$nextTick()
 
-    // nextGameStartingPlayerIndex should persist
-    expect(wrapper.vm.nextGameStartingPlayerIndex).toBe(1)
-    // But scores should be reset
+    // nextGameStartingPlayerIndex should be reset when changing players
+    expect(wrapper.vm.nextGameStartingPlayerIndex).toBeNull()
+    // Scores should be reset
     expect(wrapper.vm.players[0].score).toBe(0)
     expect(wrapper.vm.players[1].score).toBe(0)
+    // Should return to player setup
+    expect(wrapper.vm.started).toBe(false)
+  })
+
+  it('playAgain resets scores and sets loser as starting player', async () => {
+    wrapper = createWrapper()
+
+    wrapper.vm.players = [
+      { name: 'Alice', score: 10500, onBoard: true, wins: 1 },
+      { name: 'Bob', score: 2000, onBoard: true, wins: 0 }
+    ]
+    wrapper.vm.started = true
+    const initialGameKey = wrapper.vm.gameKey
+
+    // Play again with Bob (index 1) as loser
+    wrapper.vm.playAgain(1)
+    await wrapper.vm.$nextTick()
+
+    // Scores should be reset
+    expect(wrapper.vm.players[0].score).toBe(0)
+    expect(wrapper.vm.players[1].score).toBe(0)
+    // onBoard should be reset
+    expect(wrapper.vm.players[0].onBoard).toBe(false)
+    expect(wrapper.vm.players[1].onBoard).toBe(false)
+    // Loser should be set as next starter
+    expect(wrapper.vm.nextGameStartingPlayerIndex).toBe(1)
+    // Game should stay started
+    expect(wrapper.vm.started).toBe(true)
+    // gameKey should increment to force remount
+    expect(wrapper.vm.gameKey).toBe(initialGameKey + 1)
+  })
+
+  it('playAgain preserves player wins', async () => {
+    wrapper = createWrapper()
+
+    wrapper.vm.players = [
+      { name: 'Alice', score: 10500, onBoard: true, wins: 3 },
+      { name: 'Bob', score: 2000, onBoard: true, wins: 1 }
+    ]
+
+    wrapper.vm.playAgain(1)
+    await wrapper.vm.$nextTick()
+
+    // Wins should be preserved
+    expect(wrapper.vm.players[0].wins).toBe(3)
+    expect(wrapper.vm.players[1].wins).toBe(1)
   })
 })

@@ -13,6 +13,28 @@
               v-bind:players="players"
               v-bind:next-starter-index="nextStarterIndex">
             </score>
+            <v-row class="mt-6">
+              <v-col cols="12" sm="6" class="d-flex justify-center justify-sm-end">
+                <v-btn
+                  color="success"
+                  variant="elevated"
+                  size="large"
+                  @click="playAgain"
+                  class="mx-2">
+                  Play Again
+                </v-btn>
+              </v-col>
+              <v-col cols="12" sm="6" class="d-flex justify-center justify-sm-start">
+                <v-btn
+                  color="primary"
+                  variant="outlined"
+                  size="large"
+                  @click="changePlayers"
+                  class="mx-2">
+                  Change Players
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-card-text>
         </v-card>
       </v-col>
@@ -40,6 +62,14 @@ export default {
     nextStarterIndex: {
       type: Number,
       default: null
+    }
+  },
+  methods: {
+    playAgain () {
+      this.$emit('play-again')
+    },
+    changePlayers () {
+      this.$emit('change-players')
     }
   }
 }
