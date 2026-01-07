@@ -168,7 +168,7 @@ describe('Loser Plays First Feature - Integration Test', () => {
     expect(farkleGameWrapper.vm.currentPlayerName).toBe('Bob') // Wraps back
   })
 
-  it('UI shows "Plays Next" indicator after game ends', async () => {
+  it('UI shows "Starting Player" indicator after game ends', async () => {
     const players = [
       { name: 'Alice', score: 10500, onBoard: true, wins: 0 },
       { name: 'Bob', score: 2000, onBoard: true, wins: 0 },

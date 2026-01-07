@@ -9,7 +9,7 @@
         {{ player.name }}
         <v-chip size="small" v-if="player.onBoard" color="success">On Board</v-chip>
         <v-chip size="small" v-else color="warning">Not On Board</v-chip>
-        <v-chip size="small" v-if="nextStarterIndex === index" color="primary">Plays Next</v-chip>
+        <v-chip size="small" v-if="nextStarterIndex === index" color="primary">Starting Player</v-chip>
       </v-list-item-title>
       <v-list-item-subtitle>Wins: {{ player.wins }}</v-list-item-subtitle>
       <template v-slot:append>
