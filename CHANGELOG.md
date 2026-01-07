@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.1] - 2026-01-06
+
+### Changed
+
+#### Improved Button Spacing (PR #12)
+- Separated Done and Farkle buttons to prevent accidental clicks
+- Done and Farkle buttons now in distinct columns with larger size for better touch targets
+- Added visual separation for Restart Game button with divider and warning color
+- Improved overall button layout and visual hierarchy to reduce user errors
+
+Closes: farkle-7i8
+
+
 ## [2.1.0] - 2026-01-06
 
 ### Added
@@ -217,7 +230,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/cfoy/farkle/compare/2.1.0...HEAD
+[Unreleased]: https://github.com/cfoy/farkle/compare/2.1.1...HEAD
+[2.1.1]: https://github.com/cfoy/farkle/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/cfoy/farkle/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/cfoy/farkle/compare/1.5.0...2.0.0
 [1.5.0]: https://github.com/cfoy/farkle/compare/1.4.0...1.5.0
