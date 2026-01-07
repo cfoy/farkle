@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-01-06
+
+### Added
+
+#### Loser Plays First Feature (PR #11)
+- Implement "loser plays first" house rule for next game
+- After a game ends, the player with the lowest score becomes the starting player for the next game
+- Starting player indicator updated from "Plays Next" to "Starting Player" for clarity
+- Game state now tracks the next game's starting player
+- When starting a new game, the designated starting player goes first
+- Comprehensive E2E test suite for loser-plays-first functionality
+- Updated game state management to persist starting player across game restarts
+
 ## [2.0.0] - 2025-12-26
 
 ### Changed
@@ -204,7 +217,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/cfoy/farkle/compare/1.5.0...HEAD
+[Unreleased]: https://github.com/cfoy/farkle/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/cfoy/farkle/compare/2.0.0...2.1.0
+[2.0.0]: https://github.com/cfoy/farkle/compare/1.5.0...2.0.0
 [1.5.0]: https://github.com/cfoy/farkle/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/cfoy/farkle/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/cfoy/farkle/compare/1.2.0...1.3.0
