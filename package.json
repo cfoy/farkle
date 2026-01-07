@@ -17,7 +17,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test": "npm run test:unit:run && npm run test:e2e",
-    "lint": "eslint --ext .js,.vue src test"
+    "lint": "eslint --ext .js,.vue src test",
+    "release": "./scripts/release.sh"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
