@@ -57,6 +57,10 @@ export const vuetifyStubs = {
   'v-alert': {
     template: '<div class="v-alert"><slot /></div>',
     props: ['type', 'color']
+  },
+  'v-divider': {
+    template: '<hr class="v-divider" />',
+    props: []
   }
 }
 

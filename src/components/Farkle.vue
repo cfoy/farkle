@@ -5,8 +5,13 @@
         v-bind:starting-player-index="nextGameStartingPlayerIndex"
         v-on:game-end="handleGameEnd">
       </farkle-game>
-      <v-card>
-        <v-btn color="primary" @click="restartGame">Restart Game</v-btn>
+      <v-card class="mt-8">
+        <v-card-text class="text-center">
+          <v-divider class="mb-4"></v-divider>
+          <v-btn color="warning" variant="outlined" size="large" @click="restartGame">
+            Restart Game
+          </v-btn>
+        </v-card-text>
       </v-card>
   </div>
   <div v-else>
