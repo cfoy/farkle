@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-01-06
+
+### Added
+
+#### Game Over Restart Options (PR #13)
+- Added Play Again button to restart with same players (loser goes first)
+- Added Change Players button to return to player setup screen
+- Improved button layout with responsive grid (stacked on mobile, side-by-side on desktop)
+- Hides Restart Game button during Game Over screen for cleaner UI
+- Added comprehensive tests for game restart functionality
+
+Closes: farkle-zdv
+
+
 ## [2.1.1] - 2026-01-06
 
 ### Changed
@@ -230,7 +244,8 @@ Closes: farkle-7i8
 
 ---
 
-[Unreleased]: https://github.com/cfoy/farkle/compare/2.1.1...HEAD
+[Unreleased]: https://github.com/cfoy/farkle/compare/2.2.0...HEAD
+[2.2.0]: https://github.com/cfoy/farkle/compare/2.1.1...2.2.0
 [2.1.1]: https://github.com/cfoy/farkle/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/cfoy/farkle/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/cfoy/farkle/compare/1.5.0...2.0.0
