@@ -8,7 +8,7 @@
         v-on:play-again="playAgain"
         v-on:change-players="restartGame">
       </farkle-game>
-      <v-card class="mt-8">
+      <v-card v-if="!gameOver" class="mt-8">
         <v-card-text class="text-center">
           <v-divider class="mb-4"></v-divider>
           <v-btn color="warning" variant="outlined" size="large" @click="restartGame">
@@ -48,7 +48,8 @@ export default {
       players: [],
       started: false,
       nextGameStartingPlayerIndex: null,
-      gameKey: 0
+      gameKey: 0,
+      gameOver: false
     }
   },
 
@@ -59,6 +60,7 @@ export default {
     startGame () {
       if (this.players.length >= 2) {
         this.started = true
+        this.gameOver = false
       }
     },
     restartGame () {
@@ -68,6 +70,7 @@ export default {
       })
       this.started = false
       this.nextGameStartingPlayerIndex = null
+      this.gameOver = false
     },
     playAgain (loserIndex) {
       // Reset player scores and onBoard status
@@ -77,6 +80,8 @@ export default {
       })
       // Set the loser to start the next game
       this.nextGameStartingPlayerIndex = loserIndex
+      // Reset game over state
+      this.gameOver = false
       // Force FarkleGame to remount with new game state
       this.gameKey += 1
     },
@@ -84,6 +89,9 @@ export default {
       // Handle both old format (direct winner object) and new format ({ winner, loser })
       const winner = gameResult.winner || gameResult
       const loser = gameResult.loser || null
+
+      // Set game over state
+      this.gameOver = true
 
       // Increment the winner's wins count
       if (winner && winner.wins !== undefined) {
