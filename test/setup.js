@@ -1,12 +1,7 @@
 import { config } from '@vue/test-utils'
-import { configureCompat } from 'vue'
-
-// Configure Vue 3 compat mode for Vuetify 0.x
-configureCompat({
-  MODE: 2 // Full Vue 2 compatibility mode
-})
 
 // Configure Vue Test Utils for Vue 3
+// Note: This project uses pure Vue 3 (no compat mode)
 config.global = config.global || {}
 
 // Create Vuetify component stubs (only for unit tests that need them)

@@ -1,6 +1,10 @@
 <template>
   <div v-if="started">
-      <farkle-game v-bind:players="players" v-on:game-end="handleGameEnd"></farkle-game>
+      <farkle-game
+        v-bind:players="players"
+        v-bind:starting-player-index="nextGameStartingPlayerIndex"
+        v-on:game-end="handleGameEnd">
+      </farkle-game>
       <v-card>
         <v-btn color="primary" @click="restartGame">Restart Game</v-btn>
       </v-card>
@@ -34,7 +38,8 @@ export default {
   data () {
     return {
       players: [],
-      started: false
+      started: false,
+      nextGameStartingPlayerIndex: null
     }
   },
 
@@ -54,12 +59,24 @@ export default {
       })
       this.started = false
     },
-    handleGameEnd (winner) {
+    handleGameEnd (gameResult) {
+      // Handle both old format (direct winner object) and new format ({ winner, loser })
+      const winner = gameResult.winner || gameResult
+      const loser = gameResult.loser || null
+
       // Increment the winner's wins count
       if (winner && winner.wins !== undefined) {
         winner.wins += 1
         // Save to localStorage
         this.saveWinsToLocalStorage()
+      }
+
+      // Store the loser's index for next game's starting player
+      if (loser) {
+        const loserIndex = this.players.findIndex(p => p === loser)
+        if (loserIndex !== -1) {
+          this.nextGameStartingPlayerIndex = loserIndex
+        }
       }
     },
     saveWinsToLocalStorage () {

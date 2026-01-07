@@ -9,6 +9,7 @@
         {{ player.name }}
         <v-chip size="small" v-if="player.onBoard" color="success">On Board</v-chip>
         <v-chip size="small" v-else color="warning">Not On Board</v-chip>
+        <v-chip size="small" v-if="nextStarterIndex === index" color="primary">Starting Player</v-chip>
       </v-list-item-title>
       <v-list-item-subtitle>Wins: {{ player.wins }}</v-list-item-subtitle>
       <template v-slot:append>
@@ -19,7 +20,16 @@
 </template>
 <script>
   export default {
-    props: ['players'],
+    props: {
+      players: {
+        type: Array,
+        required: true
+      },
+      nextStarterIndex: {
+        type: Number,
+        default: null
+      }
+    },
     name: 'score'
   }
 </script>

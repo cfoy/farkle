@@ -5,12 +5,14 @@
       v-bind:players="players"
       v-bind:tied-player-indices="tiedPlayerIndices"
       v-bind:highest-score="highestScore"
+      v-bind:next-starter-index="nextStarterIndexAfterGame"
       v-on:select-winner="selectTieBreakerWinner">
     </tie-breaker>
     <game-over
       v-else-if="gameOver"
       v-bind:players="players"
-      v-bind:winner="winner">
+      v-bind:winner="winner"
+      v-bind:next-starter-index="nextStarterIndexAfterGame">
     </game-over>
     <div v-else>
       <current-player-header v-bind:player-name="currentPlayerName"></current-player-header>
@@ -18,6 +20,7 @@
         v-bind:current-player="players[currentPlayer]"
         v-bind:current-player-name="currentPlayerName"
         v-bind:players="players"
+        v-bind:next-starter-index="startingPlayerIndex"
         v-on:score="score">
       </active-game>
     </div>
@@ -39,7 +42,16 @@ export default {
     ActiveGame
   },
 
-  props: ['players'],
+  props: {
+    players: {
+      type: Array,
+      required: true
+    },
+    startingPlayerIndex: {
+      type: Number,
+      default: null
+    }
+  },
 
   data () {
     return {
@@ -52,6 +64,15 @@ export default {
       tiedPlayerIndices: [],
       selectedWinner: null,
       winnerEmitted: false
+    }
+  },
+
+  created () {
+    // Initialize currentPlayer based on startingPlayerIndex if provided
+    if (this.startingPlayerIndex !== null &&
+        this.startingPlayerIndex >= 0 &&
+        this.startingPlayerIndex < this.players.length) {
+      this.currentPlayer = this.startingPlayerIndex
     }
   },
 
@@ -102,6 +123,23 @@ export default {
 
       return winnerIndex
     },
+    findLoserIndex () {
+      if (this.players.length === 0) {
+        return -1
+      }
+
+      let minScore = this.players[0].score
+      let loserIndex = 0
+
+      for (let i = 1; i < this.players.length; i++) {
+        if (this.players[i].score < minScore) {
+          minScore = this.players[i].score
+          loserIndex = i
+        }
+      }
+
+      return loserIndex
+    },
     findTiedPlayers () {
       let maxScore = -1
 
@@ -140,9 +178,10 @@ export default {
     },
     emitWinner () {
       const winnerPlayer = this.winner
+      const loserPlayer = this.loser
       if (winnerPlayer && !this.winnerEmitted) {
         this.winnerEmitted = true
-        this.$emit('game-end', winnerPlayer)
+        this.$emit('game-end', { winner: winnerPlayer, loser: loserPlayer })
       }
     }
   },
@@ -170,6 +209,19 @@ export default {
       const winnerIndex = this.findWinnerIndex()
       return winnerIndex >= 0 ? this.players[winnerIndex] : null
     },
+    loser () {
+      if (!this.gameOver) {
+        return null
+      }
+
+      // If in tie-breaker mode, don't determine loser yet
+      if (this.inTieBreaker) {
+        return null
+      }
+
+      const loserIndex = this.findLoserIndex()
+      return loserIndex >= 0 ? this.players[loserIndex] : null
+    },
     highestScore () {
       if (this.players.length === 0) {
         return 0
@@ -182,6 +234,15 @@ export default {
         }
       }
       return maxScore
+    },
+    nextStarterIndexAfterGame () {
+      // Show the loser as next starter when game is over
+      if (!this.gameOver) {
+        return null
+      }
+
+      const loserIndex = this.findLoserIndex()
+      return loserIndex >= 0 ? loserIndex : null
     }
   }
 }

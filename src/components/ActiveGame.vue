@@ -11,7 +11,10 @@
       <v-col cols="12" md="6">
         <v-card>
           <v-card-text>
-            <score v-bind:players="players"></score>
+            <score
+              v-bind:players="players"
+              v-bind:next-starter-index="nextStarterIndex">
+            </score>
           </v-card-text>
         </v-card>
       </v-col>
@@ -42,6 +45,10 @@ export default {
     players: {
       type: Array,
       required: true
+    },
+    nextStarterIndex: {
+      type: Number,
+      default: null
     }
   },
 
