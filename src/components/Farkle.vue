@@ -1,9 +1,12 @@
 <template>
   <div v-if="started">
       <farkle-game
+        :key="gameKey"
         v-bind:players="players"
         v-bind:starting-player-index="nextGameStartingPlayerIndex"
-        v-on:game-end="handleGameEnd">
+        v-on:game-end="handleGameEnd"
+        v-on:play-again="playAgain"
+        v-on:change-players="restartGame">
       </farkle-game>
       <v-card class="mt-8">
         <v-card-text class="text-center">
@@ -44,7 +47,8 @@ export default {
     return {
       players: [],
       started: false,
-      nextGameStartingPlayerIndex: null
+      nextGameStartingPlayerIndex: null,
+      gameKey: 0
     }
   },
 
@@ -63,6 +67,18 @@ export default {
         player.onBoard = false
       })
       this.started = false
+      this.nextGameStartingPlayerIndex = null
+    },
+    playAgain (loserIndex) {
+      // Reset player scores and onBoard status
+      this.players.forEach(function (player) {
+        player.score = 0
+        player.onBoard = false
+      })
+      // Set the loser to start the next game
+      this.nextGameStartingPlayerIndex = loserIndex
+      // Force FarkleGame to remount with new game state
+      this.gameKey += 1
     },
     handleGameEnd (gameResult) {
       // Handle both old format (direct winner object) and new format ({ winner, loser })

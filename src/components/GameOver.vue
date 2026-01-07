@@ -13,6 +13,22 @@
               v-bind:players="players"
               v-bind:next-starter-index="nextStarterIndex">
             </score>
+            <div class="mt-6 d-flex justify-center gap-4">
+              <v-btn
+                color="success"
+                variant="elevated"
+                size="large"
+                @click="playAgain">
+                Play Again
+              </v-btn>
+              <v-btn
+                color="primary"
+                variant="outlined"
+                size="large"
+                @click="changePlayers">
+                Change Players
+              </v-btn>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -40,6 +56,14 @@ export default {
     nextStarterIndex: {
       type: Number,
       default: null
+    }
+  },
+  methods: {
+    playAgain () {
+      this.$emit('play-again')
+    },
+    changePlayers () {
+      this.$emit('change-players')
     }
   }
 }
