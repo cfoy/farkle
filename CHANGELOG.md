@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-01-16
+
+### Added
+
+#### 350 Points Scoring Button (PR #15)
+- Added new scoring button for 350 points
+- Placed alongside One and Five buttons for easy access
+- Common scoring combination in Farkle (e.g., 3 ones + 1 five)
+
+Closes: farkle-8on
+
+#### Player List Reordering (PR #16)
+- Player list now reorders when loser starts next game
+- Loser automatically moves to top of list (index 0)
+- Other players maintain their relative order
+- Visual player display now matches turn order
+
+Closes: farkle-cki
+
+### Changed
+
+#### Improved Button Click Target Separation (PR #14)
+- Added empty column between Done and Farkle buttons
+- Changed button layout from 6/6 to 5/2/5 grid
+- Creates clear visible space between buttons
+- Better click target separation to prevent accidental clicks
+
+Closes: farkle-53f
+
+
 ## [2.2.0] - 2026-01-06
 
 ### Added
@@ -244,7 +274,8 @@ Closes: farkle-7i8
 
 ---
 
-[Unreleased]: https://github.com/cfoy/farkle/compare/2.2.0...HEAD
+[Unreleased]: https://github.com/cfoy/farkle/compare/2.3.0...HEAD
+[2.3.0]: https://github.com/cfoy/farkle/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/cfoy/farkle/compare/2.1.1...2.2.0
 [2.1.1]: https://github.com/cfoy/farkle/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/cfoy/farkle/compare/2.0.0...2.1.0
