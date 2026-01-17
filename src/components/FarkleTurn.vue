@@ -28,11 +28,11 @@
     </v-col>
     <v-col cols="12">
       <v-row>
-        <v-col cols="6" class="text-center pa-1">
-          <v-btn color="primary" block class="action-btn" @click="done">Done</v-btn>
+        <v-col cols="6" class="text-center px-3">
+          <v-btn color="primary" size="large" block class="action-btn" @click="done">Done</v-btn>
         </v-col>
-        <v-col cols="6" class="text-center pa-1">
-          <v-btn color="error" block class="action-btn" @click="farkle">Farkle!</v-btn>
+        <v-col cols="6" class="text-center px-3">
+          <v-btn color="error" size="large" block class="action-btn" @click="farkle">Farkle!</v-btn>
         </v-col>
       </v-row>
     </v-col>
@@ -117,8 +117,7 @@ export default {
 </script>
 
 <style scoped>
-.action-btn {
-  padding: 10px 4px !important;
-  min-height: 44px !important;
+.action-btn :deep(.v-btn__content) {
+  padding: 0 8px !important;
 }
 </style>
