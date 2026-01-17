@@ -78,8 +78,23 @@ export default {
         player.score = 0
         player.onBoard = false
       })
-      // Set the loser to start the next game
-      this.nextGameStartingPlayerIndex = loserIndex
+
+      // Reorder players array to put loser at the front
+      if (loserIndex !== null && loserIndex >= 0 && loserIndex < this.players.length) {
+        // Create reordered array: loser + everyone after + everyone before loser
+        const reordered = [
+          ...this.players.slice(loserIndex),
+          ...this.players.slice(0, loserIndex)
+        ]
+        // Replace players array contents while maintaining reactivity
+        this.players.splice(0, this.players.length, ...reordered)
+        // After reordering, loser is at index 0
+        this.nextGameStartingPlayerIndex = 0
+      } else {
+        // Fallback if loserIndex is invalid
+        this.nextGameStartingPlayerIndex = loserIndex
+      }
+
       // Reset game over state
       this.gameOver = false
       // Force FarkleGame to remount with new game state
