@@ -6,6 +6,7 @@
     <v-col cols="12">
       <v-btn variant="text" @click="one">One</v-btn>
       <v-btn variant="text" @click="five">Five</v-btn>
+      <v-btn variant="text" @click="threeHundredFifty">350</v-btn>
     </v-col>
     <v-col cols="12">
       <v-btn variant="text" @click="tripleOnes">111</v-btn>
@@ -57,6 +58,9 @@ export default {
     },
     five () {
       this.points += 50
+    },
+    threeHundredFifty () {
+      this.points += 350
     },
     tripleOnes () {
       this.points += 300
