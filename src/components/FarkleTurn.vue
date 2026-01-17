@@ -117,13 +117,8 @@ export default {
 </script>
 
 <style scoped>
-.action-btn :deep(.v-btn__content) {
-  padding: 0 !important;
-}
-
 .action-btn {
-  padding: 6px 12px !important;
-  min-height: 40px !important;
-  height: 40px !important;
+  padding: 10px 4px !important;
+  min-height: 44px !important;
 }
 </style>
