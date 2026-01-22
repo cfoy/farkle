@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.1] - 2026-01-22
+
+### Changed
+
+#### Larger Header Fonts (PR #17)
+- Increased font sizes for Current Player and Turn Total displays
+- These key game elements are now more visible during gameplay
+
+Closes: farkle-9ww
+
+
 ## [2.3.0] - 2026-01-16
 
 ### Added
@@ -274,7 +285,8 @@ Closes: farkle-7i8
 
 ---
 
-[Unreleased]: https://github.com/cfoy/farkle/compare/2.3.0...HEAD
+[Unreleased]: https://github.com/cfoy/farkle/compare/2.3.1...HEAD
+[2.3.1]: https://github.com/cfoy/farkle/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/cfoy/farkle/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/cfoy/farkle/compare/2.1.1...2.2.0
 [2.1.1]: https://github.com/cfoy/farkle/compare/2.1.0...2.1.1
