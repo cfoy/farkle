@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <h5>Turn Total: {{ points }} points</h5>
+      <h3>Turn Total: {{ points }} points</h3>
     </v-col>
     <v-col cols="12">
       <v-btn variant="text" @click="one">One</v-btn>
