@@ -18,6 +18,12 @@ export default {
 </script>
 
 <style>
+  /* Globally scale typography by 30%. Vuetify's rem-based sizing
+     inherits from the root font size, so all text scales together. */
+  html {
+    font-size: 130%;
+  }
+
   body {
     margin: 30px;
   }
